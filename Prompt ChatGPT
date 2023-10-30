@@ -1,0 +1,33 @@
+Objetivos:
+Com a realização deste instrumento pretende-se sensibilizar e motivar os alunos para a resolução de problemas através da Formalização de problemas, e a conceção e implementação de algoritmos de procura.
+
+
+Com a realização deste trabalho prático é pretendido que se desenvolvam diversos algoritmos de procura tendo em conta um tópico relevante na nossa sociedade, a sustentabilidade. Nesse sentido, a empresa de distribuição Health Planet tem como objetivo utilizar o meio de entrega de encomendas mais sustentável/ecológico para o planeta. Nesse contexto, existem ao dispor dos estafetas diferentes meios de transporte, com diferentes níveis de consumos de energia que podem utilizar.
+
+Cada estafeta da Health Planet tem associado um conjunto de entregas a efetuar em determinadas ruas de uma cidade, as quais estão associadas a uma freguesia. Cada cliente terá a possibilidade de indicar o tempo máximo em que pretende que a sua encomenda seja entregue, existindo assim prazos de entrega. Caso o estafeta não cumpra o prazo determinado para a entrega da encomenda sofrerá uma penalização no ranking de satisfação dado pelos clientes. Deverá também ser possível, por parte do cliente, classificar a entrega do estafeta, num ranking entre 0 e 5 estrelas. Cada encomenda a ser distribuída deve ser caracterizada, pelo menos, pelo seu peso e volume. O preço do serviço de entrega deverá ter em conta para além da encomenda, pelo menos, o prazo de entrega e meio de transporte utlizado.
+
+A elaboração deste trabalho prático deverá ainda ter em consideração alguns aspetos:
+- As bicicletas podem transportar encomendas no máximo até 5 Kg, tendo em conta uma velocidade média de 10km/h;
+- No caso das motos, este meio poderá transportar encomendas com um limite máximo de 20 Kg e com uma velocidade média de cerca de 35km/h;
+- Relativamente aos carros, este terá uma velocidade média de aproximadamente 50km/h, com um peso máximo de transporte de 100kg.
+
+Atendendo ao enunciado em questão, onde a pegada ecológica é um aspeto a ter em consideração, descrevem-se as seguintes tarefas:
+● Formulação do problema como um problema de procura, indicando a representação do estado inicial, estado/teste objetivo, os operadores (nome, pré-condições, efeitos) e custo da solução. Caso à medida que vão avançando no trabalho, exista reformulação do problema,
+o de apresentar e justificar as heurísticas utilizadas nos algoritmos de procura informada;
+● Além de apresentar o caminho mais curto e o respetivo custo da solução, deve ser apresentado o caminho percorrido ao longo da execução em cada um dos algoritmos desenvolvidos;
+● Caso, no ambiente competitivo, exista a possibilidade de dois participantes se dirigirem para a mesma célula da pista, apresentar e justificar a decisão tomada nessas condições;
+● Poderão, ainda, ser considerados contextos de Procura com ações não determinísticas à sua escolha.
+
+
+Para o desenvolvimento deste trabalho é necessário ter em consideração alguns aspetos:
+● Por cada Kg transportado numa bicicleta, a velocidade média da bicicleta sofre um decréscimo de 0.6 Km/h. Notar que as bicicletas apenas podem transporta encomendas até um limite de 5Kg;
+● Se o transporte for efetuado de moto, cada Kg transportado irá afetar a velocidade média em menos 0.5 Km/h. No caso das motos, o limite máximo é de 20Kg por encomenda;
+● Por último, se o meio de transporte for o carro, por cada Kg transportado, este meio de transporte sofrerá um decréscimo de 0.1 Km/h na sua velocidade média. O limite máximo de peso por encomenda neste transporte é de 100Kg.
+
+É encorajada a inclusão de novas funcionalidades ou características no sistema, como por exemplo a inclusão de mais algoritmos de procura, quer informada quer não informada, de fatores que possam afetar as estratégias de procura, como trânsito, estradas cortadas, etc. Tais elementos nunca porão em causa a satisfação mínima do trabalho, mas beneficiarão a avaliação global do mesmo.
+
+Os resultados obtidos deverão ser objeto de um relatório, que contenha, entre outros:
+● Descrição do problema;
+● Formulação do problema;
+● Descrição de todas as tarefas realizadas, bem como de todas as decisões tomadas pelo grupo de trabalho;
+● Sumário e discussão dos resultados obtidos.
