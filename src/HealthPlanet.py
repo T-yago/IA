@@ -1,9 +1,14 @@
 from Graph import *
 from Entrega import *
 from Estafeta import *
+from MeioTransporte import *
 
 class HealthPlanet():
-    def __init__(self, estafetas={}, entregas = {}):
-        self.estafetas = estafetas # Dicionário (ID Estafeta -> Estafeta)
-        self.entregas = entregas # Dicionário (ID Entrega -> Entrega)
+    estafetas = {}
+    entregas = {}
+    
+    meiosTransporte = {}
+    meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10)
+    meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35)
+    meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50)
     
