@@ -1,13 +1,50 @@
+import random
+import datetime
 from Graph import *
 from Entrega import *
 from Estafeta import *
 from MeioTransporte import *
 
 class HealthPlanet():
-    estafetas = {}
-    entregas = {}
+    def __init__(self):
+        self.estafetas = {}
+        self.entregasPendentes = {}
+        self.entregasConcluidas = {}
+        self.meiosTransporte = {}
+        self.meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10, 0.6)
+        self.meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5)
+        self.meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1)
+
+    def addEstafeta(self, nomeEstafeta):
+        idEstafeta = len(self.estafetas)
+        newEstafeta = Estafeta(idEstafeta, nomeEstafeta)
+        self.estafetas[idEstafeta] = newEstafeta
     
-    meiosTransporte = {}
-    meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10, 0.6)
-    meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5)
-    meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1)
+    def getEstafetas(self):
+        return self.estafetas
+    
+    def addEntrega(self, peso, volume, freguesia, rua, prazo):
+        if peso <= 5:
+            mT = self.meiosTransporte["Bicicleta"]
+        elif peso <= 20:
+            mT = self.meiosTransporte["Moto"]
+        else:
+            mT = self.meiosTransporte["Carro"]
+        
+        idEntrega = len(self.entregasPendentes)
+        estafeta = self.estafetas[random.choice(list(self.estafetas.keys()))] # Escolher um estafeta aleatório
+        rankingEstafeta = None # Enquanto não for entregue
+
+        self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, mT, prazo, estafeta, rankingEstafeta)
+
+    def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
+        entrega = self.entregasPendentes.pop(idEntrega)
+
+        entrega.setRankingEstafeta(rankingEstafeta)
+        entrega.setDateTimeEntregue(datetime.now())
+
+        entrega.getEstafeta().addEntregaRanking(rankingEstafeta)
+
+        self.entregasConcluidas[idEntrega] = entrega
+
+        # FALTA VERIFICAR O PRAZO

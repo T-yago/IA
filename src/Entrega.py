@@ -1,7 +1,8 @@
 from datetime import *
 
 class Entrega():
-    def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo, estafeta, rankingEstafeta, dateTime = datetime.now()):
+    def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo
+                 , estafeta, rankingEstafeta, dateTimeCriada = datetime.now(), dateTimeEntregue = datetime.now()):
         self.id = id
         self.peso = peso
         self.volume = volume
@@ -11,7 +12,8 @@ class Entrega():
         self.prazo = prazo
         self.estafeta = estafeta
         self.rankingEstafeta = rankingEstafeta
-        self.dateTime = dateTime
+        self.dateTimeCriada = dateTimeCriada
+        self.dateTimeEntregue = dateTimeEntregue
 
     def getID(self):
         return self.id
@@ -40,8 +42,14 @@ class Entrega():
     def getRankingEstafeta(self):
         return self.rankingEstafeta
 
-    def getDateTime(self):
-        return self.dateTime
+    def getDateTimeCriada(self):
+        return self.dateTimeCriada
+    
+    def getDateTimeEntregue(self):
+        return self.dateTimeEntregue
+    
+    def getVelocidade(self):
+        return self.meioTransporte.velocidade - self.meioTransporte.descrescimo
     
     def setID(self, id):
         self.id = id
@@ -70,8 +78,11 @@ class Entrega():
     def setRankingEstafeta(self, rankingEstafeta):
         self.rankingEstafeta = rankingEstafeta
 
-    def setDateTime(self, dateTime):
-        self.dateTime = dateTime
+    def setDateTimeCriada(self, dateTimeCriada):
+        self.dateTimeCriada = dateTimeCriada
+
+    def setDateTimeEntregue(self, dateTimeEntregue):
+        self.dateTimeEntregue = dateTimeEntregue
 
     def __str__(self):
         return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.freguesia}, na rua {self.rua} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
