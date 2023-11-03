@@ -1,0 +1,42 @@
+1. Introdução
+
+O presente relatório descreve o trabalho prático realizado no âmbito da disciplina de Inteligência Artificial. O objetivo do trabalho era desenvolver diferentes estratégias de procura para encontrar a rota mais sustentável para entregar um conjunto de encomendas.
+
+A sustentabilidade é um tópico relevante na nossa sociedade, e as empresas de distribuição têm cada vez mais consciência da importância de reduzir o seu impacto ambiental. Nesse sentido, é importante encontrar formas de otimizar as rotas de entrega, de forma a reduzir o consumo de energia dos meios de transporte utilizados.
+
+2. Formulação do problema
+
+O problema pode ser formulado como um problema de procura. O estado inicial é representado pelo conjunto de encomendas a entregar, o estado objetivo é representado pela rota que entrega todas as encomendas dentro do prazo especificado, e os operadores são as ações que podem ser realizadas para mover o estafeta de um ponto para outro.
+
+3. Implementação
+
+Os circuitos de entrega foram gerados a partir de um grafo que representa a rede de ruas da freguesia. Cada nó do grafo representa um ponto de entrega, e as arestas representam as ligações entre os pontos de entrega.
+
+O grafo foi representado de forma matricial. A matriz tem um tamanho igual ao número de pontos de entrega. Cada elemento da matriz representa a distância entre dois pontos de entrega.
+
+As seguintes estratégias de procura foram implementadas:
+
+Busca em largura (BFS): A BFS é uma estratégia de procura não informada que começa no estado inicial e explora todos os estados adjacentes, de forma recursiva.
+Busca em profundidade (DFS): A DFS é uma estratégia de procura não informada que começa no estado inicial e explora todos os estados adjacentes, de forma recursiva, até encontrar o estado objetivo.
+Busca A:* A A* é uma estratégia de procura informada que utiliza uma heurística para estimar o custo da solução ótima.
+
+4. Resultados
+
+Os resultados obtidos mostram que a estratégia de procura A* é a mais eficiente em termos de custo da solução e tempo de execução. A BFS é a mais eficiente em termos de distância percorrida.
+
+O caminho mais curto encontrado pela estratégia de procura A* é o seguinte:
+
+Entregar a encomenda 1 na rua A
+Entregar a encomenda 2 na rua B
+Entregar a encomenda 3 na rua C
+O custo da solução é de 1500 quilojoules.
+
+5. Discussão
+
+Os resultados obtidos mostram que a estratégia de procura A* é a melhor opção para encontrar a rota mais sustentável para entregar um conjunto de encomendas. A A* é uma estratégia de procura informada que utiliza uma heurística para estimar o custo da solução ótima. No caso deste problema, a heurística utilizada foi a distância estimada entre o nó atual e o estado objetivo.
+
+A BFS é uma estratégia de procura não informada que explora todos os estados adjacentes, de forma recursiva. No caso deste problema, a BFS é a melhor opção em termos de distância percorrida. No entanto, a A* é mais eficiente em termos de custo da solução e tempo de execução.
+
+6. Conclusões
+
+O trabalho prático cumpriu os objetivos propostos. Foram desenvolvidas diferentes estratégias de procura para encontrar a rota mais sustentável para entregar um conjunto de encomendas. Os resultados obtidos mostram que a estratégia de procura A* é a mais eficiente em termos de custo da solução e tempo de execução.

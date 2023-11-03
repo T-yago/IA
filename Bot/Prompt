@@ -1,7 +1,3 @@
-Objetivos:
-Com a realização deste instrumento pretende-se sensibilizar e motivar os alunos para a resolução de problemas através da Formalização de problemas, e a conceção e implementação de algoritmos de procura.
-
-
 Com a realização deste trabalho prático é pretendido que se desenvolvam diversos algoritmos de procura tendo em conta um tópico relevante na nossa sociedade, a sustentabilidade. Nesse sentido, a empresa de distribuição Health Planet tem como objetivo utilizar o meio de entrega de encomendas mais sustentável/ecológico para o planeta. Nesse contexto, existem ao dispor dos estafetas diferentes meios de transporte, com diferentes níveis de consumos de energia que podem utilizar.
 
 Cada estafeta da Health Planet tem associado um conjunto de entregas a efetuar em determinadas ruas de uma cidade, as quais estão associadas a uma freguesia. Cada cliente terá a possibilidade de indicar o tempo máximo em que pretende que a sua encomenda seja entregue, existindo assim prazos de entrega. Caso o estafeta não cumpra o prazo determinado para a entrega da encomenda sofrerá uma penalização no ranking de satisfação dado pelos clientes. Deverá também ser possível, por parte do cliente, classificar a entrega do estafeta, num ranking entre 0 e 5 estrelas. Cada encomenda a ser distribuída deve ser caracterizada, pelo menos, pelo seu peso e volume. O preço do serviço de entrega deverá ter em conta para além da encomenda, pelo menos, o prazo de entrega e meio de transporte utlizado.
@@ -12,12 +8,14 @@ A elaboração deste trabalho prático deverá ainda ter em consideração algun
 - Relativamente aos carros, este terá uma velocidade média de aproximadamente 50km/h, com um peso máximo de transporte de 100kg.
 
 Atendendo ao enunciado em questão, onde a pegada ecológica é um aspeto a ter em consideração, descrevem-se as seguintes tarefas:
-● Formulação do problema como um problema de procura, indicando a representação do estado inicial, estado/teste objetivo, os operadores (nome, pré-condições, efeitos) e custo da solução. Caso à medida que vão avançando no trabalho, exista reformulação do problema,
-o de apresentar e justificar as heurísticas utilizadas nos algoritmos de procura informada;
+● Formulação do problema como um problema de procura, indicando a representação do estado inicial, estado/teste objetivo, os operadores (nome, pré-condições, efeitos) e custo da solução;
+● Gerar os circuitos de entrega que cubram um determinado território (rua ou freguesia);
+● Representação dos diferentes pontos de entrega em forma de grafo;
+● Desenvolver diferentes estratégias de procura (não informada e informada);
+● Comparar os resultados dos diferentes tipos de estratégias de  procura utilizados, não esquecendo de apresentar e justificar as heurísticas utilizadas nos algoritmos de procura informada;
 ● Além de apresentar o caminho mais curto e o respetivo custo da solução, deve ser apresentado o caminho percorrido ao longo da execução em cada um dos algoritmos desenvolvidos;
 ● Caso, no ambiente competitivo, exista a possibilidade de dois participantes se dirigirem para a mesma célula da pista, apresentar e justificar a decisão tomada nessas condições;
 ● Poderão, ainda, ser considerados contextos de Procura com ações não determinísticas à sua escolha.
-
 
 Para o desenvolvimento deste trabalho é necessário ter em consideração alguns aspetos:
 ● Por cada Kg transportado numa bicicleta, a velocidade média da bicicleta sofre um decréscimo de 0.6 Km/h. Notar que as bicicletas apenas podem transporta encomendas até um limite de 5Kg;

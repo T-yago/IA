@@ -1,0 +1,18 @@
+Descrição do Problema
+A Health Planet, uma empresa de distribuição, está empenhada em utilizar o meio de entrega de encomendas mais sustentável e ecológico para o planeta. A empresa tem vários estafetas, cada um com um conjunto de entregas a efetuar em determinadas ruas de uma cidade. Cada cliente tem a possibilidade de indicar o tempo máximo em que pretende que a sua encomenda seja entregue, existindo assim prazos de entrega.
+
+- Formulação do Problema:
+    O problema foi formulado como um problema de procura. O estado inicial é o estafeta na empresa de distribuição com um conjunto de encomendas para entregar. O estado objetivo é quando todas as encomendas foram entregues dentro do prazo estipulado pelo cliente. Os operadores incluem a escolha do meio de transporte para a entrega (bicicleta, moto ou carro), a escolha da encomenda a ser entregue, e o movimento para a localização da entrega.
+
+- Tarefas Realizadas e Decisões Tomadas:
+    Para resolver este problema, realizamos várias tarefas:
+        Gerar os circuitos de entrega: Utilizamos um algoritmo de procura para gerar um circuito de entrega que minimiza o tempo total de entrega e o consumo de energia. Este circuito cobre todas as ruas ou freguesias onde as entregas devem ser feitas.
+        
+        Representação dos pontos de entrega em forma de grafo: Cada ponto de entrega foi representado como um nó em um grafo, e as arestas representam o caminho entre dois pontos de entrega. O peso de cada aresta é o tempo de viagem ou o consumo de energia.
+        
+        Desenvolvimento de estratégias de procura: Utilizamos estratégias de procura não informada como a procura em largura ou profundidade, e estratégias de procura informada como A* ou Best-First Search. A função heurística é o tempo estimado de entrega ou o consumo de energia estimado.
+
+- Sumário e Discussão dos Resultados Obtidos:
+    Os resultados obtidos foram promissores. Conseguimos minimizar o tempo total de entrega e o consumo de energia, mantendo a satisfação do cliente. No entanto, encontramos alguns desafios, como atrasos no trânsito e falhas mecânicas nos meios de transporte. Estes desafios foram superados através da utilização de estratégias de procura robustas e da implementação de ações não determinísticas.
+
+    Esperamos continuar a melhorar o nosso sistema no futuro, através da inclusão de mais algoritmos de procura e da consideração de mais fatores que possam afetar as estratégias de procura, como trânsito, estradas cortadas, etc.
