@@ -1,12 +1,17 @@
+from datetime import *
+
 class Entrega():
-    def __init__(self, id, peso, volume, freguesia, rua, estafeta, rankingEstafeta):
+    def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo, estafeta, rankingEstafeta, dateTime = datetime.now()):
         self.id = id
         self.peso = peso
         self.volume = volume
         self.freguesia = freguesia
         self.rua = rua
+        self.meioTransporte = meioTransporte
+        self.prazo = prazo
         self.estafeta = estafeta
         self.rankingEstafeta = rankingEstafeta
+        self.dateTime = dateTime
 
     def getID(self):
         return self.id
@@ -23,12 +28,21 @@ class Entrega():
     def getRua(self):
         return self.rua
     
+    def getMeioTransporte(self):
+        return self.meioTransporte
+    
+    def getPrazo(self):
+        return self.prazo
+
     def getEstafeta(self):
         return self.estafeta
     
     def getRankingEstafeta(self):
         return self.rankingEstafeta
 
+    def getDateTime(self):
+        return self.dateTime
+    
     def setID(self, id):
         self.id = id
 
@@ -44,11 +58,20 @@ class Entrega():
     def setRua(self, rua):
         self.rua = rua
 
+    def setMeioTransporte(self, meioTransporte):
+        self.meioTransporte = meioTransporte
+
+    def setPrazo(self, prazo):
+        self.prazo = prazo
+
     def setEstafeta(self, estafeta):
         self.estafeta = estafeta
 
     def setRankingEstafeta(self, rankingEstafeta):
         self.rankingEstafeta = rankingEstafeta
+
+    def setDateTime(self, dateTime):
+        self.dateTime = dateTime
 
     def __str__(self):
         return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.freguesia}, na rua {self.rua} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
