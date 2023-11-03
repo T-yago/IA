@@ -40,10 +40,10 @@ class Estafeta():
         self.rankingTotal += int(ranking)
 
     def __str__(self):
-        return f"Estafeta nº{self.id}: {self.nome} (Ranking: {self.getRanking()})."
+        return f"Estafeta nº{self.id}: {self.nome} (Ranking: {self.getRanking()} em {self.nrEntregas} entregas)."
     
     def __repr__(self):
-        return f"Estafeta nº{self.id}: {self.nome} (Ranking: {self.getRanking()})."
+        return f"Estafeta nº{self.id}: {self.nome} (Ranking: {self.getRanking()} em {self.nrEntregas} entregas)."
     
     def __eq__(self, other):
         return self.id == other.id
