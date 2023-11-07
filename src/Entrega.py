@@ -2,7 +2,7 @@ from datetime import *
 
 class Entrega():
     def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo
-                 , estafeta, rankingEstafeta, dateTimeCriada = datetime.now(), dateTimeEntregue = datetime.now()):
+                 , estafeta, rankingEstafeta = None, dateTimeCriada = datetime.now(), dateTimeEntregue = datetime.now()):
         self.id = id
         self.peso = peso
         self.volume = volume
