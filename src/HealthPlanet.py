@@ -20,22 +20,18 @@ class HealthPlanet():
         newEstafeta = Estafeta(idEstafeta, nomeEstafeta)
         self.estafetas[idEstafeta] = newEstafeta
     
-    def getEstafetas(self):
-        return self.estafetas
-    
     def addEntrega(self, peso, volume, freguesia, rua, prazo):
         if peso <= 5:
-            mT = self.meiosTransporte["Bicicleta"]
+            meioTransporte = self.meiosTransporte["Bicicleta"]
         elif peso <= 20:
-            mT = self.meiosTransporte["Moto"]
+            meioTransporte = self.meiosTransporte["Moto"]
         else:
-            mT = self.meiosTransporte["Carro"]
+            meioTransporte = self.meiosTransporte["Carro"]
         
         idEntrega = len(self.entregasPendentes)
         estafeta = self.estafetas[random.choice(list(self.estafetas.keys()))] # Escolher um estafeta aleatório
-        rankingEstafeta = None # Enquanto não for entregue
 
-        self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, mT, prazo, estafeta, rankingEstafeta)
+        self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, meioTransporte, prazo, estafeta)
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
         entrega = self.entregasPendentes.pop(idEntrega)

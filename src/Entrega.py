@@ -48,9 +48,6 @@ class Entrega():
     def getDateTimeEntregue(self):
         return self.dateTimeEntregue
     
-    def getVelocidade(self):
-        return self.meioTransporte.velocidade - self.meioTransporte.descrescimo
-    
     def setID(self, id):
         self.id = id
 
@@ -95,3 +92,6 @@ class Entrega():
 
     def __hash__(self):
         return hash(self.id)
+    
+    def velocidade(self):
+        return self.meioTransporte.velocidade - self.meioTransporte.descrescimo

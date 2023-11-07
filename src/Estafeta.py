@@ -17,12 +17,6 @@ class Estafeta():
     def getRankingTotal(self):
         return self.rankingTotal
     
-    def getRanking(self):
-        if self.nrEntregas == 0:
-            return None
-        
-        return int(self.rankingTotal) / int(self.nrEntregas)
-    
     def setID(self, id):
         self.id = id
 
@@ -34,6 +28,11 @@ class Estafeta():
 
     def setRankingTotal(self, rankingTotal):
         self.rankingTotal = rankingTotal
+
+    def getRanking(self):
+        if self.nrEntregas == 0:
+            return None
+        return int(self.rankingTotal) / int(self.nrEntregas)
 
     def addEntregaRanking(self, ranking):
         self.nrEntregas += 1;
