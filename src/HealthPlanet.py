@@ -41,27 +41,20 @@ class HealthPlanet():
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
         entrega = self.entregasPendentes.pop(idEntrega)
-
-        entrega.setRankingEstafeta(rankingEstafeta)
         entrega.setDateTimeEntregue(datetime.now())
 
+        newRankingEstafeta = rankingEstafeta
+        diferencaMinutos = int((entrega.getDateTimeEntregue() - entrega.getDateTimeCriada()).total_seconds() / 60) - prazo
+        
+        if diferencaMinutos > 0:
+            if diferencaMinutos < 10:
+                newRankingEstafeta -= 0.5
+            elif diferencaMinutos < 25:
+                newRankingEstafeta -= 1
+            else:
+                newRankingEstafeta -= 2
+
+        entrega.setRankingEstafeta(newRankingEstafeta)
         entrega.getEstafeta().addEntregaRanking(rankingEstafeta)
 
         self.entregasConcluidas[idEntrega] = entrega
-
-        # FALTA VERIFICAR O PRAZO
-
-hp = HealthPlanet()
-
-hp.addEstafeta("Joao1", "Carro")
-hp.addEstafeta("Joao2", "Moto")
-hp.addEstafeta("Joao3", "Moto")
-hp.addEstafeta("Joao4", "Carro")
-hp.addEstafeta("Joao5", "Bicicleta")
-
-hp.addEntrega(3, 30, "Barcelos", "Rua Dr", 10)
-hp.addEntrega(20, 30, "Barcelos", "Rua Dr", 10)
-hp.addEntrega(90, 30, "Barcelos", "Rua Dr", 10)
-
-for entrega in hp.entregasPendentes.values():
-    print(entrega)
