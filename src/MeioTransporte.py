@@ -43,14 +43,6 @@ class MeioTransporte():
         printEstafetas = printEstafetas[:-2]
 
         return f"Meio de Transporte ({self.nome}) - Peso Máximo = {self.pesoMax}kg e Velocidade Média = {self.velocidade}km/h, sendo que há um descréscimo de {self.decrescimo}km/h por cada kg de carga. Estafetas - {printEstafetas}"
-
-    def __repr__(self):
-        printEstafetas = ""
-        for estafeta in self.estafetas:
-            printEstafetas += estafeta.getNome() + ", "
-        printEstafetas = printEstafetas[:-2]
-    
-        return f"Meio de Transporte ({self.nome}) - Peso Máximo = {self.pesoMax}kg e Velocidade Média = {self.velocidade}km/h, sendo que há um descréscimo de {self.decrescimo}km/h por cada kg de carga. Estafetas - {printEstafetas}"
     
     def __eq__(self, other):
         return self.nome == other.nome

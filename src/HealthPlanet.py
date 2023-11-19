@@ -21,7 +21,7 @@ class HealthPlanet():
         newEstafeta = Estafeta(idEstafeta, nomeEstafeta)
 
         self.estafetas[idEstafeta] = newEstafeta
-        meioTransporte.addEstafeta(newEstafeta.getID())
+        meioTransporte.addEstafeta(newEstafeta.getID()) 
     
     def addEntrega(self, peso, volume, freguesia, rua, prazo):
         if peso <= 5:
@@ -31,7 +31,7 @@ class HealthPlanet():
         else:
             meioTransporte = self.meiosTransporte["Carro"]
         
-        idEntrega = len(self.entregasPendentes)
+        idEntrega = len(self.entregasPendentes) + len(self.entregasConcluidas)
 
         estafetasMT = meioTransporte.getEstafetas()
         randIndex = random.choice(range(0, len(estafetasMT)))

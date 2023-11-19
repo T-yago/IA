@@ -2,7 +2,7 @@ from datetime import *
 
 class Entrega():
     def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo
-                 , estafeta, rankingEstafeta = None, dateTimeCriada = datetime.now(), dateTimeEntregue = datetime.now()):
+                 , estafeta, rankingEstafeta = None, dateTimeCriada = datetime.now(), dateTimeEntregue = None):
         self.id = id
         self.peso = peso
         self.volume = volume
@@ -82,9 +82,6 @@ class Entrega():
         self.dateTimeEntregue = dateTimeEntregue
 
     def __str__(self):
-        return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.freguesia}, na rua {self.rua} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
-
-    def __repr__(self):
         return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.freguesia}, na rua {self.rua} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
     
     def __eq__(self, other):
