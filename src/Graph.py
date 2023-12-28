@@ -337,4 +337,77 @@ class Grafo:
 
         print('Path does not exist!')
         return None
+
+Procura DFS iterativo -------> Tem de ser testada
+
+    def procura_DFS_iterativo(self, start, end):
+        visited = set()
+        parents = {}
+
+        # Helper function for recursive DFS
+        def dfs_recursive(node):
+            nonlocal visited, parents
+
+            if node == end:
+                return True
+
+            visited.add(node)
+
+            for neighbor, _ in self.getNeighbours(node):
+                if neighbor not in visited:
+                    parents[neighbor] = node
+                    if dfs_recursive(neighbor):
+                        return True
+
+            return False
+
+        # Start DFS from the given node
+        if dfs_recursive(start):
+            # Reconstruct the path
+            reconst_path = []
+            current_node = end
+            while current_node != start:
+                reconst_path.append(current_node)
+                current_node = parents[current_node]
+            reconst_path.append(start)
+            reconst_path.reverse()
+
+            return (reconst_path, self.calcula_custo(reconst_path))
+
+        print('Path does not exist!')
+        return None
+    
+DFS iterativo com stack
+
+     def procura_DFS_iterativo(self, start, end):
+        stack = [start]
+        visited = set()
+        parents = {}
+
+        while stack:
+            current_node = stack.pop()
+
+            if current_node in visited:
+                continue
+
+            visited.add(current_node)
+
+            if current_node == end:
+                # Reconstruct the path
+                reconst_path = []
+                while current_node != start:
+                    reconst_path.append(current_node)
+                    current_node = parents[current_node]
+                reconst_path.append(start)
+                reconst_path.reverse()
+
+                return (reconst_path, self.calcula_custo(reconst_path))
+
+            for neighbor, _ in self.getNeighbours(current_node):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+                    parents[neighbor] = current_node
+
+        print('Path does not exist!')
+        return None
 '''
