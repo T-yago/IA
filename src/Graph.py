@@ -298,3 +298,43 @@ class Grafo:
 
         print('Path does not exist!')
         return None
+
+''' Procura custo uniforme -------> Tem de ser testada
+
+    def procura_UCS(self, start, end):
+        open_list = [(0, start)]
+        closed_list = set()
+        parents = {}
+        g = {start: 0}
+
+        while open_list:
+            open_list.sort()  # Sort the open list by cost
+            cost, current_node = open_list.pop(0)  # Pop the node with the lowest cost
+
+            if current_node in closed_list:
+                continue
+
+            closed_list.add(current_node)
+
+            if current_node == end:
+                # Reconstruct the path
+                reconst_path = []
+                while current_node != start:
+                    reconst_path.append(current_node)
+                    current_node = parents[current_node]
+                reconst_path.append(start)
+                reconst_path.reverse()
+
+                return (reconst_path, g[end])
+
+            for neighbor, weight in self.getNeighbours(current_node):
+                new_cost = g[current_node] + weight
+
+                if neighbor not in closed_list and (neighbor not in g or new_cost < g[neighbor]):
+                    g[neighbor] = new_cost
+                    open_list.append((new_cost, neighbor))
+                    parents[neighbor] = current_node
+
+        print('Path does not exist!')
+        return None
+'''
