@@ -10,13 +10,14 @@ def main():
     '''
     RUAS: 
         - Rua Doutor Francisco Torres (Barcelos)
+        - Campo 25 de Abril (Barcelos)
         - Rua Padre Alfredo da Rocha Martins (Barcelos)
         - Rua Arquitecto Borges Vinagre (Barcelos)
-        - Avenida João Duarte (Arcozelo)
-        - Rua Doutor José Júlio Vieira Ramos (Arcozelo)
         - Largo dos Capuchinhos (Barcelos)
         - Avenida dos Combatentes da Grande Guerra (Barcelos)
+        - Rua Doutor José Júlio Vieira Ramos (Arcozelo)
         - Rua Elias Garcia (Arcozelo)
+        - Avenida João Duarte (Arcozelo)
         - Rua Dom Afonso (Arcozelo)
         '''
 
@@ -49,7 +50,7 @@ def main():
     healthPlanet.addEstafeta("Pinto", [10,11], 5)
     healthPlanet.addEstafeta("Madalena", [12,13,14,15,16,17,18,19,20,21,22], 5)
 
-    # Insere as entregas (Altera para localizações que estejam no grafo Tuga)
+    # Insere as entregas
     healthPlanet.addEntrega(25, 45.5, "Barcelos", "Rua Doutor Francisco Torres", 678, 0)
     healthPlanet.addEntrega(10, 20, "Barcelos", "Rua Padre Alfredo da Rocha Martins", 200, 1)
     healthPlanet.addEntrega(12, 9, "Barcelos", "Rua Arquitecto Borges Vinagre", 230, 1)
@@ -59,8 +60,8 @@ def main():
     healthPlanet.addEntrega(23, 10, "Barcelos", "Avenida dos Combatentes da Grande Guerra", 220, 2)
     healthPlanet.addEntrega(45, 45, "Arcozelo", "Rua Elias Garcia", 300, 2)
     healthPlanet.addEntrega(66, 54, "Arcozelo", "Rua Dom Afonso", 320, 2)
+    healthPlanet.addEntrega(12, 90, "Barcelos", "Campo 25 de Abril", 270, 3)
     '''
-    healthPlanet.addEntrega(12, 90, "Vila Boa", "Travessa da Estrada", 270, 3)
     healthPlanet.addEntrega(8, 0.5, "Vila Boa", "Travessa da Estrada", 400, 4)
     healthPlanet.addEntrega(9, 14.4, "Vila Boa", "Travessa da Estrada", 227, 4)
     healthPlanet.addEntrega(19, 20.7, "Vila Boa", "Travessa da Estrada", 325, 5)
