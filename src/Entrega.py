@@ -1,16 +1,14 @@
 from datetime import *
 
 class Entrega():
-    def __init__(self, id, peso, volume, freguesia, rua, meioTransporte, prazo
-                 , estafeta, rankingEstafeta = None, dateTimeCriada = datetime.now(), dateTimeEntregue = None):
+    def __init__(self, id, peso, volume, freguesia, rua, prazo
+                 , idEstafeta, rankingEstafeta = None, dateTimeCriada = datetime.now(), dateTimeEntregue = None):
         self.id = id
         self.peso = peso
         self.volume = volume
-        self.freguesia = freguesia
-        self.rua = rua
-        self.meioTransporte = meioTransporte
-        self.prazo = prazo
-        self.estafeta = estafeta
+        self.pontoDeEntrega = freguesia + ", " + rua
+        self.prazo = dateTimeCriada + prazo
+        self.estafeta = idEstafeta
         self.rankingEstafeta = rankingEstafeta
         self.dateTimeCriada = dateTimeCriada
         self.dateTimeEntregue = dateTimeEntregue
@@ -24,14 +22,8 @@ class Entrega():
     def getVolume(self):
         return self.volume
     
-    def getFreguesia(self):
-        return self.freguesia
-    
-    def getRua(self):
-        return self.rua
-    
-    def getMeioTransporte(self):
-        return self.meioTransporte
+    def getPontoDeEntrega(self):
+        return self.pontoDeEntrega
     
     def getPrazo(self):
         return self.prazo
@@ -57,14 +49,8 @@ class Entrega():
     def setVolume(self, volume):
         self.volume = volume
 
-    def setFreguesia(self, freguesia):
-        self.freguesia = freguesia
-
-    def setRua(self, rua):
-        self.rua = rua
-
-    def setMeioTransporte(self, meioTransporte):
-        self.meioTransporte = meioTransporte
+    def setPontoDeEntrega(self, freguesia, rua):
+        self.pontoDeEntrega = freguesia + ", " + rua
 
     def setPrazo(self, prazo):
         self.prazo = prazo
@@ -82,13 +68,10 @@ class Entrega():
         self.dateTimeEntregue = dateTimeEntregue
 
     def __str__(self):
-        return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.freguesia}, na rua {self.rua} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
+        return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.pontoDeEntrega} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
     
     def __eq__(self, other):
         return self.id == other.id
 
     def __hash__(self):
         return hash(self.id)
-    
-    def velocidade(self):
-        return self.meioTransporte.velocidade - self.meioTransporte.descrescimo

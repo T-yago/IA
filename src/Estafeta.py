@@ -1,8 +1,10 @@
 class Estafeta():
-    def __init__(self, id, nome, nrEntregas = 0, ranking = 0):
+    def __init__(self, id, nome, idsEntregas = [], ranking = 5):
         self.id = id
         self.nome = nome
-        self.nrEntregas = nrEntregas
+        self.nrEntregasConcluidas = len(idsEntregas)
+        self.entregasInconcluidas = idsEntregas
+        self.entregasConcluidas = []
         self.ranking = ranking
 
     def getID(self):
@@ -11,8 +13,14 @@ class Estafeta():
     def getNome(self):
         return self.nome
     
-    def getNrEntregas(self):
-        return self.nrEntregas
+    def getNrEntregasConcluidas(self):
+        return self.nrEntregasConcluidas
+    
+    def getEntregasConcluidas(self):
+        return self.entregasConcluidas
+    
+    def getEntregasInconcluidas(self):
+        return self.entregasInconcluidas
     
     def getRanking(self):
         return self.ranking
@@ -23,23 +31,50 @@ class Estafeta():
     def setNome(self, nome):
         self.nome = nome
 
-    def setNrEntregas(self, nrEntregas):
-        self.nrEntregas = nrEntregas
+    def setNrEntregasConcluidas(self, nrEntregasConcluidas):
+        self.nrEntregasConcluidas = nrEntregasConcluidas
+    
+    def setEntregasConcluidas(self, entregasConcluidas):
+        self.entregasConcluidas = entregasConcluidas
+
+    def setEntregasInconcluidas(self, entregasInconcluidas):
+        self.entregasInconcluidas = entregasInconcluidas
 
     def setRanking(self, ranking):
         self.ranking = ranking
 
     def getRanking(self):
-        if self.nrEntregas == 0:
-            return None
-        return int(self.ranking) / int(self.nrEntregas)
+        return self.ranking
 
-    def addEntregaRanking(self, ranking):
-        self.nrEntregas += 1
-        self.ranking = round(((self.ranking * (self.nrEntregas-1)) + ranking) / self.nrEntregas, 2)
+    def completeEntregas(self, entregas):
+
+        self.ranking = self.ranking * self.nrEntregasConcluidas
+        for id, ranking in entregas:
+            if (id in self.entregasInconcluidas):
+                self.entregasInconcluidas.remove(id)
+                self.entregasConcluidas.append(id)
+                self.nrEntregasConcluidas += 1
+                self.ranking += ranking
+        
+        self.ranking = round(self.ranking / self.nrEntregasConcluidas, 2)
+    
+    def addEntrega(self, idEntrega):
+        self.entregasInconcluidas.append(idEntrega)
 
     def __str__(self):
-        return f"Estafeta nº{self.id}: {self.nome} (Ranking: {self.ranking} em {self.nrEntregas} entregas)"
+        res = f"Estafeta nº{self.id}: {self.nome}\n\n"
+
+        res += "Ids das entregas a realizar:\n"
+        for entrega in self.entregasInconcluidas:
+            res += str(entrega) + "\n"
+        
+        res += "\nIds das entregas realizadas:\n"
+        for entrega in self.entregasConcluidas:
+            res += str(entrega) + "\n"
+        
+        res += f"\nO estafeta realizou um total de {self.nrEntregasConcluidas} obtendo um ranking total de {self.ranking}."
+
+        return res
     
     def __eq__(self, other):
         return self.id == other.id

@@ -7,37 +7,30 @@ from MeioTransporte import *
 
 class HealthPlanet():
     def __init__(self):
+        self.grafo = Grafo()
         self.estafetas = {}
         self.entregasPendentes = {}
         self.entregasConcluidas = {}
         self.meiosTransporte = {}
-        self.meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10, 0.6, [])
-        self.meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5, [])
-        self.meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1, [])
+        self.meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10, 0.6)
+        self.meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5)
+        self.meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1)
 
-    def addEstafeta(self, nomeEstafeta, nomeMeioTransporte):
+    def addEstafeta(self, nomeEstafeta, entregas, ranking):
         idEstafeta = len(self.estafetas)
-        meioTransporte = self.meiosTransporte[nomeMeioTransporte]
-        newEstafeta = Estafeta(idEstafeta, nomeEstafeta)
-
+        newEstafeta = Estafeta(idEstafeta, nomeEstafeta, entregas, ranking)
         self.estafetas[idEstafeta] = newEstafeta
-        meioTransporte.addEstafeta(newEstafeta.getID()) 
     
-    def addEntrega(self, peso, volume, freguesia, rua, prazo):
-        if peso <= 5:
-            meioTransporte = self.meiosTransporte["Bicicleta"]
-        elif peso <= 20:
-            meioTransporte = self.meiosTransporte["Moto"]
-        else:
-            meioTransporte = self.meiosTransporte["Carro"]
-        
-        idEntrega = len(self.entregasPendentes) + len(self.entregasConcluidas)
+    def addEntrega(self, peso, volume, freguesia, rua, prazo, idEstafeta):
+        if idEstafeta in self.estafetas:
+            idEntrega = len(self.entregasPendentes) + len(self.entregasConcluidas)
+            self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, prazo, idEstafeta)
+            self.estafetas[idEstafeta].addEntrega(idEntrega)
 
-        estafetasMT = meioTransporte.getEstafetas()
-        randIndex = random.choice(range(0, len(estafetasMT)))
-        estafeta = self.estafetas[estafetasMT[randIndex]]
-
-        self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, meioTransporte, prazo, estafeta)
+    def addLocalizacao(self, freguesia1, rua1, freguesia2, rua2, distancia):
+        nome1 = freguesia1 + ", " + rua1
+        nome2 = freguesia2 + ", " + rua2
+        self.grafo.add_edge(nome1, nome2. distancia)
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
         entrega = self.entregasPendentes.pop(idEntrega)

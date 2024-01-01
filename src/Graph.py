@@ -4,7 +4,7 @@ from queue import Queue
 import networkx as nx
 import matplotlib.pyplot as plt
 
-class Node:
+class Node():
     def __init__(self, name, id=-1):
         self.m_id = id
         self.m_name = str(name)
@@ -27,7 +27,7 @@ class Node:
     def __hash__(self):
         return hash(self.m_name)
 
-class Grafo:
+class Grafo():
 
     def __init__(self, directed=False):
         self.m_nodes = []
