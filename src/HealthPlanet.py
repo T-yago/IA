@@ -16,6 +16,8 @@ class HealthPlanet():
         self.meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5)
         self.meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1)
 
+        self.coordenadas = {}
+
     def addEstafeta(self, nomeEstafeta, entregas, ranking):
         idEstafeta = len(self.estafetas)
         newEstafeta = Estafeta(idEstafeta, nomeEstafeta, entregas, ranking)
@@ -27,10 +29,12 @@ class HealthPlanet():
             self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, prazo, idEstafeta)
             self.estafetas[idEstafeta].addEntrega(idEntrega)
 
-    def addLocalizacao(self, freguesia1, rua1, freguesia2, rua2, distancia):
+    def addIntercecao(self, freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia):
         nome1 = freguesia1 + ", " + rua1
         nome2 = freguesia2 + ", " + rua2
-        self.grafo.add_edge(nome1, nome2. distancia)
+        self.coordenadas[(freguesia1, rua1)] = coordenadas1
+        self.coordenadas[(freguesia2, rua2)] = coordenadas2
+        self.grafo.add_edge(nome1, nome2, distancia)
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
         entrega = self.entregasPendentes.pop(idEntrega)
