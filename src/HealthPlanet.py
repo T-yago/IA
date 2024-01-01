@@ -1,4 +1,3 @@
-import random
 import datetime
 from Graph import *
 from Entrega import *
@@ -12,6 +11,8 @@ class HealthPlanet():
         self.entregasPendentes = {}
         self.entregasConcluidas = {}
         self.meiosTransporte = {}
+        self.coordenadas = {}
+
         self.coordenadas = {}
 
     def addEstafeta(self, nomeEstafeta, entregas, ranking):
@@ -36,7 +37,6 @@ class HealthPlanet():
         nome2 = freguesia2 + ", " + rua2
         self.coordenadas[(freguesia1, rua1)] = coordenadas1
         self.coordenadas[(freguesia2, rua2)] = coordenadas2
-        self.grafo.add_edge(nome1, nome2, distancia)
         self.grafo.add_edge(nome1, nome2, distancia)
     
     def getInfoEstafeta(self, idEstafeta):
