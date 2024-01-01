@@ -8,20 +8,21 @@ def main():
     healthPlanet = HealthPlanet()
 
     '''
-    RUAS: 
-        - Rua Doutor Francisco Torres (Barcelos)
-        - Campo 25 de Abril (Barcelos)
-        - Rua Padre Alfredo da Rocha Martins (Barcelos)
-        - Rua Arquitecto Borges Vinagre (Barcelos)
-        - Largo dos Capuchinhos (Barcelos)
-        - Avenida dos Combatentes da Grande Guerra (Barcelos)
-        - Rua Doutor José Júlio Vieira Ramos (Arcozelo)
-        - Rua Elias Garcia (Arcozelo)
-        - Avenida João Duarte (Arcozelo)
-        - Rua Dom Afonso (Arcozelo)
+    RUAS (11): 
+        - Rua Doutor Francisco Torres (Barcelos) (41.535186, -8.616254)
+        - Campo 25 de Abril (Barcelos) (41.535469, -8.615419)
+        - Rua Padre Alfredo da Rocha Martins (Barcelos) (41.535896, -8.616541)
+        - Rua Arquitecto Borges Vinagre (Barcelos) (41.536004, -8.614188)
+        - Largo dos Capuchinhos (Barcelos) (41.534635, -8.615340)
+        - Avenida dos Combatentes da Grande Guerra (Barcelos) (41.534115, -8.616281)
+        - Avenida Dom Nuno Álvares Pereira (Barcelos) (41.536537, -8.618139)
+        - Rua Doutor José Júlio Vieira Ramos (Arcozelo) (41.537223, -8.613382)
+        - Rua Elias Garcia (Arcozelo) (41.536377, -8.611988)
+        - Avenida João Duarte (Arcozelo) (41.537861, -8.615156)
+        - Rua Dom Afonso (Arcozelo) (41.537089, -8.612683)
         '''
 
-    # Insere as ruas das freguesias (Altera para outras ruas Tugs)
+    # Insere as ruas das freguesias
     healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.15)
     healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.3)
     healthPlanet.addIntercecao("Barcelos", "Rua Padre Alfredo da Rocha Martins", (41.535896, -8.616541), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.15)
@@ -61,8 +62,8 @@ def main():
     healthPlanet.addEntrega(45, 45, "Arcozelo", "Rua Elias Garcia", 300, 2)
     healthPlanet.addEntrega(66, 54, "Arcozelo", "Rua Dom Afonso", 320, 2)
     healthPlanet.addEntrega(12, 90, "Barcelos", "Campo 25 de Abril", 270, 3)
+    healthPlanet.addEntrega(8, 0.5, "Barcelos", "Avenida Dom Nuno Álvares Pereira", 400, 4)
     '''
-    healthPlanet.addEntrega(8, 0.5, "Vila Boa", "Travessa da Estrada", 400, 4)
     healthPlanet.addEntrega(9, 14.4, "Vila Boa", "Travessa da Estrada", 227, 4)
     healthPlanet.addEntrega(19, 20.7, "Vila Boa", "Travessa da Estrada", 325, 5)
     healthPlanet.addEntrega(4, 5.4, "Vila Boa", "Travessa da Estrada", 456, 5)
