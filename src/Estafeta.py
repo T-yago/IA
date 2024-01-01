@@ -2,7 +2,7 @@ class Estafeta():
     def __init__(self, id, nome, idsEntregas = [], ranking = 5):
         self.id = id
         self.nome = nome
-        self.nrEntregasConcluidas = len(idsEntregas)
+        self.nrEntregasConcluidas = 0
         self.entregasInconcluidas = idsEntregas
         self.entregasConcluidas = []
         self.ranking = ranking
@@ -21,6 +21,9 @@ class Estafeta():
     
     def getEntregasInconcluidas(self):
         return self.entregasInconcluidas
+
+    def getEntregas(self):
+        return self.entregasInconcluidas + self.entregasConcluidas
     
     def getRanking(self):
         return self.ranking
@@ -62,17 +65,15 @@ class Estafeta():
         self.entregasInconcluidas.append(idEntrega)
 
     def __str__(self):
-        res = f"Estafeta nº{self.id}: {self.nome}\n\n"
+        res = f"Estafeta nº{self.id}: {self.nome}\n"
 
-        res += "Ids das entregas a realizar:\n"
-        for entrega in self.entregasInconcluidas:
-            res += str(entrega) + "\n"
+        res += "Ids das entregas a realizar: "
+        res += ', '.join(str(element) for element in self.entregasInconcluidas)
         
-        res += "\nIds das entregas realizadas:\n"
-        for entrega in self.entregasConcluidas:
-            res += str(entrega) + "\n"
+        res += "\nIds das entregas realizadas: "
+        res += ', '.join(str(element) for element in self.entregasConcluidas)
         
-        res += f"\nO estafeta realizou um total de {self.nrEntregasConcluidas} obtendo um ranking total de {self.ranking}."
+        res += f"\nO estafeta realizou um total de {self.nrEntregasConcluidas} entregas obtendo um ranking total de {self.ranking}."
 
         return res
     

@@ -7,7 +7,7 @@ class Entrega():
         self.peso = peso
         self.volume = volume
         self.pontoDeEntrega = freguesia + ", " + rua
-        self.prazo = dateTimeCriada + prazo
+        self.prazo = dateTimeCriada + timedelta(minutes=prazo)
         self.estafeta = idEstafeta
         self.rankingEstafeta = rankingEstafeta
         self.dateTimeCriada = dateTimeCriada
@@ -68,7 +68,10 @@ class Entrega():
         self.dateTimeEntregue = dateTimeEntregue
 
     def __str__(self):
-        return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.pontoDeEntrega} com o estafeta {self.estafeta.getID()}, sendo o seu ranking de {self.rankingEstafeta}."
+        if self.dateTimeEntregue != None:
+            return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.pontoDeEntrega} com o estafeta {self.id}. Foi criada em {self.dateTimeCriada} com um prazo até {self.prazo} e entregue em {self.dateTimeEntregue}, dando ao estafeta uma classificação de {self.rankingEstafeta}."
+        else:
+            return f"Entrega nº{self.id}, {self.peso}kg e Volume = {self.volume}, em {self.pontoDeEntrega} com o estafeta {self.id}, Foi criada em {self.dateTimeCriada} com um prazo até {self.prazo} e está por entregar."
     
     def __eq__(self, other):
         return self.id == other.id
