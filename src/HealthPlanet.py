@@ -12,10 +12,6 @@ class HealthPlanet():
         self.entregasPendentes = {}
         self.entregasConcluidas = {}
         self.meiosTransporte = {}
-        self.meiosTransporte["Bicicleta"] = MeioTransporte("Bicicleta", 5, 10, 0.6)
-        self.meiosTransporte["Moto"] = MeioTransporte("Moto", 20, 35, 0.5)
-        self.meiosTransporte["Carro"] = MeioTransporte("Carro", 100, 50, 0.1)
-
         self.coordenadas = {}
 
     def addEstafeta(self, nomeEstafeta, entregas, ranking):
@@ -23,11 +19,17 @@ class HealthPlanet():
         newEstafeta = Estafeta(idEstafeta, nomeEstafeta, entregas, ranking)
         self.estafetas[idEstafeta] = newEstafeta
     
-    def addEntrega(self, peso, volume, freguesia, rua, prazo, idEstafeta):
-        if idEstafeta in self.estafetas:
-            idEntrega = len(self.entregasPendentes) + len(self.entregasConcluidas)
-            self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, prazo, idEstafeta)
-            self.estafetas[idEstafeta].addEntrega(idEntrega)
+    def addMeioTransporte(self, nome, pesoMax, velocidade, decrescimo):
+        self.meiosTransporte[nome] = MeioTransporte(nome, pesoMax, velocidade, decrescimo)
+    
+    def addEntrega(self, peso, volume, freguesia, rua, prazo, idEstafeta = None):
+        if idEstafeta==None or idEstafeta not in self.estafetas:
+            # Escolhe o id de um estafeta aleatório
+            nEstafetas = len(self.estafetas)
+            random_id = random.randint(0, nEstafetas)
+            self.estafetas[idEstafeta].addEntrega(random_id)
+        idEntrega = len(self.entregasPendentes) + len(self.entregasConcluidas)
+        self.entregasPendentes[idEntrega] = Entrega(idEntrega, peso, volume, freguesia, rua, prazo, idEstafeta)
 
     def addIntercecao(self, freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia):
         nome1 = freguesia1 + ", " + rua1
@@ -35,6 +37,18 @@ class HealthPlanet():
         self.coordenadas[(freguesia1, rua1)] = coordenadas1
         self.coordenadas[(freguesia2, rua2)] = coordenadas2
         self.grafo.add_edge(nome1, nome2, distancia)
+        self.grafo.add_edge(nome1, nome2, distancia)
+    
+    def getInfoEstafeta(self, idEstafeta):
+        res = self.estafetas[idEstafeta].__str__() + "\n\nEntregas:\n"
+        idsEntregasConcluidas = self.estafetas[idEstafeta].getEntregasConcluidas()
+        for idEntrega in idsEntregasConcluidas:
+            res += self.entregasConcluidas[idEntrega].__str__() + "\n"
+        idsEntregasInconcluidas = self.estafetas[idEstafeta].getEntregasInconcluidas()
+        for idEntrega in idsEntregasInconcluidas:
+            res += self.entregasPendentes[idEntrega].__str__() + "\n"
+
+        return res[:-1]
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
         entrega = self.entregasPendentes.pop(idEntrega)

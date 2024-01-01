@@ -32,6 +32,11 @@ def main():
     healthPlanet.addEstafeta("Pinto", [10,11], 5)
     healthPlanet.addEstafeta("Madalena", [12,13,14,15,16,17,18,19,20,21,22], 5)
 
+    # Insere os meios de transporte disponíveis para os estafetas
+    healthPlanet.addMeioTransporte("Bicicleta", 5, 10, 0.6)
+    healthPlanet.addMeioTransporte("Moto", 20, 35, 0.5)
+    healthPlanet.addMeioTransporte("Carro", 100, 50, 0.1)
+
     # Insere as entregas (Altera para localizações que estejam no grafo Tuga)
     healthPlanet.addEntrega(25, 45.5, "Vila Boa", "Travessa da Estrada", 678, 0)
     healthPlanet.addEntrega(10, 20, "Vila Boa", "Travessa da Estrada", 200, 1)
@@ -57,7 +62,63 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Vila Boa", "Travessa da Estrada", 575, 5)
     healthPlanet.addEntrega(36, 4, "Vila Boa", "Travessa da Estrada", 612, 5)
 
+    # Interface do Utilizador
+    exit = False
+    while not exit:
+        option = input("\n\nQue operação pretende executar?\n1 -> Adicionar um estafeta;\n2 -> Adicionar uma entrega;\n3 -> Adicionar uma nova localização;\n4 -> Executar entregas.\n5 -> Ver as informações relativas a um estafeta e as suas entregas.\n\n")
+        
+        try:
+            option = int(option)
 
+            if option==1:
+                print("\n---ADICIONAR ESTAFETA---\n")
+                nome = input("Nome: ")
+                ids = eval(input("Ids das entregas a realizar (formato [1,2,3,...]): "))
+                healthPlanet.addEstafeta(nome, ids, 5)
+            elif option==2:
+                print("\n---ADICIONAR ENTREGA---\n")
+                peso = int(input("Peso: "))
+                volume = int(input("Volume: "))
+                freguesia = input("Freguesia: ")
+                rua = input("Rua: ")
+                prazo = input("Prazo (em minutos em relação à data e hora atual): ")
+                healthPlanet.addEntrega(peso, volume, freguesia, rua, prazo)
+            elif option==3:
+                print("\n---ADICIONAR NOVA LOCALIZAÇÃO---\n")
+                freguesia1 = input("Freguesia (Primeira): ")
+                rua1 = input("Rua (Primeira): ")
+                freguesia2 = input("Freguesia (Segunda): ")
+                rua2 = input("Rua (Segunda): ")
+                distancia = int(input("Distancia: "))
+                healthPlanet.addLocalizacao(freguesia1, rua1, freguesia2, rua2, distancia)
+            elif option==4:
+                print("\n---REALIZAR ENTREGAS---\n")
+                option_entregar = input("Pretende usar uma estratégia determinística? (S ou N): ")
+                if option_entregar.capitalize=="S":
+                    print("\n---REALIZAR ENTREGAS (determinística)---\n")
+                    idEstafeta = int(input("Id do Estafeta: "))
+                    idsEntregas = eval(input("Ids das Entregas que deseja fazer agora (formato [1,2,3,...]): "))
+                    # Completar
+
+
+
+                elif option_entregar.capitalize=="N":
+                    print("\n---REALIZAR ENTREGAS (não determinística)---\n")
+                    idEstafeta = int(input("Id do Estafeta: "))
+                    idsEntregas = eval(input("Ids das Entregas que deseja fazer agora (formato [1,2,3,...]): "))
+                    # Completar
+
+            elif option==5:
+                print("\n---INFORMAÇÃO ESTAFETA---\n")
+                idEstafeta = int(input("Id do Estafeta: "))
+                print("\n")
+                print(healthPlanet.getInfoEstafeta(idEstafeta))
+
+            else:
+                print("Operação inválida. Insira uma das opções disponíveis.")
+
+        except ValueError:
+            print("Input inválido.")
 
 
 
