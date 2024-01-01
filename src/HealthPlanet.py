@@ -32,8 +32,8 @@ class HealthPlanet():
     def addIntercecao(self, freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia):
         nome1 = freguesia1 + ", " + rua1
         nome2 = freguesia2 + ", " + rua2
-        self.coordenadas[(rua1, freguesia1)] = coordenadas1
-        self.coordenadas[(rua2, freguesia2)] = coordenadas2
+        self.coordenadas[(freguesia1, rua1)] = coordenadas1
+        self.coordenadas[(freguesia2, rua2)] = coordenadas2
         self.grafo.add_edge(nome1, nome2, distancia)
 
     def concluirEntrega(self, idEntrega, rankingEstafeta, prazo):
