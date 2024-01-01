@@ -8,23 +8,21 @@ def main():
     healthPlanet = HealthPlanet()
 
     # Insere as ruas das freguesias (Altera para outras ruas Tugs)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
-    healthPlanet.addLocalizacao("Vila Boa", "Travessa da Estrada", "Vila Boa", "Rua do Seminário", 4)
+    healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.15)
+    healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.3)
+    healthPlanet.addIntercecao("Barcelos", "Rua Padre Alfredo da Rocha Martins", (41.535896, -8.616541), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.15)
+    healthPlanet.addIntercecao("Barcelos", "Rua Padre Alfredo da Rocha Martins", (41.535896, -8.616541), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.2)
+    healthPlanet.addIntercecao("Barcelos", "Rua Padre Alfredo da Rocha Martins", (41.535896, -8.616541), "Barcelos", "Rua Arquitecto Borges Vinagre", (41.536004, -8.614188), 0.2)
+    healthPlanet.addIntercecao("Barcelos", "Rua Arquitecto Borges Vinagre", (41.536004, -8.614188), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.2)
+    healthPlanet.addIntercecao("Barcelos", "Avenida João Duarte", (41.537861, -8.615156), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.35)
+    healthPlanet.addIntercecao("Barcelos", "Rua Arquitecto Borges Vinagre", (41.536004, -8.614188), "Barcelos", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), 0.15)
+    healthPlanet.addIntercecao("Barcelos", "Avenida João Duarte", (41.537861, -8.615156), "Barcelos", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), 0.3)
+    healthPlanet.addIntercecao("Barcelos", "Largo dos Capuchinhos", (41.534635, -8.615340), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.1)
+    healthPlanet.addIntercecao("Barcelos", "Largo dos Capuchinhos", (41.534635, -8.615340), "Barcelos", "Avenida dos Combatentes da Grande Guerra", (41.534115, -8.616281), 0.1)
+    healthPlanet.addIntercecao("Barcelos", "Avenida dos Combatentes da Grande Guerra", (41.534115, -8.616281), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.35)
+    healthPlanet.addIntercecao("Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), "Barcelos", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), 0.35)
+    healthPlanet.addIntercecao("Barcelos", "Largo dos Capuchinhos", (41.534635, -8.615340), "Barcelos", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), 0.35)
+
 
     # Insere os estafetas
     healthPlanet.addEstafeta("Beatriz", [0], 5)
@@ -58,14 +56,6 @@ def main():
     healthPlanet.addEntrega(2.7, 5, "Vila Boa", "Travessa da Estrada", 245, 5)
     healthPlanet.addEntrega(0.3, 2.5, "Vila Boa", "Travessa da Estrada", 575, 5)
     healthPlanet.addEntrega(36, 4, "Vila Boa", "Travessa da Estrada", 612, 5)
-
-
-
-
-
-
-
-
-
+    
 if __name__ == "__main__":
     main()
