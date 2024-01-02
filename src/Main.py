@@ -80,7 +80,6 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
-    '''
     # Interface do Utilizador
     exit = False
     while not exit:
@@ -141,7 +140,6 @@ def main():
 
         except ValueError:
             print("Input inválido.")
-        '''
     
 if __name__ == "__main__":
     main()

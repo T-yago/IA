@@ -43,9 +43,8 @@ class Grafo():
             return out
         
     def get_node_by_name(self, name):
-        search_node = Node(name)
         for node in self.m_nodes:
-            if node == search_node:
+            if node.m_name == name:
                 return node
             else:
                 return None
