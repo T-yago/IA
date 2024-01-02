@@ -34,7 +34,6 @@ class Grafo():
         self.m_nodes = []
         self.m_directed = directed
         self.m_graph = {}
-        self.m_h = {}
 
     def __str__(self):
         out = ""
@@ -171,17 +170,6 @@ class Grafo():
         plt.draw()
         plt.show()
 
-    def add_heuristica(self, n, estima):
-        n1 = Node(n)
-        if n1 in self.m_nodes:
-            self.m_h[n] = estima
-
-    def heuristica(self):
-        nodos = self.m_graph.keys
-        for n in nodos:
-            self.m_h[n] = 1
-        return (True)
-
     def calcula_est(self, estima):
         l = list(estima.keys())
         min_estima = estima[l[0]]
@@ -193,16 +181,22 @@ class Grafo():
         return node
     
     def calcHeuristica(self, start, end):
-        (x1,y1) = (0.0,0.0)
-        (x2,y2) = (0.0,0.0)
+        (latA_deg, lonA_deg) = (0.0,0.0)
+        (latB_deg,lonB_deg) = (0.0,0.0)
 
         for node in self.m_nodes:
             if node.m_name == start:
-                (x1,y1) = node.coordenadas
+                (latA_deg,lonA_deg) = node.coordenadas
             if node.m_name == end:
-                (x2,y2) = node.coordenadas
+                (latB_deg,lonB_deg) = node.coordenadas
 
-        return ((x2-x1)**2 + (y2-y1)**2)**0.5
+        latA = math.radians(latA_deg)
+        lonA = math.radians(lonA_deg)
+        latB = math.radians(latB_deg)
+        lonB = math.radians(lonB_deg)
+        a = math.sin((latB - latA) / 2)**2 + math.cos(latA) * math.cos(latB) * math.sin((lonB - lonA) / 2)**2
+
+        return 6371000 * 2 * math.asin(math.sqrt(a)) / 1000
 
     def procura_aStar(self, start, end):
         open_list = {start}
@@ -222,9 +216,9 @@ class Grafo():
                     n = v
                 else:
                     flag = 1
-                    calc_heurist[v] = g[v] + self.getH(v)
+                    calc_heurist[v] = g[v] + self.calcHeuristica(v, end)
             if flag == 1:
-                min_estima = self.calcula_est(calc_heurist)
+                min_estima = min(calc_heurist, key=calc_heurist.get)
                 n = min_estima
             if n == None:
                 print('Path does not exist!')
@@ -264,12 +258,6 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def getH(self, nodo):
-        if nodo not in self.m_h.keys():
-            return 1000
-        else:
-            return (self.m_h[nodo])
-
     def greedy(self, start, end):
         open_list = set([start])
         closed_list = set([])
@@ -280,7 +268,7 @@ class Grafo():
             n = None
 
             for v in open_list:
-                if n == None or self.m_h[v] < self.m_h[n]:
+                if n == None or self.calcHeuristica(v, end) < self.calcHeuristica(n, end):
                     n = v
 
             if n == None:
