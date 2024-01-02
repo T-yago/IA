@@ -92,6 +92,12 @@ class Grafo():
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
         return round(custo,2)
+    
+    def getNeighbours(self, nodo):
+        lista = []
+        for (adjacente, peso) in self.m_graph[nodo]:
+            lista.append((adjacente, peso))
+        return lista
 
     def procura_DFS(self, start, end, path = [], visited = set()):
         path.append(start)
@@ -204,12 +210,6 @@ class Grafo():
             path.reverse()
             custo = self.calcula_custo(path)
         return (path, custo)
-
-    def getNeighbours(self, nodo):
-        lista = []
-        for (adjacente, peso) in self.m_graph[nodo]:
-            lista.append((adjacente, peso))
-        return lista
     
     def procura_UCS(self, start, end):
         open_list = [(0, start)]
