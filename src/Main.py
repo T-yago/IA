@@ -73,20 +73,18 @@ def main():
     healthPlanet.addEntrega(66, 54, "Arcozelo", "Rua Dom Afonso", 320, 2)
     healthPlanet.addEntrega(12, 90, "Barcelos", "Campo 25 de Abril", 270, 3)
     healthPlanet.addEntrega(8, 0.5, "Barcelos", "Avenida Dom Nuno Álvares Pereira", 400, 4)
-    '''
-    healthPlanet.addEntrega(9, 14.4, "Vila Boa", "Travessa da Estrada", 227, 4)
-    healthPlanet.addEntrega(19, 20.7, "Vila Boa", "Travessa da Estrada", 325, 5)
-    healthPlanet.addEntrega(4, 5.4, "Vila Boa", "Travessa da Estrada", 456, 5)
-    healthPlanet.addEntrega(3, 21.3, "Vila Boa", "Travessa da Estrada", 476, 5)
-    healthPlanet.addEntrega(75, 10, "Vila Boa", "Travessa da Estrada", 235, 5)
-    healthPlanet.addEntrega(22, 5, "Vila Boa", "Travessa da Estrada", 127, 5)
-    healthPlanet.addEntrega(2.5, 1, "Vila Boa", "Travessa da Estrada", 100, 5)
-    healthPlanet.addEntrega(65.3, 0.5, "Vila Boa", "Travessa da Estrada", 67, 5)
-    healthPlanet.addEntrega(23.2, 10.3, "Vila Boa", "Travessa da Estrada", 200, 5)
-    healthPlanet.addEntrega(2.7, 5, "Vila Boa", "Travessa da Estrada", 245, 5)
-    healthPlanet.addEntrega(0.3, 2.5, "Vila Boa", "Travessa da Estrada", 575, 5)
-    healthPlanet.addEntrega(36, 4, "Vila Boa", "Travessa da Estrada", 612, 5)
-    '''
+    healthPlanet.addEntrega(9, 14.4, "Barcelos", "Avenida dos Combatentes da Grande Guerra", 227, 4)
+    healthPlanet.addEntrega(19, 20.7, "Arcozelo", "Rua Dom Afonso", 325, 5)
+    healthPlanet.addEntrega(4, 5.4, "Barcelos", "Largo dos Capuchinhos", 456, 5)
+    healthPlanet.addEntrega(3, 21.3, "Barcelos", "Avenida Dom Nuno Álvares Pereira", 476, 5)
+    healthPlanet.addEntrega(75, 10, "Barcelos", "Rua Doutor Francisco Torres", 235, 5)
+    healthPlanet.addEntrega(22, 5, "Arcozelo", "Rua Doutor José Júlio Vieira Ramos", 127, 5)
+    healthPlanet.addEntrega(2.5, 1, "Arcozelo", "Rua Elias Garcia", 100, 5)
+    healthPlanet.addEntrega(65.3, 0.5, "Arcozelo", "Avenida João Duarte", 67, 5)
+    healthPlanet.addEntrega(23.2, 10.3, "Barcelos", "Rua Arquitecto Borges Vinagre", 200, 5)
+    healthPlanet.addEntrega(2.7, 5, "Arcozelo", "Rua Dom Afonso", 245, 5)
+    healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
+    healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
     # Interface do Utilizador
     exit = False
