@@ -201,7 +201,7 @@ class Grafo():
 
 # PROCURAS NÃO INFORMADAS
 
-    def procura_DFS(self, start, end, path = [], visited = set()):
+    def procura_DFS(self, start, end, path=None, visited=None):
         """
         Depth-First Search (DFS) algorithm to find a path from start to end in a graph.
 
@@ -213,12 +213,17 @@ class Grafo():
         Args:
             start: The starting node.
             end: The target node.
-            path: The current path being explored (default = []).
-            visited: A set of visited nodes to avoid cycles (default = set()).
+            path: The current path being explored (default = None).
+            visited: A set of visited nodes to avoid cycles (default = None).
 
         Returns:
             A tuple containing the path and the total cost if a path is found, None otherwise.
         """
+        if path is None:
+            path = []
+        if visited is None:
+            visited = set()
+
         path.append(start)
         visited.add(start)
 
@@ -234,6 +239,7 @@ class Grafo():
 
         path.pop()
         return None
+
     
 
         stack = [start]
