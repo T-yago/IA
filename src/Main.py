@@ -83,8 +83,6 @@ def main():
 
     print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", 20)) + "\n")
-    print("IDDFS2 -> " + str(healthPlanet.grafo.procura_IDDFS2("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
-    print("IDDFS Stack -> " + str(healthPlanet.grafo.procura_IDDFS_Stack("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("A* -> " + str(healthPlanet.grafo.procura_aStar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")

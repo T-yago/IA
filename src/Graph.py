@@ -36,7 +36,7 @@ class Grafo():
         out = ""
         for key in self.m_graph.keys():
             out = out + "node" + str(key) + ": " + str(self.m_graph[key]) + "\n"
-            return out
+        return out
         
     def get_node_by_name(self, name):
         """
@@ -51,8 +51,7 @@ class Grafo():
         for node in self.m_nodes:
             if node.m_name == name:
                 return node
-            else:
-                return None
+        return None
 
     def imprime_aresta(self):
         """
@@ -236,83 +235,7 @@ class Grafo():
         path.pop()
         return None
     
-    def procura_IDDFS(self, start, end, max_depth):
-        def DLS_Recursive(current_node, end, depth_limit, visited, path):
-            if current_node == end:
-                return "found"
 
-            if depth_limit == 0:
-                return "depth_limit_exceeded"
-
-            for neighbor, _ in self.get_neighbours(current_node):
-                if neighbor not in visited:
-                    path.append(neighbor)
-                    visited.add(neighbor)
-
-                    result = DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
-
-                    if result == "found" or result != "depth_limit_exceeded":
-                        return result
-
-                    path.pop()
-
-            return "not_found"
-        
-        def procura_DLS(start, end, depth_limit):
-            visited = set()
-            path = [start]
-
-            result = DLS_Recursive(start, end, depth_limit, visited, path)
-
-            if result == "found":
-                return path, self.calcula_custo(path)
-            return None
-        
-
-        for depth_limit in range(max_depth + 1):
-            result = procura_DLS(start, end, depth_limit)
-
-            if result is not None:
-                return result
-
-        print('Path does not exist within the specified depth limit!')
-        return None
-
-    def procura_IDDFS2(self, start, end):
-        visited = set()
-        parents = {}
-
-        def dfs_recursive(node):
-            nonlocal visited, parents
-
-            if node == end:
-                return True
-
-            visited.add(node)
-
-            for neighbor, _ in self.get_neighbours(node):
-                if neighbor not in visited:
-                    parents[neighbor] = node
-                    if dfs_recursive(neighbor):
-                        return True
-
-            return False
-
-        if dfs_recursive(start):
-            reconst_path = []
-            current_node = end
-            while current_node != start:
-                reconst_path.append(current_node)
-                current_node = parents[current_node]
-            reconst_path.append(start)
-            reconst_path.reverse()
-
-            return (reconst_path, self.calcula_custo(reconst_path))
-
-        print('Path does not exist!')
-        return None
-
-    def procura_IDDFS_Stack(self, start, end):
         stack = [start]
         visited = set()
         parents = {}
@@ -341,6 +264,64 @@ class Grafo():
                     parents[neighbor] = current_node
 
         print('Path does not exist!')
+        return None
+
+    def procura_IDDFS(self, start, end, max_depth):
+        """
+        Iterative Deepening Depth-First Search (IDDFS) algorithm to find a path from start to end in a graph.
+
+        IDDFS repeatedly performs a depth-first search with increasing depth limits until the goal is found.
+
+        Args:
+            start: The starting node.
+            end: The target node.
+            max_depth: The maximum depth to explore.
+
+        Returns:
+            A tuple containing the path and the total cost if a path is found, None otherwise.
+        """
+        def depth_limited_DFS(start, end, depth_limit, path=None, visited=None):
+            """
+            Depth-Limited DFS with a specified depth limit.
+
+            Args:
+                start: The starting node.
+                end: The target node.
+                depth_limit: The maximum depth to explore.
+                path: The current path being explored (default is None).
+                visited: A set of visited nodes to avoid cycles (default is None).
+
+            Returns:
+                A tuple containing the path and the total cost if a path is found, None otherwise.
+            """
+            if path is None:
+                path = [start]
+            if visited is None:
+                visited = set([start])
+
+            if start == end:
+                custoT = self.calcula_custo(path)
+                return (path, custoT)
+
+            if depth_limit == 0:
+                return None
+
+            for (adjacente, peso) in self.m_graph[start]:
+                if adjacente not in visited:
+                    path.append(adjacente)
+                    visited.add(adjacente)
+                    result = depth_limited_DFS(adjacente, end, depth_limit - 1, path, visited)
+                    if result is not None:
+                        return result
+                    path.pop()
+                    visited.remove(adjacente)
+
+            return None
+        
+        for depth_limit in range(1, max_depth + 1):
+            result = depth_limited_DFS(start, end, depth_limit)
+            if result is not None:
+                return result
         return None
 
     def procura_BFS(self, start, end):
