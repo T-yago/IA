@@ -211,24 +211,6 @@ class Grafo():
             lista.append((adjacente, peso))
         return lista
     
-    def calcHeuristica(self, start, end):
-        (latA_deg, lonA_deg) = (0.0,0.0)
-        (latB_deg,lonB_deg) = (0.0,0.0)
-
-        for node in self.m_nodes:
-            if node.m_name == start:
-                (latA_deg,lonA_deg) = node.coordenadas
-            if node.m_name == end:
-                (latB_deg,lonB_deg) = node.coordenadas
-
-        latA = math.radians(latA_deg)
-        lonA = math.radians(lonA_deg)
-        latB = math.radians(latB_deg)
-        lonB = math.radians(lonB_deg)
-        a = math.sin((latB - latA) / 2)**2 + math.cos(latA) * math.cos(latB) * math.sin((lonB - lonA) / 2)**2
-
-        return 6371000 * 2 * math.asin(math.sqrt(a)) / 1000
-    
     def procura_UCS(self, start, end):
         open_list = [(0, start)]
         closed_list = set()
@@ -277,7 +259,7 @@ class Grafo():
         print('Path does not exist within depth limit!')
         return None
 
-    def dls_recursive(self, current_node, end, depth_limit, visited, path):
+    def DLS_Recursive(self, current_node, end, depth_limit, visited, path):
         if current_node == end:
             return "found"
 
@@ -289,7 +271,7 @@ class Grafo():
                 path.append(neighbor)
                 visited.add(neighbor)
 
-                result = self.dls_recursive(neighbor, end, depth_limit - 1, visited, path)
+                result = self.DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
 
                 if result == "found" or result != "depth_limit_exceeded":
                     return result
@@ -307,9 +289,26 @@ class Grafo():
 
         print('Path does not exist within the specified depth limit!')
         return None
-
     
     ''' Procuras informadas '''
+
+    def calcHeuristica(self, start, end):
+        (latA_deg, lonA_deg) = (0.0,0.0)
+        (latB_deg,lonB_deg) = (0.0,0.0)
+
+        for node in self.m_nodes:
+            if node.m_name == start:
+                (latA_deg,lonA_deg) = node.coordenadas
+            if node.m_name == end:
+                (latB_deg,lonB_deg) = node.coordenadas
+
+        latA = math.radians(latA_deg)
+        lonA = math.radians(lonA_deg)
+        latB = math.radians(latB_deg)
+        lonB = math.radians(lonB_deg)
+        a = math.sin((latB - latA) / 2)**2 + math.cos(latA) * math.cos(latB) * math.sin((lonB - lonA) / 2)**2
+
+        return 6371000 * 2 * math.asin(math.sqrt(a)) / 1000
 
     def procura_aStar(self, start, end):
         open_list = {start}
@@ -414,7 +413,7 @@ class Grafo():
         return None
 
     def procura_IDAstar(self, start, end):
-        bound = self.getH(start)  # Initial bound is the heuristic value of the start node
+        bound = self.getH(start)
         path = [start]
         
         while True:
@@ -451,6 +450,3 @@ class Grafo():
                 path.pop()
 
         return min_cost, min_cost
-
-    
-    

@@ -1,4 +1,3 @@
-
 class Node():
     def __init__(self, name, coordenadas, id=-1):
         self.m_id = id
