@@ -532,10 +532,11 @@ class Grafo():
         print('Path does not exist!')
         return None
 
+
     def procura_IDAstar(self, start, end):
-        
-        def depth_limited_search(current_node, end, bound, path):
-            f = self.calcula_custo(path) + self.calcula_heuristica(current_node, end)
+
+        def depth_limited_search(current_node, end, bound, path, g):
+            f = g[current_node] + self.calcula_heuristica(current_node, end)
 
             if f > bound:
                 return f, f
@@ -547,8 +548,9 @@ class Grafo():
             for neighbor, weight in self.get_neighbours(current_node):
                 if neighbor not in path:
                     path.append(neighbor)
-                    result, new_bound = depth_limited_search(neighbor, end, bound, path)
-                    
+                    g[neighbor] = g[current_node] + weight
+                    result, new_bound = depth_limited_search(neighbor, end, bound, path, g)
+
                     if result == "found":
                         return result, new_bound
 
@@ -556,16 +558,17 @@ class Grafo():
                     path.pop()
 
             return min_cost, min_cost
-        
+
         bound = self.calcula_heuristica(start, end)
         path = [start]
-        
+        g = {start: 0}
+
         while True:
-            result, new_bound = depth_limited_search(start, end, bound, [])
-            
+            result, new_bound = depth_limited_search(start, end, bound, path, g)
+
             if result == "found":
                 return path, self.calcula_custo(path)
-            
+
             if result == math.inf:
                 print('Path does not exist!')
                 return None
