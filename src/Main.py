@@ -81,6 +81,16 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
+    print("------------------------------------------------- TESTE 1 -------------------------------------------------")
+    print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", 20)) + "\n")
+    print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("A* -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")) + "\n")
+
+    print("------------------------------------------------- TESTE 2 -------------------------------------------------")
     print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", 20)) + "\n")
     print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
@@ -88,6 +98,15 @@ def main():
     print("A* -> " + str(healthPlanet.grafo.procura_aStar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
+
+    print("------------------------------------------------- TESTE 3 -------------------------------------------------")
+    print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
+    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", 20)) + "\n")
+    print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
+    print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
+    print("A* -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
+    print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
+    print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos")) + "\n")
 
     # Interface do Utilizador
     exit = False
