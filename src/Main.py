@@ -42,7 +42,6 @@ def main():
     healthPlanet.addIntercecao("Barcelos", "Largo dos Capuchinhos", (41.534635, -8.615340), "Arcozelo", "Rua Elias Garcia", (41.536377, -8.611988), 0.35)
     healthPlanet.addIntercecao("Arcozelo", "Rua Dom Afonso", (41.537089, -8.612683), "Arcozelo", "Rua Elias Garcia", (41.536377, -8.611988), 0.11)
 
-
     # Insere os estafetas
     healthPlanet.addEstafeta("Beatriz", [0], 5)
     healthPlanet.addEstafeta("Paulo", [1,2,3], 5)
@@ -81,6 +80,7 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
+    '''
     # Interface do Utilizador
     exit = False
     while not exit:
@@ -141,6 +141,7 @@ def main():
 
         except ValueError:
             print("Input inválido.")
-
+        '''
+    
 if __name__ == "__main__":
     main()

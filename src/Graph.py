@@ -5,9 +5,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 class Node():
-    def __init__(self, name, id=-1):
+    def __init__(self, name, coordenadas, id=-1):
         self.m_id = id
         self.m_name = str(name)
+        self.coordenadas = coordenadas
 
     def __str__(self):
         return "node " + self.m_name
@@ -57,9 +58,9 @@ class Grafo():
                 listaA = listaA + nodo + " ->" + nodo2 + " custo:" + str(custo) + "\n"
         return listaA
 
-    def add_edge(self, node1, node2, weight):
-        n1 = Node(node1)
-        n2 = Node(node2)
+    def add_edge(self, node1, coordenadas1, node2, coordenadas2, weight):
+        n1 = Node(node1, coordenadas1)
+        n2 = Node(node2, coordenadas2)
         if (n1 not in self.m_nodes):
             self.m_nodes.append(n1)
             self.m_graph[node1] = list()
@@ -191,6 +192,18 @@ class Grafo():
                 min_estima = v
                 node = k
         return node
+    
+    def calcHeuristica(self, start, end):
+        (x1,y1) = (0.0,0.0)
+        (x2,y2) = (0.0,0.0)
+
+        for node in self.m_nodes:
+            if node.m_name == start:
+                (x1,y1) = node.coordenadas
+            if node.m_name == end:
+                (x2,y2) = node.coordenadas
+
+        return ((x2-x1)**2 + (y2-y1)**2)**0.5
 
     def procura_aStar(self, start, end):
         open_list = {start}

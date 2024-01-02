@@ -12,7 +12,6 @@ class HealthPlanet():
         self.entregasPendentes = {}
         self.entregasConcluidas = {}
         self.meiosTransporte = {}
-        self.coordenadas = {}
 
     def addEstafeta(self, nomeEstafeta, entregas, ranking):
         idEstafeta = len(self.estafetas)
@@ -34,9 +33,7 @@ class HealthPlanet():
     def addIntercecao(self, freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia):
         nome1 = freguesia1 + ", " + rua1
         nome2 = freguesia2 + ", " + rua2
-        self.coordenadas[(freguesia1, rua1)] = coordenadas1
-        self.coordenadas[(freguesia2, rua2)] = coordenadas2
-        self.grafo.add_edge(nome1, nome2, distancia)
+        self.grafo.add_edge(nome1, coordenadas1, nome2, coordenadas2, distancia)
     
     def getInfoEstafeta(self, idEstafeta):
         res = self.estafetas[idEstafeta].__str__() + "\n\nEntregas:\n"
