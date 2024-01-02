@@ -532,6 +532,46 @@ class Grafo():
         print('Path does not exist!')
         return None
 
+    def procura_IDAstar(self, start, end):
+        
+        def depth_limited_search(current_node, end, bound, path):
+            f = self.calcula_custo(path) + self.calcula_heuristica(current_node, end)
+
+            if f > bound:
+                return f, f
+
+            if current_node == end:
+                return "found", f
+
+            min_cost = math.inf
+            for neighbor, weight in self.get_neighbours(current_node):
+                if neighbor not in path:
+                    path.append(neighbor)
+                    result, new_bound = depth_limited_search(neighbor, end, bound, path)
+                    
+                    if result == "found":
+                        return result, new_bound
+
+                    min_cost = min(min_cost, result)
+                    path.pop()
+
+            return min_cost, min_cost
+        
+        bound = self.calcula_heuristica(start, end)
+        path = [start]
+        
+        while True:
+            result, new_bound = depth_limited_search(start, end, bound, [])
+            
+            if result == "found":
+                return path, self.calcula_custo(path)
+            
+            if result == math.inf:
+                print('Path does not exist!')
+                return None
+
+            bound = new_bound
+
     def procuraGreedy(self, start, end):
         """
         Performs a greedy search algorithm to find the shortest path from the start node to the end node.
@@ -588,43 +628,3 @@ class Grafo():
 
         print('Path does not exist!')
         return None
-
-    def procura_IDAstar(self, start, end):
-        
-        def depth_limited_search(current_node, end, bound, path):
-            f = self.calcula_custo(path) + self.calcula_heuristica(current_node, end)
-
-            if f > bound:
-                return f, f
-
-            if current_node == end:
-                return "found", f
-
-            min_cost = math.inf
-            for neighbor, weight in self.get_neighbours(current_node):
-                if neighbor not in path:
-                    path.append(neighbor)
-                    result, new_bound = depth_limited_search(neighbor, end, bound, path)
-                    
-                    if result == "found":
-                        return result, new_bound
-
-                    min_cost = min(min_cost, result)
-                    path.pop()
-
-            return min_cost, min_cost
-        
-        bound = self.calcula_heuristica(start, end)
-        path = [start]
-        
-        while True:
-            result, new_bound = depth_limited_search(start, end, bound, [])
-            
-            if result == "found":
-                return path, self.calcula_custo(path)
-            
-            if result == math.inf:
-                print('Path does not exist!')
-                return None
-
-            bound = new_bound
