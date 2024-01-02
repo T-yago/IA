@@ -280,7 +280,7 @@ class Grafo():
         print('Path does not exist within the specified depth limit!')
         return None
 
-    def procura_DFS_iterativo(self, start, end):
+    def procura_IDDFS2(self, start, end):
         visited = set()
         parents = {}
 
@@ -314,7 +314,7 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def procura_DFS_stack(self, start, end):
+    def procura_IDDFS_Stack(self, start, end):
         stack = [start]
         visited = set()
         parents = {}

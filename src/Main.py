@@ -82,8 +82,8 @@ def main():
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
     print("1 -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
-    print("2 -> " + str(healthPlanet.grafo.procura_DFS_iterativo("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
-    print("3 -> " + str(healthPlanet.grafo.procura_DFS_stack("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("2 -> " + str(healthPlanet.grafo.procura_IDDFS2("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("3 -> " + str(healthPlanet.grafo.procura_IDDFS_Stack("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
     print("4 -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
     print("5 -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
     print("6 -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
