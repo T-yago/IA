@@ -14,8 +14,6 @@ class HealthPlanet():
         self.meiosTransporte = {}
         self.coordenadas = {}
 
-        self.coordenadas = {}
-
     def addEstafeta(self, nomeEstafeta, entregas, ranking):
         idEstafeta = len(self.estafetas)
         newEstafeta = Estafeta(idEstafeta, nomeEstafeta, entregas, ranking)
