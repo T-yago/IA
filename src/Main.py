@@ -84,7 +84,7 @@ def main():
     # Interface do Utilizador
     exit = False
     while not exit:
-        option = input("\n\nQue operação pretende executar?\n1 -> Adicionar um estafeta;\n2 -> Adicionar uma entrega;\n3 -> Adicionar uma nova localização;\n4 -> Executar entregas.\n5 -> Ver as informações relativas a um estafeta e as suas entregas.\n\n")
+        option = input("\n\nQue operação pretende executar?\n1 -> Adicionar um estafeta;\n2 -> Adicionar uma entrega;\n3 -> Adicionar uma nova localização;\n4 -> Executar entregas.\n5 -> Ver as informações relativas a um estafeta e as suas entregas.\n6 -> Sair\n\n")
         
         try:
             option = int(option)
@@ -132,6 +132,9 @@ def main():
                 idEstafeta = int(input("Id do Estafeta: "))
                 print("\n")
                 print(healthPlanet.getInfoEstafeta(idEstafeta))
+
+            elif option==6:
+                exit = True
 
             else:
                 print("Operação inválida. Insira uma das opções disponíveis.")
