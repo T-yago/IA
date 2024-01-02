@@ -237,7 +237,7 @@ class Grafo():
         return None
     
     def procura_IDDFS(self, start, end, max_depth):
-        def DLS_Recursive(self, current_node, end, depth_limit, visited, path):
+        def DLS_Recursive(current_node, end, depth_limit, visited, path):
             if current_node == end:
                 return "found"
 
@@ -249,7 +249,7 @@ class Grafo():
                     path.append(neighbor)
                     visited.add(neighbor)
 
-                    result = self.DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
+                    result = DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
 
                     if result == "found" or result != "depth_limit_exceeded":
                         return result
@@ -258,21 +258,19 @@ class Grafo():
 
             return "not_found"
         
-        def procura_DLS(self, start, end, depth_limit):
+        def procura_DLS(start, end, depth_limit):
             visited = set()
             path = [start]
 
-            result = self.DLS_Recursive(start, end, depth_limit, visited, path)
+            result = DLS_Recursive(start, end, depth_limit, visited, path)
 
             if result == "found":
                 return path, self.calcula_custo(path)
-
-            print('Path does not exist within depth limit!')
             return None
         
 
         for depth_limit in range(max_depth + 1):
-            result = self.procura_DLS(start, end, depth_limit)
+            result = procura_DLS(start, end, depth_limit)
 
             if result is not None:
                 return result

@@ -82,6 +82,7 @@ def main():
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
     print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
+    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", 20)) + "\n")
     print("IDDFS2 -> " + str(healthPlanet.grafo.procura_IDDFS2("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("IDDFS Stack -> " + str(healthPlanet.grafo.procura_IDDFS_Stack("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
     print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia")) + "\n")
