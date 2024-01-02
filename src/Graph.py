@@ -56,6 +56,25 @@ class Grafo():
                 listaA = listaA + nodo + " ->" + nodo2 + " custo:" + str(custo) + "\n"
         return listaA
 
+    def desenha(self):
+        lista_v = self.m_nodes
+        lista_a = []
+        g = nx.Graph()
+        for nodo in lista_v:
+            n = nodo.getName()
+            g.add_node(n)
+            for (adjacente, peso) in self.m_graph[n]:
+                lista = (n, adjacente)
+                g.add_edge(n, adjacente, weight=peso)
+
+        pos = nx.spring_layout(g)
+        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
+        labels = nx.get_edge_attributes(g, 'weight')
+        nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
+
+        plt.draw()
+        plt.show()
+
     def add_edge(self, node1, coordenadas1, node2, coordenadas2, weight):
         n1 = Node(node1, coordenadas1)
         n2 = Node(node2, coordenadas2)
@@ -82,7 +101,7 @@ class Grafo():
 
     def get_arc_cost(self, node1, node2):
         custoT = math.inf
-        a = self.m_graph[node1]  # lista de arestas para aquele nodo
+        a = self.m_graph[node1]
         for (nodo, custo) in a:
             if nodo == node2:
                 custoT = custo
@@ -96,9 +115,9 @@ class Grafo():
         while i + 1 < len(teste):
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
-        return custo
+        return round(custo,2)
 
-    def procura_DFS(self, start, end, path=[], visited=set()):
+    def procura_DFS(self, start, end, path = [], visited = set()):
         path.append(start)
         visited.add(start)
 
@@ -111,6 +130,71 @@ class Grafo():
                 if resultado is not None:
                     return resultado
         path.pop()
+        return None
+
+    def procura_DFS_iterativo(self, start, end):
+        visited = set()
+        parents = {}
+
+        def dfs_recursive(node):
+            nonlocal visited, parents
+
+            if node == end:
+                return True
+
+            visited.add(node)
+
+            for neighbor, _ in self.getNeighbours(node):
+                if neighbor not in visited:
+                    parents[neighbor] = node
+                    if dfs_recursive(neighbor):
+                        return True
+
+            return False
+
+        if dfs_recursive(start):
+            reconst_path = []
+            current_node = end
+            while current_node != start:
+                reconst_path.append(current_node)
+                current_node = parents[current_node]
+            reconst_path.append(start)
+            reconst_path.reverse()
+
+            return (reconst_path, self.calcula_custo(reconst_path))
+
+        print('Path does not exist!')
+        return None
+
+    def procura_DFS_stack(self, start, end):
+        stack = [start]
+        visited = set()
+        parents = {}
+
+        while stack:
+            current_node = stack.pop()
+
+            if current_node in visited:
+                continue
+
+            visited.add(current_node)
+
+            if current_node == end:
+                reconst_path = []
+                while current_node != start:
+                    reconst_path.append(current_node)
+                    current_node = parents[current_node]
+                reconst_path.append(start)
+                reconst_path.reverse()
+
+                return (reconst_path, self.calcula_custo(reconst_path))
+
+            for neighbor, _ in self.getNeighbours(current_node):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+                    parents[neighbor] = current_node
+
+        print('Path does not exist!')
         return None
 
     def procura_BFS(self, start, end):
@@ -150,35 +234,6 @@ class Grafo():
         for (adjacente, peso) in self.m_graph[nodo]:
             lista.append((adjacente, peso))
         return lista
-
-    def desenha(self):
-        lista_v = self.m_nodes
-        lista_a = []
-        g = nx.Graph()
-        for nodo in lista_v:
-            n = nodo.getName()
-            g.add_node(n)
-            for (adjacente, peso) in self.m_graph[n]:
-                lista = (n, adjacente)
-                g.add_edge(n, adjacente, weight=peso)
-
-        pos = nx.spring_layout(g)
-        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
-        labels = nx.get_edge_attributes(g, 'weight')
-        nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
-
-        plt.draw()
-        plt.show()
-
-    def calcula_est(self, estima):
-        l = list(estima.keys())
-        min_estima = estima[l[0]]
-        node = l[0]
-        for k, v in estima.items():
-            if v < min_estima:
-                min_estima = v
-                node = k
-        return node
     
     def calcHeuristica(self, start, end):
         (latA_deg, lonA_deg) = (0.0,0.0)
@@ -258,7 +313,7 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def greedy(self, start, end):
+    def procuraGreedy(self, start, end):
         open_list = set([start])
         closed_list = set([])
         parents = {}
@@ -299,8 +354,6 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-''' Procura custo uniforme -------> Tem de ser testada
-
     def procura_UCS(self, start, end):
         open_list = [(0, start)]
         closed_list = set()
@@ -308,8 +361,8 @@ class Grafo():
         g = {start: 0}
 
         while open_list:
-            open_list.sort()  # Sort the open list by cost
-            cost, current_node = open_list.pop(0)  # Pop the node with the lowest cost
+            open_list.sort()
+            cost, current_node = open_list.pop(0)
 
             if current_node in closed_list:
                 continue
@@ -317,7 +370,6 @@ class Grafo():
             closed_list.add(current_node)
 
             if current_node == end:
-                # Reconstruct the path
                 reconst_path = []
                 while current_node != start:
                     reconst_path.append(current_node)
@@ -337,77 +389,3 @@ class Grafo():
 
         print('Path does not exist!')
         return None
-
-Procura DFS iterativo -------> Tem de ser testada
-
-    def procura_DFS_iterativo(self, start, end):
-        visited = set()
-        parents = {}
-
-        # Helper function for recursive DFS
-        def dfs_recursive(node):
-            nonlocal visited, parents
-
-            if node == end:
-                return True
-
-            visited.add(node)
-
-            for neighbor, _ in self.getNeighbours(node):
-                if neighbor not in visited:
-                    parents[neighbor] = node
-                    if dfs_recursive(neighbor):
-                        return True
-
-            return False
-
-        # Start DFS from the given node
-        if dfs_recursive(start):
-            # Reconstruct the path
-            reconst_path = []
-            current_node = end
-            while current_node != start:
-                reconst_path.append(current_node)
-                current_node = parents[current_node]
-            reconst_path.append(start)
-            reconst_path.reverse()
-
-            return (reconst_path, self.calcula_custo(reconst_path))
-
-        print('Path does not exist!')
-        return None
-    
-DFS iterativo com stack
-
-     def procura_DFS_iterativo(self, start, end):
-        stack = [start]
-        visited = set()
-        parents = {}
-
-        while stack:
-            current_node = stack.pop()
-
-            if current_node in visited:
-                continue
-
-            visited.add(current_node)
-
-            if current_node == end:
-                # Reconstruct the path
-                reconst_path = []
-                while current_node != start:
-                    reconst_path.append(current_node)
-                    current_node = parents[current_node]
-                reconst_path.append(start)
-                reconst_path.reverse()
-
-                return (reconst_path, self.calcula_custo(reconst_path))
-
-            for neighbor, _ in self.getNeighbours(current_node):
-                if neighbor not in visited:
-                    stack.append(neighbor)
-                    parents[neighbor] = current_node
-
-        print('Path does not exist!')
-        return None
-'''

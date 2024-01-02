@@ -41,6 +41,7 @@ def main():
     healthPlanet.addIntercecao("Arcozelo", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), "Arcozelo", "Rua Elias Garcia", (41.536377, -8.611988), 0.55)
     healthPlanet.addIntercecao("Barcelos", "Largo dos Capuchinhos", (41.534635, -8.615340), "Arcozelo", "Rua Elias Garcia", (41.536377, -8.611988), 0.35)
     healthPlanet.addIntercecao("Arcozelo", "Rua Dom Afonso", (41.537089, -8.612683), "Arcozelo", "Rua Elias Garcia", (41.536377, -8.611988), 0.11)
+    healthPlanet.addIntercecao("Arcozelo", "Rua Dom Afonso", (41.537089, -8.612683), "Arcozelo", "Rua Doutor José Júlio Vieira Ramos", (41.537223, -8.613382), 0.07)
 
     # Insere os estafetas
     healthPlanet.addEstafeta("Beatriz", [0], 5)
@@ -80,10 +81,13 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
-    print(healthPlanet.grafo.procura_aStar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia"))
-    print(healthPlanet.grafo.greedy("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia"))
-    print(healthPlanet.grafo.procura_BFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia"))
-    print(healthPlanet.grafo.procura_DFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia"))
+    print("1 -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("2 -> " + str(healthPlanet.grafo.procura_DFS_iterativo("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("3 -> " + str(healthPlanet.grafo.procura_DFS_stack("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("4 -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("5 -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("6 -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("7 -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
 
     # Interface do Utilizador
     exit = False
