@@ -532,8 +532,25 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-
     def procura_IDAstar(self, start, end):
+        """
+        Performs an IDA* search algorithm to find the optimal path from the start node to the end node in a graph.
+
+        The IDA* algorithm is a variant of the A* search algorithm that uses iterative deepening to find the optimal path.
+        It performs a depth-limited search, gradually increasing the depth limit until a path is found or the search space is exhausted.
+        At each depth limit, the algorithm expands the nodes in the graph, considering the cost of the path from the start node and the estimated cost to the target node.
+        If the estimated cost exceeds the current depth limit, the search is pruned for that node.
+        The algorithm continues until a path is found or it is determined that no path exists.
+        
+        Args:
+            start: The starting node.
+            end: The target node.
+
+        Returns:
+            If a path is found, returns a tuple containing the path and its cost.
+            If no path is found, returns None.
+
+        """
 
         def depth_limited_search(current_node, end, bound, path, g):
             f = g[current_node] + self.calcula_heuristica(current_node, end)
