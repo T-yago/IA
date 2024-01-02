@@ -236,8 +236,8 @@ class Grafo():
         g = {start: 0}
 
         while open_list:
-            open_list.sort()  
-            cost, current_node = open_list.pop(0)  
+            open_list.sort()
+            cost, current_node = open_list.pop(0)
 
             if current_node in closed_list:
                 continue
@@ -260,8 +260,10 @@ class Grafo():
                 if neighbor not in closed_list and (neighbor not in g or new_cost < g[neighbor]):
                     g[neighbor] = new_cost
                     open_list.append((new_cost, neighbor))
-                    open_list.sort() 
+                    parents[neighbor] = current_node
 
+        print('Path does not exist!')
+        return None
 
     def procura_DLS(self, start, end, depth_limit):
         visited = set()
@@ -410,7 +412,6 @@ class Grafo():
 
         print('Path does not exist!')
         return None
-
 
     def procura_IDAstar(self, start, end):
         bound = self.getH(start)  # Initial bound is the heuristic value of the start node

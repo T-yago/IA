@@ -1,8 +1,9 @@
 
 class Node():
-    def __init__(self, name, id=-1):
+    def __init__(self, name, coordenadas, id=-1):
         self.m_id = id
         self.m_name = str(name)
+        self.coordenadas = coordenadas
 
     def __str__(self):
         return "node " + self.m_name
