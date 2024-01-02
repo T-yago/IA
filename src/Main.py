@@ -56,11 +56,6 @@ def main():
     healthPlanet.addMeioTransporte("Moto", 20, 35, 0.5)
     healthPlanet.addMeioTransporte("Carro", 100, 50, 0.1)
 
-    # Insere os meios de transporte disponíveis para os estafetas
-    healthPlanet.addMeioTransporte("Bicicleta", 5, 10, 0.6)
-    healthPlanet.addMeioTransporte("Moto", 20, 35, 0.5)
-    healthPlanet.addMeioTransporte("Carro", 100, 50, 0.1)
-
     # Insere as entregas
     healthPlanet.addEntrega(25, 45.5, "Barcelos", "Rua Doutor Francisco Torres", 678, 0)
     healthPlanet.addEntrega(10, 20, "Barcelos", "Rua Padre Alfredo da Rocha Martins", 200, 1)
