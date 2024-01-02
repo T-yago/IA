@@ -121,15 +121,6 @@ class Grafo():
         if not self.m_directed:
             self.m_graph[node2].append((node1, weight))
 
-    def getNodes(self):
-        """
-        Retrieves the nodes in the graph.
-
-        Returns:
-            list: List of nodes in the graph.
-        """
-        return self.m_nodes
-
     def get_arc_cost(self, node1, node2):
         """
         Retrieves the cost of an arc between two nodes.
@@ -166,7 +157,7 @@ class Grafo():
             i = i + 1
         return round(custo,2)
     
-    def getNeighbours(self, nodo):
+    def get_neighbours(self, nodo):
         """
         Retrieves the neighbors of a given node.
 
@@ -181,18 +172,53 @@ class Grafo():
             lista.append((adjacente, peso))
         return lista
 
-    def procura_DFS(self, start, end, path = [], visited = set()):
+    def calcula_heuristica(self, start, end):
         """
-        Performs a depth-first search to find a path between two nodes.
+        Calculates the heuristic value between two nodes, using the Haversine formula.
 
         Args:
             start (str): Name of the starting node.
             end (str): Name of the ending node.
-            path (list, optional): List of nodes representing the current path. Defaults to [].
-            visited (set, optional): Set of visited nodes. Defaults to set().
 
         Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
+            float: The heuristic value between the two nodes.
+        """
+        (latA_deg, lonA_deg) = (0.0,0.0)
+        (latB_deg,lonB_deg) = (0.0,0.0)
+
+        for node in self.m_nodes:
+            if node.m_name == start:
+                (latA_deg,lonA_deg) = node.coordenadas
+            if node.m_name == end:
+                (latB_deg,lonB_deg) = node.coordenadas
+
+        latA = math.radians(latA_deg)
+        lonA = math.radians(lonA_deg)
+        latB = math.radians(latB_deg)
+        lonB = math.radians(lonB_deg)
+        a = math.sin((latB - latA) / 2)**2 + math.cos(latA) * math.cos(latB) * math.sin((lonB - lonA) / 2)**2
+
+        return 6371000 * 2 * math.asin(math.sqrt(a)) / 1000
+
+# PROCURAS NÃO INFORMADAS
+
+    def procura_DFS(self, start, end, path = [], visited = set()):
+        """
+        Depth-First Search (DFS) algorithm to find a path from start to end in a graph.
+
+        DFS explores the graph by traversing as far as possible along each branch before backtracking.
+        It starts at the given 'start' node and explores its neighbors recursively until it reaches the 'end' node or
+        there are no more unvisited neighbors. If the 'end' node is found, it returns the path from 'start' to 'end'.
+        Otherwise, it returns None.
+
+        Args:
+            start: The starting node.
+            end: The target node.
+            path: The current path being explored (default = []).
+            visited: A set of visited nodes to avoid cycles (default = set()).
+
+        Returns:
+            A tuple containing the path and the total cost if a path is found, None otherwise.
         """
         path.append(start)
         visited.add(start)
@@ -200,25 +226,61 @@ class Grafo():
         if start == end:
             custoT = self.calcula_custo(path)
             return (path, custoT)
+
         for (adjacente, peso) in self.m_graph[start]:
             if adjacente not in visited:
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if resultado is not None:  
                     return resultado
+
         path.pop()
+        return None
+    
+    def procura_IDDFS(self, start, end, max_depth):
+        def DLS_Recursive(self, current_node, end, depth_limit, visited, path):
+            if current_node == end:
+                return "found"
+
+            if depth_limit == 0:
+                return "depth_limit_exceeded"
+
+            for neighbor, _ in self.get_neighbours(current_node):
+                if neighbor not in visited:
+                    path.append(neighbor)
+                    visited.add(neighbor)
+
+                    result = self.DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
+
+                    if result == "found" or result != "depth_limit_exceeded":
+                        return result
+
+                    path.pop()
+
+            return "not_found"
+        
+        def procura_DLS(self, start, end, depth_limit):
+            visited = set()
+            path = [start]
+
+            result = self.DLS_Recursive(start, end, depth_limit, visited, path)
+
+            if result == "found":
+                return path, self.calcula_custo(path)
+
+            print('Path does not exist within depth limit!')
+            return None
+        
+
+        for depth_limit in range(max_depth + 1):
+            result = self.procura_DLS(start, end, depth_limit)
+
+            if result is not None:
+                return result
+
+        print('Path does not exist within the specified depth limit!')
         return None
 
     def procura_DFS_iterativo(self, start, end):
-        """
-        Performs an iterative depth-first search to find a path between two nodes.
-
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
-
-        Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
-        """
         visited = set()
         parents = {}
 
@@ -230,7 +292,7 @@ class Grafo():
 
             visited.add(node)
 
-            for neighbor, _ in self.getNeighbours(node):
+            for neighbor, _ in self.get_neighbours(node):
                 if neighbor not in visited:
                     parents[neighbor] = node
                     if dfs_recursive(neighbor):
@@ -253,16 +315,6 @@ class Grafo():
         return None
 
     def procura_DFS_stack(self, start, end):
-        """
-        Performs a stack-based depth-first search to find a path between two nodes.
-
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
-
-        Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
-        """
         stack = [start]
         visited = set()
         parents = {}
@@ -285,7 +337,7 @@ class Grafo():
 
                 return (reconst_path, self.calcula_custo(reconst_path))
 
-            for neighbor, _ in self.getNeighbours(current_node):
+            for neighbor, _ in self.get_neighbours(current_node):
                 if neighbor not in visited:
                     stack.append(neighbor)
                     parents[neighbor] = current_node
@@ -296,6 +348,9 @@ class Grafo():
     def procura_BFS(self, start, end):
         """
         Performs a breadth-first search to find a path between two nodes.
+
+        Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
+        It starts at the root node and explores all the neighbor nodes at the present depth before moving on to the nodes at the next depth level.
 
         Args:
             start (str): Name of the starting node.
@@ -337,15 +392,22 @@ class Grafo():
     
     def procura_UCS(self, start, end):
         """
-        Performs a uniform-cost search to find a path between two nodes.
+        Performs Uniform Cost Search (UCS) algorithm to find the shortest path from start to end in a graph.
 
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
+        UCS works by exploring the graph in a breadth-first manner, considering the lowest cost of each path.
+        It maintains an open list of nodes to be explored, sorted by their cumulative cost.
+        The algorithm continues until the open list is empty or the target node is reached.
+        During the exploration, it keeps track of the parents of each node to reconstruct the path later.
+
+        Parameters:
+        - start: The starting node.
+        - end: The target node.
 
         Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
+        - A tuple containing the shortest path from start to end and its cost.
+            If no path exists, returns None.
         """
+
         open_list = [(0, start)]
         closed_list = set()
         parents = {}
@@ -370,7 +432,7 @@ class Grafo():
 
                 return (reconst_path, g[end])
 
-            for neighbor, weight in self.getNeighbours(current_node):
+            for neighbor, weight in self.get_neighbours(current_node):
                 new_cost = g[current_node] + weight
 
                 if neighbor not in closed_list and (neighbor not in g or new_cost < g[neighbor]):
@@ -381,99 +443,35 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def procura_IDDFS(self, start, end, max_depth):
-        """
-        Performs an iterative deepening depth-first search to find a path between two nodes.
-
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
-            max_depth (int): Maximum depth limit for the search.
-
-        Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
-        """
-        def DLS_Recursive(self, current_node, end, depth_limit, visited, path):
-            if current_node == end:
-                return "found"
-
-            if depth_limit == 0:
-                return "depth_limit_exceeded"
-
-            for neighbor, _ in self.getNeighbours(current_node):
-                if neighbor not in visited:
-                    path.append(neighbor)
-                    visited.add(neighbor)
-
-                    result = self.DLS_Recursive(neighbor, end, depth_limit - 1, visited, path)
-
-                    if result == "found" or result != "depth_limit_exceeded":
-                        return result
-
-                    path.pop()
-
-            return "not_found"
-        
-        def procura_DLS(self, start, end, depth_limit):
-            visited = set()
-            path = [start]
-
-            result = self.DLS_Recursive(start, end, depth_limit, visited, path)
-
-            if result == "found":
-                return path, self.calcula_custo(path)
-
-            print('Path does not exist within depth limit!')
-            return None
-        
-
-        for depth_limit in range(max_depth + 1):
-            result = self.procura_DLS(start, end, depth_limit)
-
-            if result is not None:
-                return result
-
-        print('Path does not exist within the specified depth limit!')
-        return None
-
-    def calcHeuristica(self, start, end):
-        """
-        Calculates the heuristic value between two nodes.
-
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
-
-        Returns:
-            float: The heuristic value between the two nodes.
-        """
-        (latA_deg, lonA_deg) = (0.0,0.0)
-        (latB_deg,lonB_deg) = (0.0,0.0)
-
-        for node in self.m_nodes:
-            if node.m_name == start:
-                (latA_deg,lonA_deg) = node.coordenadas
-            if node.m_name == end:
-                (latB_deg,lonB_deg) = node.coordenadas
-
-        latA = math.radians(latA_deg)
-        lonA = math.radians(lonA_deg)
-        latB = math.radians(latB_deg)
-        lonB = math.radians(lonB_deg)
-        a = math.sin((latB - latA) / 2)**2 + math.cos(latA) * math.cos(latB) * math.sin((lonB - lonA) / 2)**2
-
-        return 6371000 * 2 * math.asin(math.sqrt(a)) / 1000
+# PROCURAS INFORMADAS
 
     def procura_aStar(self, start, end):
         """
-        Performs an A* search to find a path between two nodes.
+        Finds the shortest path from the start node to the end node using the A* algorithm.
 
-        Args:
-            start (str): Name of the starting node.
-            end (str): Name of the ending node.
+        The A* algorithm is an informed search algorithm that uses heuristics to guide the search
+        towards the goal node. It maintains two lists: an open list and a closed list. The open list
+        contains the nodes that are yet to be explored, while the closed list contains the nodes that
+        have already been explored.
+
+        The algorithm starts by initializing the open list with the start node. It then iteratively
+        selects the node with the lowest estimated cost (based on the sum of the actual cost from the
+        start node and the heuristic estimate to the goal node) from the open list. If the selected node
+        is the goal node, the algorithm reconstructs the path from the start node to the goal node and
+        returns it along with the cost of the path.
+
+        If the open list becomes empty before reaching the goal node, it means that there is no path
+        from the start node to the goal node, and the algorithm returns None.
+
+        The A* algorithm is commonly used in pathfinding problems, where finding the shortest path
+        between two points in a graph is required.
+        
+        Parameters:
+            start (Node): The starting node.
+            end (Node): The target node.
 
         Returns:
-            tuple: Tuple containing the path and its cost, or None if no path is found.
+            tuple: A tuple containing the shortest path as a list of nodes and the cost of the path.
         """
         open_list = {start}
         closed_list = set([])
@@ -492,7 +490,7 @@ class Grafo():
                     n = v
                 else:
                     flag = 1
-                    calc_heurist[v] = g[v] + self.calcHeuristica(v, end)
+                    calc_heurist[v] = g[v] + self.calcula_heuristica(v, end)
             if flag == 1:
                 min_estima = min(calc_heurist, key=calc_heurist.get)
                 n = min_estima
@@ -513,7 +511,7 @@ class Grafo():
 
                 return (reconst_path, self.calcula_custo(reconst_path))
 
-            for (m, weight) in self.getNeighbours(n):
+            for (m, weight) in self.get_neighbours(n):
                 if m not in open_list and m not in closed_list:
                     open_list.add(m)
                     parents[m] = n
@@ -538,14 +536,19 @@ class Grafo():
         """
         Performs a greedy search algorithm to find the shortest path from the start node to the end node.
 
-        Args:
-            start: The start node.
-            end: The end node.
+        Greedy search works by always choosing the node that appears to be closest to the target based on a heuristic function.
+        It expands the search by considering the neighbors of the current node and selecting the one with the lowest heuristic value.
+        This process continues until the target node is reached or there are no more nodes to explore.
+
+        Parameters:
+        - start: The starting node of the search.
+        - end: The target node to reach.
 
         Returns:
-            If a path is found, returns a tuple containing the reconstructed path and its cost.
-            If no path is found, returns None.
+        - If a path is found, returns a tuple containing the path as a list of nodes and the total cost of the path.
+        - If no path is found, returns None.
         """
+
         open_list = set([start])
         closed_list = set([])
         parents = {}
@@ -555,7 +558,7 @@ class Grafo():
             n = None
 
             for v in open_list:
-                if n == None or self.calcHeuristica(v, end) < self.calcHeuristica(n, end):
+                if n == None or self.calcula_heuristica(v, end) < self.calcula_heuristica(n, end):
                     n = v
 
             if n == None:
@@ -575,7 +578,7 @@ class Grafo():
 
                 return (reconst_path, self.calcula_custo(reconst_path))
 
-            for (m, weight) in self.getNeighbours(n):
+            for (m, weight) in self.get_neighbours(n):
                 if m not in open_list and m not in closed_list:
                     open_list.add(m)
                     parents[m] = n
@@ -587,65 +590,41 @@ class Grafo():
         return None
 
     def procura_IDAstar(self, start, end):
-            """
-            Performs an IDA* search algorithm to find the optimal path from start to end in the graph.
+        
+        def depth_limited_search(self, current_node, end, bound, path):
+            f = self.calcula_custo(path) + self.getH(current_node)
 
-            Args:
-                start: The starting node.
-                end: The target node.
+            if f > bound:
+                return f, f
 
-            Returns:
-                A tuple containing the optimal path and its cost if a path is found.
-                None if no path exists.
-            """
-            bound = self.getH(start)
-            path = [start]
+            if current_node == end:
+                return "found", f
+
+            min_cost = math.inf
+            for neighbor, weight in self.get_neighbours(current_node):
+                if neighbor not in path:
+                    path.append(neighbor)
+                    result, new_bound = self.depth_limited_search(neighbor, end, bound, path)
+                    
+                    if result == "found":
+                        return result, new_bound
+
+                    min_cost = min(min_cost, result)
+                    path.pop()
+
+            return min_cost, min_cost
+        
+        bound = self.getH(start)
+        path = [start]
+        
+        while True:
+            result, new_bound = self.depth_limited_search(start, end, bound, [])
             
-            while True:
-                result, new_bound = self.depth_limited_search(start, end, bound, [])
-                
-                if result == "found":
-                    return path, self.calcula_custo(path)
-                
-                if result == math.inf:
-                    print('Path does not exist!')
-                    return None
+            if result == "found":
+                return path, self.calcula_custo(path)
+            
+            if result == math.inf:
+                print('Path does not exist!')
+                return None
 
-                bound = new_bound
-
-    def depth_limited_search(self, current_node, end, bound, path):
-        """
-        Perform a depth-limited search from the current_node to find the end node within a specified bound.
-
-        Args:
-            current_node: The current node being explored.
-            end: The target end node to find.
-            bound: The maximum cost bound for the search.
-            path: The current path of nodes explored.
-
-        Returns:
-            If the end node is found within the bound, returns a tuple ("found", cost).
-            Otherwise, returns a tuple (min_cost, min_cost) representing the minimum cost found during the search.
-
-        """
-        f = self.calcula_custo(path) + self.getH(current_node)
-
-        if f > bound:
-            return f, f
-
-        if current_node == end:
-            return "found", f
-
-        min_cost = math.inf
-        for neighbor, weight in self.getNeighbours(current_node):
-            if neighbor not in path:
-                path.append(neighbor)
-                result, new_bound = self.depth_limited_search(neighbor, end, bound, path)
-                
-                if result == "found":
-                    return result, new_bound
-
-                min_cost = min(min_cost, result)
-                path.pop()
-
-        return min_cost, min_cost
+            bound = new_bound
