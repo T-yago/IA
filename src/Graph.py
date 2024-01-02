@@ -439,8 +439,20 @@ class Grafo():
         is the goal node, the algorithm reconstructs the path from the start node to the goal node and
         returns it along with the cost of the path.
 
-        If the open list becomes empty before reaching the goal node, it means that there is no path
-        from the start node to the goal node, and the algorithm returns None.
+        However, if the selected node is not the goal node, the algorithm dynamically expands the chosen 
+        node's neighborhood, generating adjacent nodes that are directly accessible from the current position. 
+        It then calculates or updates various values for each neighboring node, including the actual cost from 
+        the start node to the neighbor, the heuristic estimate from that node to the goal, and the sum of these 
+        two values (the f-cost).
+
+        Subsequently, the algorithm checks whether each neighboring node is already part of the open list or the 
+        closed list. Nodes that are absent from the open list or have a lower f-cost compared to their previous 
+        state are considered for inclusion or update. This iterative process ensures that the algorithm continues 
+        to prioritize nodes with lower estimated costs, creating an efficient search strategy.
+
+        The A* algorithm repeats the selection step, choosing the next node with the lowest estimated cost from the 
+        updated open list. This cycle continues until the goal node is eventually reached or until the open list is 
+        empty, signifying that no viable path to the goal exists.
 
         The A* algorithm is commonly used in pathfinding problems, where finding the shortest path
         between two points in a graph is required.
