@@ -22,7 +22,7 @@ def main():
         - Rua Dom Afonso (Arcozelo) (41.537089, -8.612683)
         '''
 
-    # Insere as ruas das freguesias
+    # Insere as interceções
     healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.12)
     healthPlanet.addIntercecao("Barcelos", "Rua Doutor Francisco Torres", (41.535186, -8.616254), "Barcelos", "Avenida Dom Nuno Álvares Pereira", (41.536537, -8.618139), 0.3)
     healthPlanet.addIntercecao("Barcelos", "Rua Padre Alfredo da Rocha Martins", (41.535896, -8.616541), "Barcelos", "Campo 25 de Abril", (41.535469, -8.615419), 0.15)
@@ -138,12 +138,6 @@ def main():
 
         except ValueError:
             print("Input inválido.")
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
