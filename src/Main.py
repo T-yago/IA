@@ -88,6 +88,7 @@ def main():
     print("5 -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
     print("6 -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
     print("7 -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
+    print("8 -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia")))
 
     # Interface do Utilizador
     exit = False
