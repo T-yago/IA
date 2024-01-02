@@ -229,6 +229,7 @@ class Grafo():
 
         if start == end:
             custoT = self.calcula_custo(path)
+            print("Nodos Visitados: " + str(visited))
             return (path, custoT)
 
         for (adjacente, peso) in self.m_graph[start]:
@@ -238,38 +239,6 @@ class Grafo():
                     return resultado
 
         path.pop()
-        return None
-
-    
-
-        stack = [start]
-        visited = set()
-        parents = {}
-
-        while stack:
-            current_node = stack.pop()
-
-            if current_node in visited:
-                continue
-
-            visited.add(current_node)
-
-            if current_node == end:
-                reconst_path = []
-                while current_node != start:
-                    reconst_path.append(current_node)
-                    current_node = parents[current_node]
-                reconst_path.append(start)
-                reconst_path.reverse()
-
-                return (reconst_path, self.calcula_custo(reconst_path))
-
-            for neighbor, _ in self.get_neighbours(current_node):
-                if neighbor not in visited:
-                    stack.append(neighbor)
-                    parents[neighbor] = current_node
-
-        print('Path does not exist!')
         return None
 
     def procura_IDDFS(self, start, end, max_depth):
@@ -307,6 +276,7 @@ class Grafo():
 
             if start == end:
                 custoT = self.calcula_custo(path)
+                print("Nodos Visitados: " + str(visited))
                 return (path, custoT)
 
             if depth_limit == 0:
@@ -373,6 +343,8 @@ class Grafo():
                 end = parent[end]
             path.reverse()
             custo = self.calcula_custo(path)
+        
+        print("Nodos Visitados: " + str(visited))
         return (path, custo)
     
     def procura_UCS(self, start, end):
@@ -415,6 +387,7 @@ class Grafo():
                 reconst_path.append(start)
                 reconst_path.reverse()
 
+                print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, round(g[end], 2))
 
             for neighbor, weight in self.get_neighbours(current_node):
@@ -494,6 +467,7 @@ class Grafo():
 
                 reconst_path.reverse()
 
+                print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, self.calcula_custo(reconst_path))
 
             for (m, weight) in self.get_neighbours(n):
@@ -537,7 +511,7 @@ class Grafo():
 
         """
 
-        def depth_limited_search(current_node, end, bound, path, g):
+        def depth_limited_search(current_node, end, bound, path, g, visited):
             f = g[current_node] + self.calcula_heuristica(current_node, end)
 
             if f > bound:
@@ -550,8 +524,9 @@ class Grafo():
             for neighbor, weight in self.get_neighbours(current_node):
                 if neighbor not in path:
                     path.append(neighbor)
+                    visited.add(neighbor)
                     g[neighbor] = g[current_node] + weight
-                    result, new_bound = depth_limited_search(neighbor, end, bound, path, g)
+                    result, new_bound = depth_limited_search(neighbor, end, bound, path, g, visited)
 
                     if result == "found":
                         return result, new_bound
@@ -564,11 +539,13 @@ class Grafo():
         bound = self.calcula_heuristica(start, end)
         path = [start]
         g = {start: 0}
+        visited = set([start])
 
         while True:
-            result, new_bound = depth_limited_search(start, end, bound, path, g)
+            result, new_bound = depth_limited_search(start, end, bound, path, g, visited)
 
             if result == "found":
+                print("Nodos Visitados: " + str(visited))
                 return path, self.calcula_custo(path)
 
             if result == math.inf:
@@ -621,6 +598,7 @@ class Grafo():
 
                 reconst_path.reverse()
 
+                print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, self.calcula_custo(reconst_path))
 
             for (m, weight) in self.get_neighbours(n):
