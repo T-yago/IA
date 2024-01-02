@@ -409,7 +409,7 @@ class Grafo():
                 reconst_path.append(start)
                 reconst_path.reverse()
 
-                return (reconst_path, g[end])
+                return (reconst_path, round(g[end], 2))
 
             for neighbor, weight in self.get_neighbours(current_node):
                 new_cost = g[current_node] + weight
