@@ -136,7 +136,8 @@ class HealthPlanet():
             caminhoFinal += " -> " + posicaoAtual
             distanciaTotal += self.grafo.get_arc_cost(caminho[0], caminho[1])
             if (posicaoAtual==self.entregasPendentes[ordemEntregas[0]].getPontoDeEntrega()):
-                entregas.pop(0)
+                entregaConcluida = entregas.pop(0)
+                self.concluirEntregas(idEstafeta, [entregaConcluida], 0, 0)
         
         while posicaoAtual!=self.sede:
 
