@@ -157,7 +157,7 @@ class Grafo():
         while i + 1 < len(teste):
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
-        return round(custo,2)
+        return custo
     
     def get_neighbours(self, nodo):
         """

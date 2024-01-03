@@ -51,20 +51,22 @@ class Estafeta():
     def setRanking(self, ranking):
         self.ranking = ranking
 
+    def getRanking(self):
+        return self.ranking
+
     """
     Completa uma lista de entregas, atualizando as entregas inconcluídas, concluídas, o número de entregas realizadas
     e o ranking total do estafeta
     """
-    def completeEntregas(self, entregas):
+    def completeEntregas(self, idsEntregas, rankingTravessia):
+
         self.ranking = self.ranking * self.nrEntregasConcluidas
-        for id, ranking in entregas:
-            if (id in self.entregasInconcluidas):
+        self.nrEntregasConcluidas += len(idsEntregas)
+        self.ranking = (self.ranking + rankingTravessia * len(idsEntregas)) / self.nrEntregasConcluidas
+        for id in idsEntregas:
+            if id in self.entregasInconcluidas:
                 self.entregasInconcluidas.remove(id)
                 self.entregasConcluidas.append(id)
-                self.nrEntregasConcluidas += 1
-                self.ranking += ranking
-        
-        self.ranking = round(self.ranking / self.nrEntregasConcluidas, 2)
     
     """
     Adiciona uma nova entrega à lista de entregas pendentes
