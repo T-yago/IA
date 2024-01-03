@@ -204,7 +204,7 @@ class Grafo():
 
 # PROCURAS NÃO INFORMADAS
 
-    def procura_DFS(self, start, end, path=None, visited=None):
+    def procura_DFS(self, start, end, path=None, visited=None, print_visited = False):
         """
         Depth-First Search (DFS) algorithm to find a path from start to end in a graph.
 
@@ -232,7 +232,8 @@ class Grafo():
 
         if start == end:
             custoT = self.calcula_custo(path)
-            print("Nodos Visitados: " + str(visited))
+            if print_visited:
+                print("Nodos Visitados: " + str(visited))
             return (path, custoT)
 
         for (adjacente, peso) in self.m_graph[start]:
@@ -244,7 +245,7 @@ class Grafo():
         path.pop()
         return None
 
-    def procura_IDDFS(self, start, end, max_depth):
+    def procura_IDDFS(self, start, end, max_depth, print_visited = False):
         """
         Iterative Deepening Depth-First Search (IDDFS) algorithm to find a path from start to end in a graph.
 
@@ -279,8 +280,7 @@ class Grafo():
 
             if start == end:
                 custoT = self.calcula_custo(path)
-                print("Nodos Visitados: " + str(visited))
-                return (path, custoT)
+                return ((path, custoT),visited)
 
             if depth_limit == 0:
                 return None
@@ -298,12 +298,15 @@ class Grafo():
             return None
         
         for depth_limit in range(1, max_depth + 1):
-            result = depth_limited_DFS(start, end, depth_limit)
-            if result is not None:
+            func_return = depth_limited_DFS(start, end, depth_limit)
+            if func_return is not None:
+                (result, visited) = func_return
+                if print_visited:
+                    print("Nodos Visitados: " + str(visited))
                 return result
         return None
 
-    def procura_BFS(self, start, end):
+    def procura_BFS(self, start, end, print_visited = False):
         """
         Performs a breadth-first search to find a path between two nodes.
 
@@ -347,10 +350,11 @@ class Grafo():
             path.reverse()
             custo = self.calcula_custo(path)
         
-        print("Nodos Visitados: " + str(visited))
+        if print_visited:
+            print("Nodos Visitados: " + str(visited))
         return (path, custo)
     
-    def procura_UCS(self, start, end):
+    def procura_UCS(self, start, end, print_visited = False):
         """
         Performs Uniform Cost Search (UCS) algorithm to find the shortest path from start to end in a graph.
 
@@ -390,7 +394,8 @@ class Grafo():
                 reconst_path.append(start)
                 reconst_path.reverse()
 
-                print("Nodos Visitados: " + str(closed_list))
+                if print_visited:
+                    print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, round(g[end], 2))
 
             for neighbor, weight in self.get_neighbours(current_node):
@@ -404,7 +409,7 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def procura_dijkstra(self, start, end):
+    def procura_dijkstra(self, start, end, print_visited = False):
         """
         Finds the shortest path using Dijkstra's algorithm.
 
@@ -432,7 +437,8 @@ class Grafo():
                     current_node = parents[current_node]
                 reconst_path.reverse()
 
-                print("Nodos Visitados: " + str(visited))
+                if print_visited:
+                    print("Nodos Visitados: " + str(visited))
                 return reconst_path, round(cost_to_reach[end],2)
 
             visited.add(current_node)
@@ -448,7 +454,7 @@ class Grafo():
         print('Path does not exist!')
         return None
     
-    def procura_bellman_ford(self, start, end):
+    def procura_bellman_ford(self, start, end, print_visited = False):
         """
         Finds the shortest path using the Bellman-Ford algorithm.
 
@@ -489,10 +495,11 @@ class Grafo():
             current_node = parents[current_node]
         reconst_path.reverse()
 
-        print("Nodos Visitados: " + str(visited))
+        if print_visited:
+            print("Nodos Visitados: " + str(visited))
         return reconst_path, round(cost_to_reach[end], 2)
     
-    def procura_floyd_warshall(self, start, end):
+    def procura_floyd_warshall(self, start, end, print_visited = False):
         """
         Finds the shortest path between two nodes using the Floyd-Warshall algorithm.
         It computes the shortest path between every pair of nodes in the graph.
@@ -539,10 +546,11 @@ class Grafo():
 
         distance = dist_matrix[start_index][end_index]
 
-        print("Nodos Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
+        if print_visited:
+            print("Nodos Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
         return path_nodes, round(distance,2)
 
-    def random_walk(self, start, end):
+    def random_walk(self, start, end, print_visited = False):
         """
         Performs a random walk algorithm to find a path between the start and end nodes.
 
@@ -580,12 +588,13 @@ class Grafo():
                 visited_nodes.add(next_node)
                 current_node = next_node
 
-        print("Visited Nodes: " + str(visited_nodes))
+        if print_visited:
+            print("Visited Nodes: " + str(visited_nodes))
         return path, round(total_cost, 2)
 
 # PROCURAS INFORMADAS
 
-    def procura_aStar(self, start, end):
+    def procura_aStar(self, start, end, print_visited = False):
         """
         Finds the shortest path from the start node to the end node using the A* algorithm.
 
@@ -661,7 +670,8 @@ class Grafo():
 
                 reconst_path.reverse()
 
-                print("Nodos Visitados: " + str(closed_list))
+                if print_visited:
+                    print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, self.calcula_custo(reconst_path))
 
             for (m, weight) in self.get_neighbours(n):
@@ -685,7 +695,7 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def procura_IDAstar(self, start, end):
+    def procura_IDAstar(self, start, end, print_visited = False):
         """
         Performs an IDA* search algorithm to find the optimal path from the start node to the end node in a graph.
 
@@ -739,7 +749,8 @@ class Grafo():
             result, new_bound = depth_limited_search(start, end, bound, path, g, visited)
 
             if result == "found":
-                print("Nodos Visitados: " + str(visited))
+                if print_visited:
+                    print("Nodos Visitados: " + str(visited))
                 return path, self.calcula_custo(path)
 
             if result == math.inf:
@@ -748,7 +759,7 @@ class Grafo():
 
             bound = new_bound
 
-    def procuraGreedy(self, start, end):
+    def procuraGreedy(self, start, end, print_visited = False):
         """
         Performs a greedy search algorithm to find the shortest path from the start node to the end node.
 
@@ -792,7 +803,8 @@ class Grafo():
 
                 reconst_path.reverse()
 
-                print("Nodos Visitados: " + str(closed_list))
+                if print_visited:
+                    print("Nodos Visitados: " + str(closed_list))
                 return (reconst_path, self.calcula_custo(reconst_path))
 
             for (m, weight) in self.get_neighbours(n):
