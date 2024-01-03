@@ -235,7 +235,7 @@ class HealthPlanet():
 
         # Verifica se já excedeu o tempo limite para a execução
         if (tempoComeco>tempoLimite):
-                    return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal)
+                    return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal, melhorOrdemEntregaEncomendas)
 
         # Tenta realizar as entregas com todas as combinações possíveis de veículos e todas as combinações de encomendas que leva em cada viagem de forma a obter a travessia com menos atrasos e mais ecológica
         for meioTransporte in self.meiosTransporte.values():
