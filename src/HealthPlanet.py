@@ -125,7 +125,7 @@ class HealthPlanet():
                 for rua in caminho:
                     estatisticasAvancadasStr += rua + " -> "
                 estatisticasAvancadasStr = estatisticasAvancadasStr[:-4]
-                estatisticasAvancadasStr += "\nDistancia Percurso: " + str(round(custo, 2)) + " Km.\nTempo: " + str(round(tempoTotalAux, 2)) + " minutos.\nEmissao CO2: " + str(round(emissaoCO2, 3)) + " Kg.\nAtraso nas entregas: " + str(round(atraso, 2)) + " minutos.\n\n"
+                estatisticasAvancadasStr += "\nDistancia Percurso: " + str(round(custo, 2)) + " Km.\nTempo: " + str(tempoTotalAux/60) + " minutos e " + str(round(tempoTotalAux%60, 2)) + " segundos.\nEmissao CO2: " + str(round(emissaoCO2, 3)) + " Kg.\nAtraso nas entregas: " + str(round(atraso, 2)) + " minutos.\n\n"
 
                 # Entrega as entregas restantes se tiverem sobrado entregas no armazem
                 restantesEntregas = []

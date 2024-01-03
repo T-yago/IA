@@ -1,3 +1,4 @@
+import time
 from HealthPlanet import HealthPlanet
 from Estafeta import Estafeta
 from Entrega import Entrega
@@ -165,13 +166,22 @@ def main():
                         visualizarExpansao = True
                     else:
                         visualizarExpansao = False
+                    comeco = time.time()
                     result = healthPlanet.calcularMelhorRota(idEstafeta, idsEntregas, metodoProcura, visualizarExpansao)
+                    fim = time.time()
+
+                    # Calcula o tempo que demorou a executar a procura da melhor travessia para uma dada estratégia de procura
+                    tempoExecucao = fim - comeco
+                    tempoExecucao_minutos = int(tempoExecucao // 60)
+                    tempoExecucao_segundos = int(tempoExecucao % 60)
+
                     print(f"\n\nINFO TRAVESSIA\n")
                     print(f"Melhor Caminho -> {result[0]}")
                     print(f"Distância Total -> {result[1]:.2f} Km.")
                     print(f"Tempo total -> {result[4]:.2f} minutos.")
-                    print(f"Total dos atrasos -> {result[2]:.2f} minutos.")
+                    print(f"Total dos atrasos -> {result[2]/60:.2f} minutos e {result[2]%60:.2f} segundos.")
                     print(f"CO2 total emitido -> {result[3]:.3f} Kg.")
+                    print(f"\nTEMPO TOTAL A EXECUTAR A PROCURA -> {tempoExecucao_minutos} minutos e {tempoExecucao_segundos:.2f} segundos.")
 
                     estatisticasAvancadas = input("\n\nVer estatísticas avançadas da Travessia? (S ou N)\n\n")
                     if estatisticasAvancadas.capitalize()=="S":
