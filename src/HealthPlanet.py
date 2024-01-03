@@ -213,7 +213,7 @@ class HealthPlanet():
             elif metodoDeProcura==2: 
                 procuraRes = self.grafo.procura_BFS(origin, localEntrega, print_visited=visualizarExpansao)
             elif metodoDeProcura==3: 
-                procuraRes = self.grafo.procura_IDDFS(origin, localEntrega, print_visited=visualizarExpansao)
+                procuraRes = self.grafo.procura_IDDFS(origin, localEntrega, 20, print_visited=visualizarExpansao)
             elif metodoDeProcura==4: 
                 procuraRes = self.grafo.procura_UCS(origin, localEntrega, print_visited=visualizarExpansao)
             elif metodoDeProcura==5: 
@@ -262,7 +262,7 @@ class HealthPlanet():
             elif metodoDeProcura==2:
                 procuraRes = self.grafo.procura_BFS(origin, self.sede, print_visited=visualizarExpansao)
             elif metodoDeProcura==3: 
-                procuraRes = self.grafo.procura_IDDFS(origin, self.sede, print_visited=visualizarExpansao)
+                procuraRes = self.grafo.procura_IDDFS(origin, self.sede, 20, print_visited=visualizarExpansao)
             elif metodoDeProcura==4: 
                 procuraRes = self.grafo.procura_UCS(origin, self.sede, print_visited=visualizarExpansao)
             elif metodoDeProcura==5: 
