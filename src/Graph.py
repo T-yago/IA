@@ -99,7 +99,12 @@ class Grafo():
             i = i + 1
         return custo
 
-    def procura_DFS(self, start, end, path=[], visited=set()):
+    def procura_DFS(self, start, end, path=None, visited=None):
+        if path is None:
+            path = []
+        if visited is None:
+            visited = set()
+
         path.append(start)
         visited.add(start)
 
