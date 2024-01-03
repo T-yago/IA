@@ -156,7 +156,7 @@ class Grafo():
             custoT = self.calcula_custo(path)
             if print_visited:
                 print("Nodos Visitados: " + str(visited))
-            return (path, custoT)
+            return (path, round(custoT,2))
 
         for (adjacente, peso) in self.m_graph[start]:
             if adjacente not in visited:
@@ -209,10 +209,10 @@ class Grafo():
         for depth_limit in range(1, max_depth + 1):
             func_return = depth_limited_DFS(start, end, depth_limit)
             if func_return is not None:
-                (result, visited) = func_return
+                ((x, cost), visited) = func_return
                 if print_visited:
                     print("Nodos Visitados: " + str(visited))
-                return result
+                return (x, round(cost,2))
         return None
 
     def procura_BFS(self, start, end, print_visited = False):
@@ -262,7 +262,7 @@ class Grafo():
         
         if print_visited:
             print("Nodos Visitados: " + str(visited))
-        return (path, custo)
+        return (path, round(custo,2))
     
     def procura_UCS(self, start, end, print_visited = False):
         """
@@ -338,19 +338,13 @@ class Grafo():
         - tuple: Um tuplo contendo o caminho mais curto e seu custo.
         """
         priority_queue = [(0, start)]
-        # Dicionario que guarda o custo para chegar a cada node
         cost_to_reach = {start: 0}
-        # Dictionário para guardar o pai de cada node no caminho mais curto
         parents = {start: None}
         visited = set()
         
         while priority_queue:
-        # Obtém o nó com menor custo da fila de prioridade
             current_cost, current_node = heapq.heappop(priority_queue)
-
-            # Verifica se alcançamos o nó de destino
             if current_node == end:
-                # Reconstrói o caminho
                 reconst_path = []
                 while current_node is not None:
                     reconst_path.append(current_node)
@@ -361,11 +355,11 @@ class Grafo():
                     print("Nodos Visitados: " + str(visited))
                 return reconst_path, round(cost_to_reach[end],2)
 
-            # Explora os vizinhos
+            visited.add(current_node)
+
             for neighbor, weight in self.get_neighbours(current_node):
                 new_cost = cost_to_reach[current_node] + weight
 
-                # Se o novo custo for menor que o custo registrado, atualiza-o
                 if neighbor not in cost_to_reach or new_cost < cost_to_reach[neighbor]:
                     cost_to_reach[neighbor] = new_cost
                     parents[neighbor] = current_node
@@ -427,7 +421,7 @@ class Grafo():
         distance = dist_matrix[start_index][end_index]
 
         if print_visited:
-            print("Nós Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
+            print("Nós Visitados: " + str(set(path_nodes)))
         return path_nodes, round(distance, 2)
 
     
@@ -445,40 +439,42 @@ class Grafo():
         Retorna:
         - tuple: Um tuplo contendo o caminho mais curto e seu custo.
         """
-            # Dicionário para armazenar o custo para alcançar cada nó
-        custo_para_alcancar = {node.getName(): math.inf for node in self.m_nodes}
-        custo_para_alcancar[start] = 0
-            # Dicionário para armazenar o pai de cada nó no caminho mais curto
-        pais = {node.getName(): None for node in self.m_nodes}
-
-        # Relaxa as arestas repetidamente
+        cost_to_reach = {node.getName(): math.inf for node in self.m_nodes}
+        cost_to_reach[start] = 0
+        parents = {node.getName(): None for node in self.m_nodes}
+        visited = set()
+        
         for _ in range(len(self.m_nodes) - 1):
             for node in self.m_nodes:
-                for vizinho, peso in self.get_neighbours(node.getName()):
-                    novo_custo = custo_para_alcancar[node.getName()] + peso
-                    if novo_custo < custo_para_alcancar[vizinho]:
-                        custo_para_alcancar[vizinho] = novo_custo
-                        pais[vizinho] = node.getName()
+                visited.add(node.getName())
+                for neighbor, weight in self.get_neighbours(node.getName()):
+                    visited.add(neighbor)
+                    new_cost = cost_to_reach[node.getName()] + weight
+                    if new_cost < cost_to_reach[neighbor]:
+                        cost_to_reach[neighbor] = new_cost
+                        parents[neighbor] = node.getName()
 
-        # Verifica ciclos negativos
         for node in self.m_nodes:
-            for vizinho, peso in self.get_neighbours(node.getName()):
-                if custo_para_alcancar[node.getName()] + peso < custo_para_alcancar[vizinho]:
-                    print('Ciclo negativo detetado!')
+            for neighbor, weight in self.get_neighbours(node.getName()):
+                visited.add(node.getName())
+                visited.add(neighbor)
+                if cost_to_reach[node.getName()] + weight < cost_to_reach[neighbor]:
+                    print('Negative cycle detected!')
                     return None
 
-        # Reconstrói o caminho
-        caminho_reconstruido = []
-        no_atual = end
-        while no_atual is not None:
-            caminho_reconstruido.append(no_atual)
-            no_atual = pais[no_atual]
-        caminho_reconstruido.reverse()
+        reconst_path = []
+        current_node = end
+        while current_node is not None:
+            reconst_path.append(current_node)
+            current_node = parents[current_node]
+        reconst_path.reverse()
 
-        return caminho_reconstruido, round(custo_para_alcancar[end])
+        if print_visited:
+            print("Nodos Visitados: " + str(visited))
+        return reconst_path, round(cost_to_reach[end], 2)
 
 
-    def random_walk(self, start_node, end_node):
+    def random_walk(self, start, end, print_visited = False):
         """
         Algoritmo de passeio aleatório que tenta encontrar uma solução entre os nós de início e fim.
 
@@ -489,28 +485,29 @@ class Grafo():
         Retorna:
             tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
         """
-        current_node = start_node
+        current_node = start
         path = [current_node]
         total_cost = 0
+        visited_nodes = set()
 
-        while current_node != end_node:
+        while current_node != end:
             neighbors = self.m_graph.get(current_node, [])
             unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
 
             if not unvisited_neighbors:
-                # Se não houver mais vizinhos por visitar, backtrack
                 path.pop()
                 if not path:
-                    # If the path is empty, no solution is found
                     return None
                 current_node = path[-1]
             else:
-                # Move para um vizinho ainda não visitado aleatorio 
                 next_node, cost = random.choice(unvisited_neighbors)
                 path.append(next_node)
                 total_cost += cost
+                visited_nodes.add(next_node)
                 current_node = next_node
 
+        if print_visited:
+            print("Visited Nodes: " + str(visited_nodes))
         return path, round(total_cost, 2)
 
 # PROCURAS INFORMADAS
@@ -564,7 +561,7 @@ class Grafo():
 
                 if print_visited:
                     print("Nodos Visitados: " + str(closed_list))
-                return (reconst_path, self.calcula_custo(reconst_path))
+                return (reconst_path, round(self.calcula_custo(reconst_path),2))
 
             for (m, weight) in self.get_neighbours(n):
                 if m not in open_list and m not in closed_list:
@@ -643,7 +640,7 @@ class Grafo():
             if result == "found":
                 if print_visited:
                     print("Nodos Visitados: " + str(visited))
-                return path, self.calcula_custo(path)
+                return path, round(self.calcula_custo(path),2)
 
             if result == math.inf:
                 print('Path does not exist!')
@@ -697,7 +694,7 @@ class Grafo():
 
                 if print_visited:
                     print("Nodos Visitados: " + str(closed_list))
-                return (reconst_path, self.calcula_custo(reconst_path))
+                return (reconst_path, round(self.calcula_custo(reconst_path),2))
 
             for (m, weight) in self.get_neighbours(n):
                 if m not in open_list and m not in closed_list:

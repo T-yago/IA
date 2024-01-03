@@ -83,7 +83,7 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
-    #testes(healthPlanet)
+    testes(healthPlanet)
 
     # Interface do Utilizador
     exit = False
