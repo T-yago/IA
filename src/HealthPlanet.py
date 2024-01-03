@@ -81,7 +81,7 @@ class HealthPlanet():
     ser encontrar a travessia mais ecológica, nós consideramos que minimizar os atrasos nas entregas é a prioridade máxima, de forma a assegurar um bom
     serviço e deixar os clientes o mais satisfeitos possíveis.
     """
-    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, indexTravessia = 1):
+    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, indexTravessia = 1):
 
         melhorCusto = float('inf')
         melhorCaminho = []
@@ -110,9 +110,9 @@ class HealthPlanet():
             entregasPrimeiraTravessiaCombinacoes = generate_combinations(pesosEntregas, meioTransporte.getPesoMax())
             for entregasPrimeiraTravessia in entregasPrimeiraTravessiaCombinacoes:
                 idsEntregas = [idEntrega[0] for idEntrega in entregasPrimeiraTravessia]
-                res = self.calcularMelhorRotaVeiculo(idEstafeta, idsEntregas, 1, meioTransporte)
+                res = self.calcularMelhorRotaVeiculo(idEstafeta, idsEntregas, metodoDeProcura, meioTransporte, visualizarExpansao)
                 custo += res[1]
-                caminho += res[0]
+                caminho = res[0]
                 atraso += res[2]
                 emissaoCO2 += res[3]
                 tempoTotalAux += res[4]
@@ -135,7 +135,7 @@ class HealthPlanet():
                 
                 # Faz a recursiva das restantes encomendas, podendo estas ser entregues com o mesmo meio de transporte ou não, dependendo de qual traz o melhor resultado
                 if len(restantesEntregas)>0:
-                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, 1, indexTravessia+1)
+                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, metodoDeProcura, visualizarExpansao, indexTravessia+1)
                     custo += nextTravessia[1]
                     caminho += nextTravessia[0]
                     atraso += nextTravessia[2]
@@ -155,7 +155,7 @@ class HealthPlanet():
         return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal)
 
     
-    def calcularMelhorRotaVeiculo(self, idEstafeta, entregas, metodoDeProcura, meioTransporte, firstIteration=True, removeIndex = 0, pesoEntregas = 0, horaEstadoAtual = None):
+    def calcularMelhorRotaVeiculo(self, idEstafeta, entregas, metodoDeProcura, meioTransporte, visualizarExpansao, firstIteration=True, removeIndex = 0, pesoEntregas = 0, horaEstadoAtual = None):
 
         """
         Vai buscar o local de entrega de cada entrega, a data de entrega da mesma e o peso associado. Consideramos ainda que a hora de início da travessia é a hora atual. Este
@@ -176,8 +176,6 @@ class HealthPlanet():
             origin = self.sede
         else:
             origin = entregas.pop(removeIndex)[0]
-
-        # Usando DFS
 
         """
         Calcula o caminho mais curto pririzando caminhos sem atrasos mas mais longos, a caminhos mais curtos mas com atrasos maiores, de forma a assegurar o
@@ -201,18 +199,39 @@ class HealthPlanet():
             tempoTotalAux = 0
 
             # Calcula um caminho entre dois pontos obrigatórios (entre sede e ponto de entrega ou entre pontos de entrega)
-            procuraDFS = self.grafo.procura_DFS(origin, localEntrega)
-            custo += procuraDFS[1]
-            caminho += procuraDFS[0]
-            tempoViagem = meioTransporte.calculaTempoEmMinutos(procuraDFS[1], pesoEntregas)
+            if metodoDeProcura==1:
+                procuraRes = self.grafo.procura_DFS(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==2: 
+                procuraRes = self.grafo.procura_BFS(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==3: 
+                procuraRes = self.grafo.procura_IDDFS(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==4: 
+                procuraRes = self.grafo.procura_UCS(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==5: 
+                procuraRes = self.grafo.procura_dijkstra(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==6: 
+                procuraRes = self.grafo.procura_bellman_ford(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==7: 
+                procuraRes = self.grafo.procura_floyd_warshall(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==8: 
+                procuraRes = self.grafo.random_walk(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==9: 
+                procuraRes = self.grafo.procuraGreedy(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==10: 
+                procuraRes = self.grafo.procura_aStar(origin, localEntrega, print_visited=visualizarExpansao)
+            elif metodoDeProcura==11: 
+                procuraRes = self.grafo.procura_IDAstar(origin, localEntrega, print_visited=visualizarExpansao)
+            custo += procuraRes[1]
+            caminho += procuraRes[0]
+            tempoViagem = meioTransporte.calculaTempoEmMinutos(procuraRes[1], pesoEntregas)
             horaChegada = horaEstadoAtual + timedelta(minutes=tempoViagem) # Calcula a que horas o estafeta chegou a determinado ponto tendo em conta o percurso já realizado e o peso da carga transportada
             if (prazo < horaChegada):
                 atraso += (horaChegada - prazo).total_seconds() / 60
-            emissaoCO2 += meioTransporte.calculaEmissaoCO2(procuraDFS[1])
+            emissaoCO2 += meioTransporte.calculaEmissaoCO2(procuraRes[1])
             tempoTotalAux += tempoViagem
 
             # Executa a função para todas as ordens possíveis de visitar os pontos de entrega, assegurando o melhor resultado possível (para a estratégia de procura utilizada)
-            nextEntrega = self.calcularMelhorRotaVeiculo(idEstafeta, entregas.copy(), 1, meioTransporte, False, index, pesoEntregas-peso, horaChegada)
+            nextEntrega = self.calcularMelhorRotaVeiculo(idEstafeta, entregas.copy(), metodoDeProcura, meioTransporte, visualizarExpansao, False, index, pesoEntregas-peso, horaChegada)
             custo += nextEntrega[1]
             caminho += nextEntrega[0]
             atraso += nextEntrega[2]
@@ -229,12 +248,33 @@ class HealthPlanet():
         
         # Utilizado para calcular o percurso de volta ao armazem, pois consideramos que o veículo tem de voltar de novo para o armazem, sendo necessário ter em conta esta travessia para o caminho mais curto
         if (len(entregas)==0):
-            procuraDFS = self.grafo.procura_DFS(origin, self.sede)
-            melhorCusto = procuraDFS[1]
-            melhorCaminho = procuraDFS[0]
+            if metodoDeProcura==1:
+                procuraRes = self.grafo.procura_DFS(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==2:
+                procuraRes = self.grafo.procura_BFS(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==3: 
+                procuraRes = self.grafo.procura_IDDFS(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==4: 
+                procuraRes = self.grafo.procura_UCS(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==5: 
+                procuraRes = self.grafo.procura_dijkstra(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==6: 
+                procuraRes = self.grafo.procura_bellman_ford(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==7: 
+                procuraRes = self.grafo.procura_floyd_warshall(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==8: 
+                procuraRes = self.grafo.random_walk(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==9: 
+                procuraRes = self.grafo.procuraGreedy(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==10: 
+                procuraRes = self.grafo.procura_aStar(origin, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==11: 
+                procuraRes = self.grafo.procura_IDAstar(origin, self.sede, print_visited=visualizarExpansao)
+            melhorCusto = procuraRes[1]
+            melhorCaminho = procuraRes[0]
             melhorAtraso = 0
-            emissaoCO2 = meioTransporte.calculaEmissaoCO2(procuraDFS[1])
-            tempoTotal = meioTransporte.calculaTempoEmMinutos(procuraDFS[1], 0)
+            emissaoCO2 = meioTransporte.calculaEmissaoCO2(procuraRes[1])
+            tempoTotal = meioTransporte.calculaTempoEmMinutos(procuraRes[1], 0)
         
         return (melhorCaminho, melhorCusto, melhorAtraso, emissaoCO2, tempoTotal)
     

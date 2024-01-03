@@ -18,6 +18,25 @@ def find_combinations(idsEntregas, capacidade, combinacao_Atual, set_Resultado, 
     # Exclude the current number
     find_combinations(idsEntregas[1:], capacidade, combinacao_Atual, set_Resultado, capacidade_final)
 
+
+"""
+Remove todas as combinações em que poderia ser adicionado mais uma entrega ao conjunto sem exceder a capacidade máxima
+"""
+def removeExcesso(idsEntregas, capacidade, combinacoes):
+    elementosExcesso = []
+    for combinacao in combinacoes:
+        somaElementos = 0
+        for elemento in combinacao:
+            somaElementos += elemento[1]
+        for e in idsEntregas:
+            if e not in combinacao and e[1] + somaElementos <= capacidade:
+                elementosExcesso.append(combinacao)
+                break
+
+    for remover in elementosExcesso:
+        combinacoes.remove(remover)
+
+
 """
 Função que recebe como argumentos uma lista de listas de dois elementos em que o primeiro elemento é o id da entrega e o
 segundo o peso associado à entrega, e um float que representa a capacidade máxima do veículo.
@@ -35,12 +54,5 @@ Resultado -> [[[1, 4]], [[2, 5]], [[3, 3], [4, 2]], [[3, 3]], [[4, 2]]]
 def generate_combinations(idsEntregas, capacidade):
     set_Resultado = []
     find_combinations(idsEntregas, capacidade, [], set_Resultado, capacidade)
+    # removeExcesso(idsEntregas, capacidade, set_Resultado)
     return set_Resultado
-
-# Example usage
-nums = [[1, 4], [2, 5], [3, 3], [4, 2]]
-bag_size = 5
-combinations = generate_combinations(nums, bag_size)
-
-# Print the result
-print(combinations)

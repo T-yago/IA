@@ -81,6 +81,7 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
+    """
     print("------------------------------------------------- TESTE 1 -------------------------------------------------")
     print("DFS -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
     print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", 20, print_visited = True)) + "\n")
@@ -119,6 +120,7 @@ def main():
     print("A* -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
     print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
     print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
+    """
 
     # Interface do Utilizador
     exit = False
@@ -157,13 +159,19 @@ def main():
                     print("\n---REALIZAR ENTREGAS (determinística)---\n")
                     idEstafeta = int(input("Id do Estafeta: "))
                     idsEntregas = eval(input("Ids das Entregas que deseja fazer agora (formato [1,2,3,...]): "))
-                    result = healthPlanet.calcularMelhorRota(idEstafeta, idsEntregas, 1)
+                    metodoProcura = int(input("\nQuer utilizar que método de procura?\n\nPesquisas Não Informadas:\n1 -> Depth-first search (DFS);\n2 -> Breadth-first search (BFS);\n3 -> Iterative Deepening Depth-First Search (IDDFS);\n4 -> Uniform Cost Search (UCS);\n5 -> Dijkstra's Search;\n6 -> Bellman-Ford Search;\n7 -> Floyd-Warshall Search;\n8 -> random walk Search;\n\nPesquisas Informadas:\n9 -> Greedy Search;\n10 -> A* Search;\n11 -> Iterative Deepening A* Search\n\n"))
+                    visualizarExpansao = input("Pretende visualizar a expansão dos nodos? (S ou N) ")
+                    if visualizarExpansao.capitalize()=="S":
+                        visualizarExpansao = True
+                    else:
+                        visualizarExpansao = False
+                    result = healthPlanet.calcularMelhorRota(idEstafeta, idsEntregas, metodoProcura, visualizarExpansao)
                     print(f"\n\nINFO TRAVESSIA\n")
                     print(f"Melhor Caminho -> {result[0]}")
                     print(f"Distância Total -> {result[1]:.2f} Km.")
                     print(f"Tempo total -> {result[4]:.2f} minutos.")
                     print(f"Total dos atrasos -> {result[2]:.2f} minutos.")
-                    print(f"CO2 total emitido -> {result[3]:.2f} Kg.")
+                    print(f"CO2 total emitido -> {result[3]:.3f} Kg.")
 
                     estatisticasAvancadas = input("\n\nVer estatísticas avançadas da Travessia? (S ou N)\n\n")
                     if estatisticasAvancadas.capitalize()=="S":
