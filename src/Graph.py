@@ -386,6 +386,9 @@ class Grafo():
         tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
     """
     def procura_floyd_warshall(self, start, end, print_visited=False):
+        if start == end:
+            return [start], 0
+        
         num_nodes = len(self.m_nodes)
         dist_matrix = [[math.inf] * num_nodes for _ in range(num_nodes)]
         next_node_matrix = [[None] * num_nodes for _ in range(num_nodes)]
