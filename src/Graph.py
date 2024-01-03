@@ -126,7 +126,7 @@ class Grafo():
 
 # PROCURAS NÃO INFORMADAS
 
-    def procura_DFS(self, start, end, path=None, visited=None):
+    def procura_DFS(self, start, end, path=None, visited=None, print_visited = False):
         """
         Algoritmo de Pesquisa em Profundidade (DFS) para encontrar um caminho de start a end num grafo.
 
@@ -167,7 +167,7 @@ class Grafo():
         path.pop()
         return None
 
-    def procura_IDDFS(self, start, end, max_depth):
+    def procura_IDDFS(self, start, end, max_depth, print_visited = False):
         """
         Algoritmo de Pesquisa em Profundidade Iterativa com Limite (IDDFS) para encontrar um caminho de start a end num grafo.
 
@@ -215,7 +215,7 @@ class Grafo():
                 return result
         return None
 
-    def procura_BFS(self, start, end):
+    def procura_BFS(self, start, end, print_visited = False):
         """
         Realiza uma pesquisa em largura para encontrar um caminho entre dois nós.
 
@@ -264,7 +264,7 @@ class Grafo():
             print("Nodos Visitados: " + str(visited))
         return (path, custo)
     
-    def procura_UCS(self, start, end):
+    def procura_UCS(self, start, end, print_visited = False):
         """
         Executa o algoritmo de Busca de Custo Uniforme (UCS) para encontrar o caminho mais curto de start a end num grafo.
 
@@ -322,7 +322,7 @@ class Grafo():
 
 
 
-    def procura_dijkstra(self, start, end):
+    def procura_dijkstra(self, start, end, print_visited = False):
         """
         Encontra o caminho mais curto usando o algoritmo de Dijkstra.
         Ele usa uma fila de prioridade para explorar os nós de forma ordenada, mantendo um registro dos 
@@ -431,7 +431,7 @@ class Grafo():
         return path_nodes, round(distance, 2)
 
     
-    def procura_bellman_ford(self, start, end):
+    def procura_bellman_ford(self, start, end, print_visited = False):
         """
         Encontra o caminho mais curto usando o algoritmo de Bellman-Ford.
 
@@ -475,12 +475,47 @@ class Grafo():
             no_atual = pais[no_atual]
         caminho_reconstruido.reverse()
 
-        return caminho_reconstruido, custo_para_alcancar[end]
+        return caminho_reconstruido, round(custo_para_alcancar[end])
 
+
+    def random_walk(self, start_node, end_node):
+        """
+        Algoritmo de passeio aleatório que tenta encontrar uma solução entre os nós de início e fim.
+
+        Parâmetros:
+            start_node (str): Nome do nó de partida.
+            end_node (str): Nome do nó de destino.
+
+        Retorna:
+            tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
+        """
+        current_node = start_node
+        path = [current_node]
+        total_cost = 0
+
+        while current_node != end_node:
+            neighbors = self.m_graph.get(current_node, [])
+            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
+
+            if not unvisited_neighbors:
+                # Se não houver mais vizinhos por visitar, backtrack
+                path.pop()
+                if not path:
+                    # If the path is empty, no solution is found
+                    return None
+                current_node = path[-1]
+            else:
+                # Move para um vizinho ainda não visitado aleatorio 
+                next_node, cost = random.choice(unvisited_neighbors)
+                path.append(next_node)
+                total_cost += cost
+                current_node = next_node
+
+        return path, round(total_cost, 2)
 
 # PROCURAS INFORMADAS
 
-    def procura_aStar(self, start, end):
+    def procura_aStar(self, start, end, print_visited = False):
         """
         O algoritmo A* efetivamente utiliza listas abertas e fechadas para otimizar a busca. A lista aberta armazena nós
         que ainda precisam ser explorados, priorizando aqueles com menores custos estimados. A lista fechada, por sua vez,
@@ -552,7 +587,7 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-    def procura_IDAstar(self, start, end):
+    def procura_IDAstar(self, start, end, print_visited = False):
         """
         Realiza um algoritmo de pesquisa IDA* para encontrar o caminho ótimo do nó de partida ao nó de destino num grafo.
 
@@ -616,7 +651,7 @@ class Grafo():
 
             bound = new_bound
 
-    def procuraGreedy(self, start, end):
+    def procuraGreedy(self, start, end, print_visited = False):
         """
         Realiza um algoritmo de pesquisa gulosa para encontrar o caminho mais curto do nó de partida ao nó de destino.
 
@@ -675,37 +710,4 @@ class Grafo():
         print('Path does not exist!')
         return None
     
-    def random_walk(self, start_node, end_node):
-        """
-        Algoritmo de passeio aleatório que tenta encontrar uma solução entre os nós de início e fim.
-
-        Parâmetros:
-            start_node (str): Nome do nó de partida.
-            end_node (str): Nome do nó de destino.
-
-        Retorna:
-            tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
-        """
-        current_node = start_node
-        path = [current_node]
-        total_cost = 0
-
-        while current_node != end_node:
-            neighbors = self.m_graph.get(current_node, [])
-            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
-
-            if not unvisited_neighbors:
-                # Se não houver mais vizinhos por visitar, backtrack
-                path.pop()
-                if not path:
-                    # If the path is empty, no solution is found
-                    return None
-                current_node = path[-1]
-            else:
-                # Move para um vizinho ainda não visitado aleatorio 
-                next_node, cost = random.choice(unvisited_neighbors)
-                path.append(next_node)
-                total_cost += cost
-                current_node = next_node
-
-        return path, round(total_cost, 2)
+    
