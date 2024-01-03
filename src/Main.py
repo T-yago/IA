@@ -149,12 +149,13 @@ def main():
                     tempoExecucao_milisegundos = round(tempoExecucao_milisegundos * 1000)
 
                     print(f"\n\nINFO TRAVESSIA\n")
-                    print(f"Melhor Caminho -> {result[0]}")
-                    print(f"Distância Total -> {result[1]:.2f} Km.")
-                    print(f"Tempo total -> {int(result[4])} minutos e {(result[4]-int(result[4]))*60:.0f} segundos.")
-                    print(f"Total dos atrasos -> {result[2]:.2f} minutos e {result[2]%60:.2f} segundos.")
-                    print(f"CO2 total emitido -> {result[3]:.3f} Kg.")
-                    print(f"\nTEMPO TOTAL A EXECUTAR A PROCURA -> {int(tempoExecucao_minutos)} minutos, {int(tempoExecucao_segundos)} segundos e {tempoExecucao_milisegundos} milissegundos.")
+                    print("Ordem de entrega das encomendas: " + " -> ".join(map(str, result[6])))
+                    print(f"Melhor Caminho: {result[0]}")
+                    print(f"Distância Total: {result[1]:.2f} Km.")
+                    print(f"Tempo total: {int(result[4])} minutos e {(result[4]-int(result[4]))*60:.0f} segundos.")
+                    print(f"Total dos atrasos: {result[2]:.2f} minutos e {result[2]%60:.2f} segundos.")
+                    print(f"CO2 total emitido: {result[3]:.3f} Kg.")
+                    print(f"\nTEMPO TOTAL A EXECUTAR A PROCURA: {int(tempoExecucao_minutos)} minutos, {int(tempoExecucao_segundos)} segundos e {tempoExecucao_milisegundos} milissegundos.")
 
                     estatisticasAvancadas = input("\n\nVer estatísticas avançadas da Travessia? (S ou N)\n\n")
                     if estatisticasAvancadas.capitalize()=="S":
@@ -170,7 +171,18 @@ def main():
                     print("\n---REALIZAR ENTREGAS (não determinística)---\n")
                     idEstafeta = int(input("Id do Estafeta: "))
                     idsEntregas = eval(input("Ids das Entregas que deseja fazer agora (formato [1,2,3,...]): "))
-                    # Completar
+                    metodoProcura = int(input("\nQuer utilizar que método de procura?\n\nPesquisas Não Informadas:\n1 -> Depth-first search (DFS);\n2 -> Breadth-first search (BFS);\n3 -> Iterative Deepening Depth-First Search (IDDFS);\n4 -> Uniform Cost Search (UCS);\n5 -> Dijkstra's Search;\n6 -> Bellman-Ford Search;\n7 -> Floyd-Warshall Search;\n8 -> random walk Search;\n\nPesquisas Informadas:\n9 -> Greedy Search;\n10 -> A* Search;\n11 -> Iterative Deepening A* Search\n\n"))
+                    tempoLimite = input("Pretende limitar o tempo máximo de execução do algoritmo? (S ou N) ")
+                    if tempoLimite.capitalize()=="S":
+                        tempoLimite = int(input("Tempo máximo de execução em segundos: "))
+                    else:
+                        tempoLimite = float('inf')
+                    visualizarExpansao = input("Pretende visualizar a expansão dos nodos? (S ou N) ")
+                    if visualizarExpansao.capitalize()=="S":
+                        visualizarExpansao = True
+                    else:
+                        visualizarExpansao = False
+                    healthPlanet.calcularMelhorRotaNaoDeterministico(idEstafeta, idsEntregas, metodoProcura, visualizarExpansao, tempoLimite)
                     
             elif option==5:
                 print("\n---INFORMAÇÃO ESTAFETA---\n")

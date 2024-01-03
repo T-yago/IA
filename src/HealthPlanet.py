@@ -1,4 +1,4 @@
-from time import time as timestammp
+from time import sleep, time as timestammp
 import datetime
 import random
 from Graph import *
@@ -70,6 +70,144 @@ class HealthPlanet():
             res += self.entregasPendentes[idEntrega].__str__() + "\n"
 
         return res[:-1]
+    
+
+    """
+    Função responsável por executar um conjunto de entregas num ambiente não determinístico, dando a possibilidade ao utilizador de alterar
+    o mapa enquanto o estafeta está a realizar as entregas. Importante mencionar que a cada rua que o estafeta avança, o estafeta volta a
+    calcular qual o melhor caminho para realizar todas as entregas, independentemente de haver alterações no mapa ou não, simulando a atuação de
+    um agente num ambiente não determinístico, intercalando procura e execução
+    """
+    def calcularMelhorRotaNaoDeterministico(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, tempoLimite = float('inf')):
+
+        # Estatísticas
+        distanciaTotal = 0
+        caminhoFinal = ""
+        indexPosicao = 1
+
+        posicaoAtual = self.sede
+        print(str(indexPosicao)+ "ª Posicao -> " + posicaoAtual)
+        indexPosicao += 1
+        caminhoFinal += posicaoAtual
+        while len(entregas)>0:
+
+            # Permite ao utilizador alterar o mapa a meio de uma travessia
+            alterarPath = input("Deseja realizar alguma alteracao ao mapa? (S ou N) ")
+            while alterarPath.capitalize()=="S":
+                alterarPath = int(input("Que alteração deseja realizar?\n1 -> Adicionar uma rua;\n2 -> Alterar uma rua;\n\n"))
+                if alterarPath==1:
+                    freguesia1 = input("Freguesia (Primeira): ")
+                    rua1 = input("Rua (Primeira): ")
+                    coordenadas1 = eval(input("Coordenadas (Primeira) (formato (latitude, longitude)): "))
+                    freguesia2 = input("Freguesia (Segunda): ")
+                    rua2 = input("Rua (Segunda): ")
+                    coordenadas2 = eval(input("Coordenadas (Segunda) (formato (latitude, longitude)): "))
+                    distancia = float(input("Distancia: "))
+                    self.addIntercecao(freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia)
+                elif alterarPath==2:
+                    alterarPath = int(input("Que tipo de alteracao a uma rua deseja realizar?\n1 -> Apagar uma rua;\n2 -> Alterar custo associado a um arco do grafo;\n\n"))
+                    if alterarPath == 1:
+                        freguesia = input("Freguesia: ")
+                        rua = input("Rua: ")
+                        funcionou = self.grafo.remove_nodo(freguesia + ", " + rua)
+                        if funcionou:
+                            print("Rua apagada com sucesso.")
+                    elif alterarPath == 2:
+                        freguesia1 = input("Freguesia (Primeira): ")
+                        rua1 = input("Rua (Primeira): ")
+                        freguesia2 = input("Freguesia (Segunda): ")
+                        rua2 = input("Rua (Segunda): ")
+                        novoCusto = int(input("Novo custo do arco: "))
+                        funcionou = self.grafo.altera_custo_arco(freguesia1 + ", " + rua1, freguesia2 + ", " + rua2, novoCusto)
+                        if funcionou:
+                            print("Custo associado ao arco alterado com sucesso.")
+                
+                alterarPath = input("\n\nDeseja realizar mais alguma alteração? (S ou N)\n\n")
+            
+            # Calcula o melhor caminho para a posicao em que se encontra
+            melhorRes = self.calcularMelhorRota(idEstafeta, entregas, metodoDeProcura, visualizarExpansao, tempoLimite, origin=posicaoAtual)
+            caminho = melhorRes[0]
+            ordemEntregas = melhorRes[6]
+
+            # Avanca a sua posicao para a posicao seguinte de acordo com o melhor caminho obtido a partir da sua posicao anterior
+            posicaoAtual = caminho[1]
+            print(str(indexPosicao)+ "ª Posicao -> " + posicaoAtual)
+            indexPosicao += 1
+            caminhoFinal += " -> " + posicaoAtual
+            distanciaTotal += self.grafo.get_arc_cost(caminho[0], caminho[1])
+            if (posicaoAtual==self.entregasPendentes[ordemEntregas[0]].getPontoDeEntrega()):
+                entregas.pop(0)
+        
+        while posicaoAtual!=self.sede:
+
+            # Permite ao utilizador alterar o mapa a meio de uma travessia
+            alterarPath = input("Deseja realizar alguma alteracao ao mapa? (S ou N) ")
+            while alterarPath.capitalize()=="S":
+                alterarPath = int(input("Que alteração deseja realizar?\n1 -> Adicionar uma rua;\n2 -> Alterar uma rua;\n\n"))
+                if alterarPath==1:
+                    freguesia1 = input("Freguesia (Primeira): ")
+                    rua1 = input("Rua (Primeira): ")
+                    coordenadas1 = eval(input("Coordenadas (Primeira) (formato (latitude, longitude)): "))
+                    freguesia2 = input("Freguesia (Segunda): ")
+                    rua2 = input("Rua (Segunda): ")
+                    coordenadas2 = eval(input("Coordenadas (Segunda) (formato (latitude, longitude)): "))
+                    distancia = float(input("Distancia: "))
+                    self.addIntercecao(freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia)
+                elif alterarPath==2:
+                    alterarPath = int(input("Que tipo de alteracao a uma rua deseja realizar?\n1 -> Apagar uma rua;\n2 -> Alterar custo associado a um arco do grafo;\n\n"))
+                    if alterarPath == 1:
+                        freguesia = input("Freguesia: ")
+                        rua = input("Rua: ")
+                        funcionou = self.grafo.remove_nodo(freguesia + ", " + rua)
+                        if funcionou:
+                            print("Rua apagada com sucesso.")
+                    elif alterarPath == 2:
+                        freguesia1 = input("Freguesia (Primeira): ")
+                        rua1 = input("Rua (Primeira): ")
+                        freguesia2 = input("Freguesia (Segunda): ")
+                        rua2 = input("Rua (Segunda): ")
+                        novoCusto = int(input("Novo custo do arco: "))
+                        funcionou = self.grafo.altera_custo_arco(freguesia1 + ", " + rua1, freguesia2 + ", " + rua2, novoCusto)
+                        if funcionou:
+                            print("Custo associado ao arco alterado com sucesso.")
+
+                alterarPath = input("\n\nDeseja realizar mais alguma alteração? (S ou N)\n\n")
+
+            # Calcula o melhor caminho para voltar ao armazem da empresa
+            if metodoDeProcura==1:
+                procuraRes = self.grafo.procura_DFS(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==2: 
+                procuraRes = self.grafo.procura_BFS(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==3: 
+                procuraRes = self.grafo.procura_IDDFS(posicaoAtual, self.sede, 20, print_visited=visualizarExpansao)
+            elif metodoDeProcura==4: 
+                procuraRes = self.grafo.procura_UCS(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==5: 
+                procuraRes = self.grafo.procura_dijkstra(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==6: 
+                procuraRes = self.grafo.procura_bellman_ford(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==7: 
+                procuraRes = self.grafo.procura_floyd_warshall(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==8: 
+                procuraRes = self.grafo.random_walk(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==9: 
+                procuraRes = self.grafo.procuraGreedy(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==10: 
+                procuraRes = self.grafo.procura_aStar(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            elif metodoDeProcura==11: 
+                procuraRes = self.grafo.procura_IDAstar(posicaoAtual, self.sede, print_visited=visualizarExpansao)
+            
+            # Avanca a sua posicao para a posicao seguinte de acordo com o melhor caminho obtido a partir da sua posicao anterior
+            posicaoAtual = procuraRes[0][1]
+            print(str(indexPosicao)+ "ª Posicao -> " + posicaoAtual)
+            indexPosicao += 1
+            caminhoFinal += " -> " + posicaoAtual
+            distanciaTotal += self.grafo.get_arc_cost(procuraRes[0][0], procuraRes[0][1])
+        
+        print(caminhoFinal)
+        print("\nDistância Total: " + str(distanciaTotal) + " Km.")
+
+
 
     """
     Função responsável por calcular qual a melhor combinação de veículos a utilizar, bem como qual a melhor distribuição de encomendas que
@@ -82,20 +220,21 @@ class HealthPlanet():
     ser encontrar a travessia mais ecológica, nós consideramos que minimizar os atrasos nas entregas é a prioridade máxima, de forma a assegurar um bom
     serviço e deixar os clientes o mais satisfeitos possíveis.
     """
-    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, indexTravessia = 1, comeco = None, tempoLimite = float('inf')):
+    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, indexTravessia = 1, tempoComeco = None, tempoLimite = float('inf'), origin = None):
 
-        if comeco==None:
-            comeco = timestammp()
-            tempoLimite = comeco + tempoLimite
+        if tempoComeco==None:
+            tempoComeco = timestammp()
+            tempoLimite = tempoComeco + tempoLimite
         melhorCusto = float('inf')
         melhorCaminho = []
         melhorAtraso = float('inf')
         melhorEmissaoCO2 = float('inf')
         tempoTotal = 0
+        melhorOrdemEntregaEncomendas = []
         estatisticasAvancadasStrFinal = ""
 
         # Verifica se já excedeu o tempo limite para a execução
-        if (comeco>tempoLimite):
+        if (tempoComeco>tempoLimite):
                     return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal)
 
         # Tenta realizar as entregas com todas as combinações possíveis de veículos e todas as combinações de encomendas que leva em cada viagem de forma a obter a travessia com menos atrasos e mais ecológica
@@ -106,6 +245,7 @@ class HealthPlanet():
             atraso = 0
             emissaoCO2 = 0
             tempoTotalAux = 0
+            ordemEntregaEncomendas = []
             estatisticasAvancadasStr = ""
 
             # Associa aos ids das entregas os seus pesos, para poder executar a seguir a função generate_combinations
@@ -119,12 +259,13 @@ class HealthPlanet():
             for entregasPrimeiraTravessia in entregasPrimeiraTravessiaCombinacoes:
 
                 idsEntregas = [idEntrega[0] for idEntrega in entregasPrimeiraTravessia]
-                res = self.calcularMelhorRotaVeiculo(idEstafeta, idsEntregas, metodoDeProcura, meioTransporte, visualizarExpansao)
+                res = self.calcularMelhorRotaVeiculo(idEstafeta, idsEntregas, metodoDeProcura, meioTransporte, visualizarExpansao, origin=origin)
                 custo += res[1]
                 caminho = res[0]
                 atraso += res[2]
                 emissaoCO2 += res[3]
                 tempoTotalAux += res[4]
+                ordemEntregaEncomendas = res[5]
                 # String que contêm dados mais específicos de cada travessia para depois apresentar ao utilizador
                 estatisticasAvancadasStr += str(indexTravessia) + "ª Travessia: " + meioTransporte.getNome() + "\nEncomendas entregues: "
                 for id in idsEntregas:
@@ -144,12 +285,13 @@ class HealthPlanet():
                 
                 # Faz a recursiva das restantes encomendas, podendo estas ser entregues com o mesmo meio de transporte ou não, dependendo de qual traz o melhor resultado
                 if len(restantesEntregas)>0:
-                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, metodoDeProcura, visualizarExpansao, indexTravessia+1, timestammp(), tempoLimite)
+                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, metodoDeProcura, visualizarExpansao, indexTravessia+1, timestammp(), tempoLimite, origin=origin)
                     custo += nextTravessia[1]
                     caminho += nextTravessia[0]
                     atraso += nextTravessia[2]
                     emissaoCO2 += nextTravessia[3]
                     tempoTotalAux += nextTravessia[4]
+                    ordemEntregaEncomendas += nextTravessia[6]
                     estatisticasAvancadasStr += nextTravessia[5]
                 
                 # Atualiza o valor da melhor travessia caso seja melhor que a anteriormente melhor registada
@@ -159,12 +301,13 @@ class HealthPlanet():
                     melhorAtraso = atraso
                     melhorEmissaoCO2 = emissaoCO2
                     tempoTotal = tempoTotalAux
+                    melhorOrdemEntregaEncomendas = ordemEntregaEncomendas
                     estatisticasAvancadasStrFinal = estatisticasAvancadasStr
 
-        return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal)
+        return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal, melhorOrdemEntregaEncomendas)
 
     
-    def calcularMelhorRotaVeiculo(self, idEstafeta, entregas, metodoDeProcura, meioTransporte, visualizarExpansao, firstIteration=True, removeIndex = 0, pesoEntregas = 0, horaEstadoAtual = None):
+    def calcularMelhorRotaVeiculo(self, idEstafeta, entregas, metodoDeProcura, meioTransporte, visualizarExpansao, firstIteration=True, removeIndex = 0, pesoEntregas = 0, horaEstadoAtual = None, origin = None):
 
         """
         Vai buscar o local de entrega de cada entrega, a data de entrega da mesma e o peso associado. Consideramos ainda que a hora de início da travessia é a hora atual. Este
@@ -179,10 +322,11 @@ class HealthPlanet():
             locaisEntregas = []
             if idEstafeta in self.estafetas:
                 for idEntrega in entregas:
-                    locaisEntregas.append((self.entregasPendentes[idEntrega].getPontoDeEntrega(), self.entregasPendentes[idEntrega].getPrazo(), self.entregasPendentes[idEntrega].getPeso()))
+                    locaisEntregas.append((self.entregasPendentes[idEntrega].getPontoDeEntrega(), self.entregasPendentes[idEntrega].getPrazo(), self.entregasPendentes[idEntrega].getPeso(), idEntrega))
                     pesoEntregas += self.entregasPendentes[idEntrega].getPeso()
             entregas = locaisEntregas
-            origin = self.sede
+            if origin==None:
+                origin = self.sede
         else:
             origin = entregas.pop(removeIndex)[0]
 
@@ -197,15 +341,18 @@ class HealthPlanet():
         melhorAtraso = float('inf')
         melhorEmissaoCO2 = float('inf')
         tempoTotal = 0
+        melhorOrdemEntregaEncomendas = []
         for index, infoEntrega in enumerate(entregas):
             localEntrega = infoEntrega[0]
             prazo = infoEntrega[1]
             peso = infoEntrega[2]
+            id = infoEntrega[3]
             custo = 0
             caminho = []
             atraso = 0
             emissaoCO2 = 0
             tempoTotalAux = 0
+            ordemEntregaEncomendas = []
 
             # Calcula um caminho entre dois pontos obrigatórios (entre sede e ponto de entrega ou entre pontos de entrega)
             if metodoDeProcura==1:
@@ -238,6 +385,7 @@ class HealthPlanet():
                 atraso += (horaChegada - prazo).total_seconds() / 60
             emissaoCO2 += meioTransporte.calculaEmissaoCO2(procuraRes[1])
             tempoTotalAux += tempoViagem
+            ordemEntregaEncomendas.append(id)
 
             # Executa a função para todas as ordens possíveis de visitar os pontos de entrega, assegurando o melhor resultado possível (para a estratégia de procura utilizada)
             nextEntrega = self.calcularMelhorRotaVeiculo(idEstafeta, entregas.copy(), metodoDeProcura, meioTransporte, visualizarExpansao, False, index, pesoEntregas-peso, horaChegada)
@@ -246,6 +394,7 @@ class HealthPlanet():
             atraso += nextEntrega[2]
             emissaoCO2 += nextEntrega[3]
             tempoTotalAux += nextEntrega[4]
+            ordemEntregaEncomendas += nextEntrega[5]
 
             # Atualiza o valor da melhor travessia caso seja melhor que a anteriormente melhor registada
             if atraso<melhorAtraso or (atraso<=melhorAtraso and emissaoCO2<melhorEmissaoCO2) or (atraso<=melhorAtraso and emissaoCO2<=melhorEmissaoCO2 and custo<melhorCusto):
@@ -254,6 +403,7 @@ class HealthPlanet():
                 melhorAtraso = atraso
                 melhorEmissaoCO2 = emissaoCO2
                 tempoTotal = tempoTotalAux
+                melhorOrdemEntregaEncomendas = ordemEntregaEncomendas
         
         # Utilizado para calcular o percurso de volta ao armazem, pois consideramos que o veículo tem de voltar de novo para o armazem, sendo necessário ter em conta esta travessia para o caminho mais curto
         if (len(entregas)==0):
@@ -284,8 +434,9 @@ class HealthPlanet():
             melhorAtraso = 0
             emissaoCO2 = meioTransporte.calculaEmissaoCO2(procuraRes[1])
             tempoTotal = meioTransporte.calculaTempoEmMinutos(procuraRes[1], 0)
+            melhorOrdemEntregaEncomendas = []
         
-        return (melhorCaminho, melhorCusto, melhorAtraso, emissaoCO2, tempoTotal)
+        return (melhorCaminho, melhorCusto, melhorAtraso, emissaoCO2, tempoTotal, melhorOrdemEntregaEncomendas)
     
     """
     Completa uma lista de entregas, removendo as entregas concluídas do dicionário de entregas pendentes e adicionando as mesmas
