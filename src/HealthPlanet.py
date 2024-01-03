@@ -1,3 +1,4 @@
+from time import time as timestammp
 import datetime
 import random
 from Graph import *
@@ -81,14 +82,21 @@ class HealthPlanet():
     ser encontrar a travessia mais ecológica, nós consideramos que minimizar os atrasos nas entregas é a prioridade máxima, de forma a assegurar um bom
     serviço e deixar os clientes o mais satisfeitos possíveis.
     """
-    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, indexTravessia = 1):
+    def calcularMelhorRota(self, idEstafeta, entregas, metodoDeProcura, visualizarExpansao, indexTravessia = 1, comeco = None, tempoLimite = float('inf')):
 
+        if comeco==None:
+            comeco = timestammp()
+            tempoLimite = comeco + tempoLimite
         melhorCusto = float('inf')
         melhorCaminho = []
         melhorAtraso = float('inf')
         melhorEmissaoCO2 = float('inf')
         tempoTotal = 0
         estatisticasAvancadasStrFinal = ""
+
+        # Verifica se já excedeu o tempo limite para a execução
+        if (comeco>tempoLimite):
+                    return (melhorCaminho, melhorCusto, melhorAtraso, melhorEmissaoCO2, tempoTotal, estatisticasAvancadasStrFinal)
 
         # Tenta realizar as entregas com todas as combinações possíveis de veículos e todas as combinações de encomendas que leva em cada viagem de forma a obter a travessia com menos atrasos e mais ecológica
         for meioTransporte in self.meiosTransporte.values():
@@ -109,6 +117,7 @@ class HealthPlanet():
             # Calcula todas as combinações possíveis de organizar as entregas em travessias diferentes
             entregasPrimeiraTravessiaCombinacoes = generate_combinations(pesosEntregas, meioTransporte.getPesoMax())
             for entregasPrimeiraTravessia in entregasPrimeiraTravessiaCombinacoes:
+
                 idsEntregas = [idEntrega[0] for idEntrega in entregasPrimeiraTravessia]
                 res = self.calcularMelhorRotaVeiculo(idEstafeta, idsEntregas, metodoDeProcura, meioTransporte, visualizarExpansao)
                 custo += res[1]
@@ -125,7 +134,7 @@ class HealthPlanet():
                 for rua in caminho:
                     estatisticasAvancadasStr += rua + " -> "
                 estatisticasAvancadasStr = estatisticasAvancadasStr[:-4]
-                estatisticasAvancadasStr += "\nDistancia Percurso: " + str(round(custo, 2)) + " Km.\nTempo: " + str(tempoTotalAux/60) + " minutos e " + str(round(tempoTotalAux%60, 2)) + " segundos.\nEmissao CO2: " + str(round(emissaoCO2, 3)) + " Kg.\nAtraso nas entregas: " + str(round(atraso, 2)) + " minutos.\n\n"
+                estatisticasAvancadasStr += "\nDistancia Percurso: " + str(round(custo, 2)) + " Km.\nTempo: " + str(int(tempoTotalAux)) + " minutos e " + str(round((tempoTotalAux-int(tempoTotalAux))*60, 0)) + " segundos.\nEmissao CO2: " + str(round(emissaoCO2, 3)) + " Kg.\nAtraso nas entregas: " + str(round(atraso, 2)) + " minutos.\n\n"
 
                 # Entrega as entregas restantes se tiverem sobrado entregas no armazem
                 restantesEntregas = []
@@ -135,7 +144,7 @@ class HealthPlanet():
                 
                 # Faz a recursiva das restantes encomendas, podendo estas ser entregues com o mesmo meio de transporte ou não, dependendo de qual traz o melhor resultado
                 if len(restantesEntregas)>0:
-                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, metodoDeProcura, visualizarExpansao, indexTravessia+1)
+                    nextTravessia = self.calcularMelhorRota(idEstafeta, restantesEntregas, metodoDeProcura, visualizarExpansao, indexTravessia+1, timestammp(), tempoLimite)
                     custo += nextTravessia[1]
                     caminho += nextTravessia[0]
                     atraso += nextTravessia[2]
