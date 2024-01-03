@@ -125,17 +125,25 @@ class Grafo():
 
 
 # PROCURAS NÃO INFORMADAS
-    
-    """
-    Depth-First Search (DFS) algorithm to find a path from start to end in a graph.
 
-    DFS explores the graph by traversing as far as possible along each branch before backtracking.
-    It starts at the given 'start' node and explores its neighbors recursively until it reaches the 'end' node or
-    there are no more unvisited neighbors. If the 'end' node is found, it returns the path from 'start' to 'end'.
-    Otherwise, it returns None.
+    def procura_DFS(self, start, end, path=None, visited=None):
+        """
+        Algoritmo de Pesquisa em Profundidade (DFS) para encontrar um caminho de start a end num grafo.
+
+        O DFS explora o grafo, percorrendo o máximo possível ao longo de cada ramo antes de retroceder.
+        Começa no nó 'start' fornecido e explora os seus vizinhos recursivamente até atingir o nó 'end' ou
+        não haver mais vizinhos não visitados. Se o nó 'end' for encontrado, retorna o caminho de 'start' a 'end', e o custo total.
+        Caso contrário, retorna None.
+
+        Args:
+            start: O nó de partida.
+            end: O nó de destino.
+            path: O caminho atual em exploração (padrão = None).
+            visited: Um conjunto de nós visitados para evitar ciclos (padrão = None).
+
+        Returns:
+            Um tuplo contendo o caminho e o custo total se um caminho for encontrado, caso contrário, retorna None.
     """
-    def procura_DFS(self, start, end, path=None, visited=None, print_visited = False):
-        
         if path is None:
             path = []
         if visited is None:
@@ -159,16 +167,19 @@ class Grafo():
         path.pop()
         return None
 
-
-    """
-    Iterative Deepening Depth-First Search (IDDFS) algorithm to find a path from start to end in a graph.
-
-    IDDFS repeatedly performs a depth-first search with increasing depth limits until the goal is found.
-    """
-    def procura_IDDFS(self, start, end, max_depth, print_visited = False):
-
+    def procura_IDDFS(self, start, end, max_depth):
         """
-        Depth-Limited DFS with a specified depth limit.
+        Algoritmo de Pesquisa em Profundidade Iterativa com Limite (IDDFS) para encontrar um caminho de start a end num grafo.
+
+        O IDDFS realiza repetidas pesquisas em profundidade com limites de profundidade crescentes até encontrar o objetivo.
+
+        Args:
+            start: O nó de partida.
+            end: O nó de destino.
+            max_depth: A profundidade máxima a explorar.
+
+        Returns:
+            Um tuplo contendo o caminho e o custo total se um caminho for encontrado, caso contrário, retorna None. 
         """
         def depth_limited_DFS(start, end, depth_limit, path=None, visited=None):
             if path is None:
@@ -204,14 +215,21 @@ class Grafo():
                 return result
         return None
 
+    def procura_BFS(self, start, end):
+        """
+        Realiza uma pesquisa em largura para encontrar um caminho entre dois nós.
 
-    """
-    Performs a breadth-first search to find a path between two nodes.
+        A pesquisa em largura (BFS) é um algoritmo para percorrer ou pesquisar estruturas de dados de árvores ou grafos que 
+        começa no nó raiz e explora todos os nós vizinhos na profundidade atual antes de passar para os nós no próximo nível de profundidade.
 
-    Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
-    It starts at the root node and explores all the neighbor nodes at the present depth before moving on to the nodes at the next depth level.
-    """
-    def procura_BFS(self, start, end, print_visited = False):
+        Args:
+            start (str): Nome do nó de partida.
+            end (str): Nome do nó de destino.
+
+        Returns:
+            tuple: Tuplo contendo o caminho e o seu custo, ou None se nenhum caminho for encontrado.
+        """
+
         visited = set()
         fila = Queue()
 
@@ -246,16 +264,24 @@ class Grafo():
             print("Nodos Visitados: " + str(visited))
         return (path, custo)
     
+    def procura_UCS(self, start, end):
+        """
+        Executa o algoritmo de Busca de Custo Uniforme (UCS) para encontrar o caminho mais curto de start a end num grafo.
 
-    """
-    Performs Uniform Cost Search (UCS) algorithm to find the shortest path from start to end in a graph.
+        O UCS funciona explorando o grafo de maneira em largura, considerando o menor custo de cada caminho.
+        Mantém uma lista aberta de nós a serem explorados, ordenados pelo custo cumulativo.
+        O algoritmo continua até que a lista aberta esteja vazia ou o nó alvo seja alcançado.
+        Durante a exploração, mantém estado dos pais de cada nó para reconstruir o caminho posteriormente.
 
-    UCS works by exploring the graph in a breadth-first manner, considering the lowest cost of each path.
-    It maintains an open list of nodes to be explored, sorted by their cumulative cost.
-    The algorithm continues until the open list is empty or the target node is reached.
-    During the exploration, it keeps track of the parents of each node to reconstruct the path later.
-    """
-    def procura_UCS(self, start, end, print_visited = False):
+        Parâmetros:
+        - start: O nó de partida.
+        - end: O nó de destino.
+
+        Retorna:
+        - Um tuplo contendo o caminho mais curto de start a end e o seu custo.
+        Se nenhum caminho existir, retorna None.
+        """
+
 
         open_list = [(0, start)]
         closed_list = set()
@@ -295,21 +321,36 @@ class Grafo():
         return None
 
 
-    """
-    Finds the shortest path using Dijkstra's algorithm.
 
-    It starts from the given start node and explores the neighboring nodes in a greedy manner, always choosing the node with the lowest cost.
-    The algorithm maintains a priority queue to keep track of the nodes to be explored next.
-    """
-    def procura_dijkstra(self, start, end, print_visited = False):
+    def procura_dijkstra(self, start, end):
+        """
+        Encontra o caminho mais curto usando o algoritmo de Dijkstra.
+        Ele usa uma fila de prioridade para explorar os nós de forma ordenada, mantendo um registro dos 
+        custos acumulados e dos pais de cada nó no caminho mais curto. O processo continua até que o nó 
+        de destino seja alcançado ou todos os nós sejam explorados. O caminho mais curto é então reconstruído
+        a partir dos pais registrados.
+
+        Parâmetros:
+        - start (str): Nome do nó de partida.
+        - end (str): Nome do nó de destino.
+
+        Retorna:
+        - tuple: Um tuplo contendo o caminho mais curto e seu custo.
+        """
         priority_queue = [(0, start)]
+        # Dicionario que guarda o custo para chegar a cada node
         cost_to_reach = {start: 0}
+        # Dictionário para guardar o pai de cada node no caminho mais curto
         parents = {start: None}
         visited = set()
         
         while priority_queue:
+        # Obtém o nó com menor custo da fila de prioridade
             current_cost, current_node = heapq.heappop(priority_queue)
+
+            # Verifica se alcançamos o nó de destino
             if current_node == end:
+                # Reconstrói o caminho
                 reconst_path = []
                 while current_node is not None:
                     reconst_path.append(current_node)
@@ -320,11 +361,11 @@ class Grafo():
                     print("Nodos Visitados: " + str(visited))
                 return reconst_path, round(cost_to_reach[end],2)
 
-            visited.add(current_node)
-
+            # Explora os vizinhos
             for neighbor, weight in self.get_neighbours(current_node):
                 new_cost = cost_to_reach[current_node] + weight
 
+                # Se o novo custo for menor que o custo registrado, atualiza-o
                 if neighbor not in cost_to_reach or new_cost < cost_to_reach[neighbor]:
                     cost_to_reach[neighbor] = new_cost
                     parents[neighbor] = current_node
@@ -333,52 +374,24 @@ class Grafo():
         print('Path does not exist!')
         return None
     
-
     """
-    Finds the shortest path using the Bellman-Ford algorithm.
+    Encontra o caminho mais curto entre dois nós usando o algoritmo de Floyd-Warshall.
+    Calcula o caminho mais curto entre todos os pares de nós no grafo.
 
-    (************ADICIONAR UMA DESCRIÇÃO DO ALGORITMO************)
+    Este algoritmo utiliza uma abordagem dinâmica para encontrar o caminho mais curto entre todos os pares de nós.
+    Inicializa uma matriz de distâncias com os pesos das arestas existentes e as atualiza iterativamente para considerar
+    caminhos intermediários. O caminho e o custo total entre os nós de partida e destino são recuperados a partir das
+    matrizes geradas durante o processo.
+
+    Parâmetros:
+        start (str): Nome do nó de partida.
+        end (str): Nome do nó de destino.
+        print_visited (bool, opcional): Indica se deve imprimir os nós visitados durante a execução (padrão = False).
+
+    Retorna:
+        tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
     """
-    def procura_bellman_ford(self, start, end, print_visited = False):
-        cost_to_reach = {node.getName(): math.inf for node in self.m_nodes}
-        cost_to_reach[start] = 0
-        parents = {node.getName(): None for node in self.m_nodes}
-        visited = set()
-        
-        for _ in range(len(self.m_nodes) - 1):
-            for node in self.m_nodes:
-                visited.add(node.getName())
-                for neighbor, weight in self.get_neighbours(node.getName()):
-                    visited.add(neighbor)
-                    new_cost = cost_to_reach[node.getName()] + weight
-                    if new_cost < cost_to_reach[neighbor]:
-                        cost_to_reach[neighbor] = new_cost
-                        parents[neighbor] = node.getName()
-
-        for node in self.m_nodes:
-            for neighbor, weight in self.get_neighbours(node.getName()):
-                visited.add(node.getName())
-                visited.add(neighbor)
-                if cost_to_reach[node.getName()] + weight < cost_to_reach[neighbor]:
-                    print('Negative cycle detected!')
-                    return None
-
-        reconst_path = []
-        current_node = end
-        while current_node is not None:
-            reconst_path.append(current_node)
-            current_node = parents[current_node]
-        reconst_path.reverse()
-
-        if print_visited:
-            print("Nodos Visitados: " + str(visited))
-        return reconst_path, round(cost_to_reach[end], 2)
-    
-    """
-    Finds the shortest path between two nodes using the Floyd-Warshall algorithm.
-    It computes the shortest path between every pair of nodes in the graph.
-    """
-    def procura_floyd_warshall(self, start, end, print_visited = False):
+    def procura_floyd_warshall(self, start, end, print_visited=False):
         num_nodes = len(self.m_nodes)
         dist_matrix = [[math.inf] * num_nodes for _ in range(num_nodes)]
         next_node_matrix = [[None] * num_nodes for _ in range(num_nodes)]
@@ -414,85 +427,70 @@ class Grafo():
         distance = dist_matrix[start_index][end_index]
 
         if print_visited:
-            print("Nodos Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
-        return path_nodes, round(distance,2)
+            print("Nós Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
+        return path_nodes, round(distance, 2)
 
+    
+    def procura_bellman_ford(self, start, end):
+        """
+        Encontra o caminho mais curto usando o algoritmo de Bellman-Ford.
 
-    """
-    Performs a random walk algorithm to find a path between the start and end nodes.
+        O algoritmo de Bellman-Ford encontra o caminho mais curto entre dois nós em um grafo, mesmo quando há arestas com pesos negativos.
+        Ele utiliza a técnica de relaxamento, iterativamente, sobre todas as arestas do grafo para encontrar as distâncias mais curtas.
 
-    The random walk algorithm starts at the specified start node and randomly selects a neighbor node to move to.
-    It continues this process until it reaches the end node or there are no unvisited neighbors left.
-    The algorithm keeps track of the visited nodes and the total cost of the path.
-    """
-    def random_walk(self, start, end, print_visited = False):
-        current_node = start
-        path = [current_node]
-        total_cost = 0
-        visited_nodes = set()
+        Parâmetros:
+        - start (str): Nome do nó de partida.
+        - end (str): Nome do nó de destino.
 
-        while current_node != end:
-            neighbors = self.m_graph.get(current_node, [])
-            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
+        Retorna:
+        - tuple: Um tuplo contendo o caminho mais curto e seu custo.
+        """
+            # Dicionário para armazenar o custo para alcançar cada nó
+        custo_para_alcancar = {node.getName(): math.inf for node in self.m_nodes}
+        custo_para_alcancar[start] = 0
+            # Dicionário para armazenar o pai de cada nó no caminho mais curto
+        pais = {node.getName(): None for node in self.m_nodes}
 
-            if not unvisited_neighbors:
-                path.pop()
-                if not path:
+        # Relaxa as arestas repetidamente
+        for _ in range(len(self.m_nodes) - 1):
+            for node in self.m_nodes:
+                for vizinho, peso in self.get_neighbours(node.getName()):
+                    novo_custo = custo_para_alcancar[node.getName()] + peso
+                    if novo_custo < custo_para_alcancar[vizinho]:
+                        custo_para_alcancar[vizinho] = novo_custo
+                        pais[vizinho] = node.getName()
+
+        # Verifica ciclos negativos
+        for node in self.m_nodes:
+            for vizinho, peso in self.get_neighbours(node.getName()):
+                if custo_para_alcancar[node.getName()] + peso < custo_para_alcancar[vizinho]:
+                    print('Ciclo negativo detetado!')
                     return None
-                current_node = path[-1]
-            else:
-                next_node, cost = random.choice(unvisited_neighbors)
-                path.append(next_node)
-                total_cost += cost
-                visited_nodes.add(next_node)
-                current_node = next_node
 
-        if print_visited:
-            print("Visited Nodes: " + str(visited_nodes))
-        return path, round(total_cost, 2)
+        # Reconstrói o caminho
+        caminho_reconstruido = []
+        no_atual = end
+        while no_atual is not None:
+            caminho_reconstruido.append(no_atual)
+            no_atual = pais[no_atual]
+        caminho_reconstruido.reverse()
 
+        return caminho_reconstruido, custo_para_alcancar[end]
 
 
 # PROCURAS INFORMADAS
-    
-    """
-    Finds the shortest path from the start node to the end node using the A* algorithm.
 
-    The A* algorithm is an informed search algorithm that uses heuristics to guide the search
-    towards the goal node. It maintains two lists: an open list and a closed list. The open list
-    contains the nodes that are yet to be explored, while the closed list contains the nodes that
-    have already been explored.
-
-    The algorithm starts by initializing the open list with the start node. It then iteratively
-    selects the node with the lowest estimated cost (based on the sum of the actual cost from the
-    start node and the heuristic estimate to the goal node) from the open list. If the selected node
-    is the goal node, the algorithm reconstructs the path from the start node to the goal node and
-    returns it along with the cost of the path.
-
-    However, if the selected node is not the goal node, the algorithm dynamically expands the chosen 
-    node's neighborhood, generating adjacent nodes that are directly accessible from the current position. 
-    It then calculates or updates various values for each neighboring node, including the actual cost from 
-    the start node to the neighbor, the heuristic estimate from that node to the goal, and the sum of these 
-    two values (the f-cost).
-
-    Subsequently, the algorithm checks whether each neighboring node is already part of the open list or the 
-    closed list. Nodes that are absent from the open list or have a lower f-cost compared to their previous 
-    state are considered for inclusion or update. This iterative process ensures that the algorithm continues 
-    to prioritize nodes with lower estimated costs, creating an efficient search strategy.
-
-    The A* algorithm repeats the selection step, choosing the next node with the lowest estimated cost from the 
-    updated open list. This cycle continues until the goal node is eventually reached or until the open list is 
-    empty, signifying that no viable path to the goal exists.
-
-    The A* algorithm is commonly used in pathfinding problems, where finding the shortest path
-    between two points in a graph is required.
-
-
-
-
-    (*******MELHOREM ISTO QUE ESTÁ CHAPADO DO CHATGPT*******)
-    """
-    def procura_aStar(self, start, end, print_visited = False):
+    def procura_aStar(self, start, end):
+        """
+        O algoritmo A* efetivamente utiliza listas abertas e fechadas para otimizar a busca. A lista aberta armazena nós
+        que ainda precisam ser explorados, priorizando aqueles com menores custos estimados. A lista fechada, por sua vez,
+        registra os nós já explorados, evitando revisões desnecessárias. Isso melhora significativamente a eficiência do
+        algoritmo, garantindo que a busca se concentre em áreas mais promissoras do grafo, economizando recursos computacionais.
+        Ao iterativamente selecionar e expandir nós, o A* equilibra a busca entre a exploração de novas possibilidades e a
+        reutilização de informações previamente analisadas, resultando em um método eficaz para encontrar o caminho mais curto.
+        Parâmetros: start (Node) - nó de partida, end (Node) - nó de destino.
+        Retorna: tuplo com caminho (lista de nós) e custo.
+        """
         open_list = {start}
         closed_list = set([])
         g = {}
@@ -554,17 +552,25 @@ class Grafo():
         print('Path does not exist!')
         return None
 
+    def procura_IDAstar(self, start, end):
+        """
+        Realiza um algoritmo de pesquisa IDA* para encontrar o caminho ótimo do nó de partida ao nó de destino num grafo.
 
-    """
-    Performs an IDA* search algorithm to find the optimal path from the start node to the end node in a graph.
+        O algoritmo IDA* é uma variante do algoritmo de pesquisa A* que utiliza aprofundamento iterativo para encontrar o caminho ótimo.
+        Ele realiza uma pesquisa com limite de profundidade, aumentando gradualmente o limite de profundidade até encontrar um caminho ou até que o espaço de pesquisa seja esgotado.
+        Em cada limite de profundidade, o algoritmo expande os nós no grafo, considerando o custo do caminho desde o nó de partida e o custo estimado até o nó de destino.
+        Se o custo estimado exceder o limite de profundidade atual, a pesquisa é interrompida para esse nó.
+        O algoritmo continua até encontrar um caminho ou determinar que nenhum caminho existe.
+        
+        Parâmetros:
+            start: O nó de partida.
+            end: O nó de destino.
 
-    The IDA* algorithm is a variant of the A* search algorithm that uses iterative deepening to find the optimal path.
-    It performs a depth-limited search, gradually increasing the depth limit until a path is found or the search space is exhausted.
-    At each depth limit, the algorithm expands the nodes in the graph, considering the cost of the path from the start node and the estimated cost to the target node.
-    If the estimated cost exceeds the current depth limit, the search is pruned for that node.
-    The algorithm continues until a path is found or it is determined that no path exists.
-    """
-    def procura_IDAstar(self, start, end, print_visited = False):
+        Retorna:
+            Se encontrar um caminho, retorna um tuplo com o caminho e seu custo.
+            Se não encontrar um caminho, retorna None.
+
+        """
 
         def depth_limited_search(current_node, end, bound, path, g, visited):
             f = g[current_node] + self.calcula_heuristica(current_node, end)
@@ -610,15 +616,22 @@ class Grafo():
 
             bound = new_bound
 
+    def procuraGreedy(self, start, end):
+        """
+        Realiza um algoritmo de pesquisa gulosa para encontrar o caminho mais curto do nó de partida ao nó de destino.
 
-    """
-    Performs a greedy search algorithm to find the shortest path from the start node to the end node.
+        A pesquisa gulosa funciona escolhendo sempre o nó que parece estar mais próximo do destino com base numa função heurística.
+        Expande a pesquisa considerando os vizinhos do nó atual e selecionando aquele com o valor heurístico mais baixo.
+        Este processo continua até atingir o nó de destino ou não houver mais nós para explorar.
 
-    Greedy search works by always choosing the node that appears to be closest to the target based on a heuristic function.
-    It expands the search by considering the neighbors of the current node and selecting the one with the lowest heuristic value.
-    This process continues until the target node is reached or there are no more nodes to explore.
-    """
-    def procuraGreedy(self, start, end, print_visited = False):
+        Parâmetros:
+        - start: O nó de partida da pesquisa.
+        - end: O nó de destino a alcançar.
+
+        Retorna:
+        - Se encontrar um caminho, retorna um tuplo com o caminho como uma lista de nós e o custo total do caminho.
+        - Se não encontrar um caminho, retorna None.
+        """
 
         open_list = set([start])
         closed_list = set([])
@@ -661,3 +674,38 @@ class Grafo():
 
         print('Path does not exist!')
         return None
+    
+    def random_walk(self, start_node, end_node):
+        """
+        Algoritmo de passeio aleatório que tenta encontrar uma solução entre os nós de início e fim.
+
+        Parâmetros:
+            start_node (str): Nome do nó de partida.
+            end_node (str): Nome do nó de destino.
+
+        Retorna:
+            tuple ou None: Tuplo contendo o caminho e o custo total se uma solução for encontrada, None caso contrário.
+        """
+        current_node = start_node
+        path = [current_node]
+        total_cost = 0
+
+        while current_node != end_node:
+            neighbors = self.m_graph.get(current_node, [])
+            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
+
+            if not unvisited_neighbors:
+                # Se não houver mais vizinhos por visitar, backtrack
+                path.pop()
+                if not path:
+                    # If the path is empty, no solution is found
+                    return None
+                current_node = path[-1]
+            else:
+                # Move para um vizinho ainda não visitado aleatorio 
+                next_node, cost = random.choice(unvisited_neighbors)
+                path.append(next_node)
+                total_cost += cost
+                current_node = next_node
+
+        return path, round(total_cost, 2)
