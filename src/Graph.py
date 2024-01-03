@@ -4,6 +4,9 @@ from Node import Node
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import heapq
+import random
+
 
 class Grafo():
     """
@@ -422,6 +425,139 @@ class Grafo():
         print('Path does not exist!')
         return None
 
+
+
+    def procura_dijkstra(self, start, end):
+        """
+        Finds the shortest path using Dijkstra's algorithm.
+
+        Args:
+            start (str): Name of the starting node.
+            end (str): Name of the ending node.
+
+        Returns:
+            tuple: A tuple containing the shortest path and its cost.
+        """
+        # Priority queue for Dijkstra's algorithm
+        priority_queue = [(0, start)]
+        # Dictionary to store the cost to reach each node
+        cost_to_reach = {start: 0}
+        # Dictionary to store the parent of each node in the shortest path
+        parents = {start: None}
+
+        while priority_queue:
+            # Get the node with the lowest cost from the priority queue
+            current_cost, current_node = heapq.heappop(priority_queue)
+
+            # Check if we reached the end node
+            if current_node == end:
+                # Reconstruct the path
+                reconst_path = []
+                while current_node is not None:
+                    reconst_path.append(current_node)
+                    current_node = parents[current_node]
+                reconst_path.reverse()
+
+                return reconst_path, cost_to_reach[end]
+
+            # Explore neighbors
+            for neighbor, weight in self.get_neighbours(current_node):
+                new_cost = cost_to_reach[current_node] + weight
+
+                # If the new cost is smaller than the recorded cost, update it
+                if neighbor not in cost_to_reach or new_cost < cost_to_reach[neighbor]:
+                    cost_to_reach[neighbor] = new_cost
+                    parents[neighbor] = current_node
+                    heapq.heappush(priority_queue, (new_cost, neighbor))
+
+        print('Path does not exist!')
+        return None
+    
+    def procura_bellman_ford(self, start, end):
+        """
+        Finds the shortest path using the Bellman-Ford algorithm.
+
+        Args:
+            start (str): Name of the starting node.
+            end (str): Name of the ending node.
+
+        Returns:
+            tuple: A tuple containing the shortest path and its cost.
+        """
+        # Dictionary to store the cost to reach each node
+        cost_to_reach = {node.getName(): math.inf for node in self.m_nodes}
+        cost_to_reach[start] = 0
+        # Dictionary to store the parent of each node in the shortest path
+        parents = {node.getName(): None for node in self.m_nodes}
+
+        # Relax edges repeatedly
+        for _ in range(len(self.m_nodes) - 1):
+            for node in self.m_nodes:
+                for neighbor, weight in self.get_neighbours(node.getName()):
+                    new_cost = cost_to_reach[node.getName()] + weight
+                    if new_cost < cost_to_reach[neighbor]:
+                        cost_to_reach[neighbor] = new_cost
+                        parents[neighbor] = node.getName()
+
+        # Check for negative cycles
+        for node in self.m_nodes:
+            for neighbor, weight in self.get_neighbours(node.getName()):
+                if cost_to_reach[node.getName()] + weight < cost_to_reach[neighbor]:
+                    print('Negative cycle detected!')
+                    return None
+
+        # Reconstruct the path
+        reconst_path = []
+        current_node = end
+        while current_node is not None:
+            reconst_path.append(current_node)
+            current_node = parents[current_node]
+        reconst_path.reverse()
+
+        return reconst_path, cost_to_reach[end]
+    
+    def procura_floyd_warshall(self, start, end):
+        num_nodes = len(self.m_nodes)
+        dist_matrix = [[math.inf] * num_nodes for _ in range(num_nodes)]
+        next_node_matrix = [[None] * num_nodes for _ in range(num_nodes)]
+
+        # Initialize distance matrix with edge weights
+        for i in range(num_nodes):
+            dist_matrix[i][i] = 0
+            node_name = self.m_nodes[i].getName()
+            for (neighbor, weight) in self.m_graph[node_name]:
+                neighbor_index = self.m_nodes.index(self.get_node_by_name(neighbor))
+                dist_matrix[i][neighbor_index] = weight
+                next_node_matrix[i][neighbor_index] = neighbor_index
+
+        # Floyd-Warshall algorithm
+        for k in range(num_nodes):
+            for i in range(num_nodes):
+                for j in range(num_nodes):
+                    if dist_matrix[i][k] != math.inf and dist_matrix[k][j] != math.inf:
+                        if dist_matrix[i][k] + dist_matrix[k][j] < dist_matrix[i][j]:
+                            dist_matrix[i][j] = dist_matrix[i][k] + dist_matrix[k][j]
+                            next_node_matrix[i][j] = next_node_matrix[i][k]
+
+        # Reconstruct the path
+        start_index = self.m_nodes.index(self.get_node_by_name(start))
+        end_index = self.m_nodes.index(self.get_node_by_name(end))
+
+        if next_node_matrix[start_index][end_index] is None:
+            # No path exists between start and end
+            return None, math.inf
+
+        path = [start_index]
+        while path[-1] != end_index:
+            path.append(next_node_matrix[path[-1]][end_index])
+
+        # Convert node indices to node names
+        path_nodes = [self.m_nodes[i].getName() for i in path]
+
+        # Return the path and distance
+        distance = dist_matrix[start_index][end_index]
+        return path_nodes, distance
+
 # PROCURAS INFORMADAS
 
     def procura_aStar(self, start, end):
@@ -639,3 +775,38 @@ class Grafo():
 
         print('Path does not exist!')
         return None
+    
+    def random_walk(self, start_node, end_node):
+        """
+        Random walk algorithm that attempts to find a solution between start and end nodes.
+
+        Args:
+            start_node (str): Name of the starting node.
+            end_node (str): Name of the ending node.
+
+        Returns:
+            tuple or None: Tuple containing the path and total cost if a solution is found, None otherwise.
+        """
+        current_node = start_node
+        path = [current_node]
+        total_cost = 0
+
+        while current_node != end_node:
+            neighbors = self.m_graph.get(current_node, [])
+            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
+
+            if not unvisited_neighbors:
+                # If there are no unvisited neighbors, backtrack
+                path.pop()
+                if not path:
+                    # If the path is empty, no solution is found
+                    return None
+                current_node = path[-1]
+            else:
+                # Move to a random unvisited neighbor
+                next_node, cost = random.choice(unvisited_neighbors)
+                path.append(next_node)
+                total_cost += cost
+                current_node = next_node
+
+        return path, round(total_cost, 2)
