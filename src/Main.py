@@ -2,6 +2,7 @@ import time
 from HealthPlanet import HealthPlanet
 from Estafeta import Estafeta
 from Entrega import Entrega
+from Testes import testes
 
 def main():
 
@@ -82,46 +83,7 @@ def main():
     healthPlanet.addEntrega(0.3, 2.5, "Barcelos", "Campo 25 de Abril", 575, 5)
     healthPlanet.addEntrega(36, 4, "Barcelos", "Rua Doutor Francisco Torres", 612, 5)
 
-    """
-    print("------------------------------------------------- TESTE 1 -------------------------------------------------")
-    print("DFS -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", 20, print_visited = True)) + "\n")
-    print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Dijkstra -> " + str(healthPlanet.grafo.procura_dijkstra("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Bellman Ford -> "+ str(healthPlanet.grafo.procura_bellman_ford("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Floyd Warshall -> "+ str(healthPlanet.grafo.procura_floyd_warshall("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Random Walk -> "+ str(healthPlanet.grafo.random_walk("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("A* -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Rua Doutor José Júlio Vieira Ramos", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-
-    print("------------------------------------------------- TESTE 2 -------------------------------------------------")
-    print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", 20, print_visited = True)) + "\n")
-    print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Dijkstra -> " + str(healthPlanet.grafo.procura_dijkstra("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Bellman Ford -> "+ str(healthPlanet.grafo.procura_bellman_ford("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Floyd Warshall -> "+ str(healthPlanet.grafo.procura_floyd_warshall("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Random Walk -> "+ str(healthPlanet.grafo.random_walk("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("A* -> " + str(healthPlanet.grafo.procura_aStar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-    print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Barcelos, Avenida Dom Nuno Álvares Pereira", "Arcozelo, Rua Elias Garcia", print_visited = True)) + "\n")
-
-    print("------------------------------------------------- TESTE 3 -------------------------------------------------")
-    print("\n" + "DFS -> " + str(healthPlanet.grafo.procura_DFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("IDDFS -> " + str(healthPlanet.grafo.procura_IDDFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", 20, print_visited = True)) + "\n")
-    print("BFS -> " + str(healthPlanet.grafo.procura_BFS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("UCS -> " + str(healthPlanet.grafo.procura_UCS("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("Dijkstra -> " + str(healthPlanet.grafo.procura_dijkstra("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("Bellman Ford -> "+ str(healthPlanet.grafo.procura_bellman_ford("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("Floyd Warshall -> "+ str(healthPlanet.grafo.procura_floyd_warshall("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("Random Walk -> "+ str(healthPlanet.grafo.random_walk("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("A* -> " + str(healthPlanet.grafo.procura_aStar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("IDA* -> " + str(healthPlanet.grafo.procura_IDAstar("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    print("Greedy -> " + str(healthPlanet.grafo.procuraGreedy("Arcozelo, Avenida João Duarte", "Barcelos, Largo dos Capuchinhos", print_visited = True)) + "\n")
-    """
+    #testes(healthPlanet)
 
     # Interface do Utilizador
     exit = False
@@ -137,6 +99,7 @@ def main():
                 nome = input("Nome: ")
                 ids = eval(input("Ids das entregas a realizar (formato [1,2,3,...]): "))
                 healthPlanet.addEstafeta(nome, ids, 5)
+
             elif option==2:
                 print("\n---ADICIONAR ENTREGA---\n")
                 peso = int(input("Peso: "))
@@ -145,14 +108,18 @@ def main():
                 rua = input("Rua: ")
                 prazo = input("Prazo (em minutos em relação à data e hora atual): ")
                 healthPlanet.addEntrega(peso, volume, freguesia, rua, prazo)
+
             elif option==3:
                 print("\n---ADICIONAR NOVA LOCALIZAÇÃO---\n")
                 freguesia1 = input("Freguesia (Primeira): ")
                 rua1 = input("Rua (Primeira): ")
+                coordenadas1 = eval(input("Coordenadas (Primeira) (formato (latitude, longitude)): "))
                 freguesia2 = input("Freguesia (Segunda): ")
                 rua2 = input("Rua (Segunda): ")
-                distancia = int(input("Distancia: "))
-                healthPlanet.addLocalizacao(freguesia1, rua1, freguesia2, rua2, distancia)
+                coordenadas2 = eval(input("Coordenadas (Segunda) (formato (latitude, longitude)): "))
+                distancia = float(input("Distancia: "))
+                healthPlanet.addIntercecao(freguesia1, rua1, coordenadas1, freguesia2, rua2, coordenadas2, distancia)
+
             elif option==4:
                 print("\n---REALIZAR ENTREGAS---\n")
                 option_entregar = input("Pretende usar uma estratégia determinística? (S ou N)\n\n")
@@ -172,8 +139,9 @@ def main():
 
                     # Calcula o tempo que demorou a executar a procura da melhor travessia para uma dada estratégia de procura
                     tempoExecucao = fim - comeco
-                    tempoExecucao_minutos = int(tempoExecucao // 60)
-                    tempoExecucao_segundos = int(tempoExecucao % 60)
+                    tempoExecucao_minutos, tempoExecucao_segundos = divmod(tempoExecucao, 60)
+                    tempoExecucao_segundos, tempoExecucao_milisegundos = divmod(tempoExecucao_segundos, 1)
+                    tempoExecucao_milisegundos = round(tempoExecucao_milisegundos * 1000) 
 
                     print(f"\n\nINFO TRAVESSIA\n")
                     print(f"Melhor Caminho -> {result[0]}")
@@ -181,7 +149,7 @@ def main():
                     print(f"Tempo total -> {result[4]:.2f} minutos.")
                     print(f"Total dos atrasos -> {result[2]/60:.2f} minutos e {result[2]%60:.2f} segundos.")
                     print(f"CO2 total emitido -> {result[3]:.3f} Kg.")
-                    print(f"\nTEMPO TOTAL A EXECUTAR A PROCURA -> {tempoExecucao_minutos} minutos e {tempoExecucao_segundos:.2f} segundos.")
+                    print(f"\nTEMPO TOTAL A EXECUTAR A PROCURA -> {int(tempoExecucao_minutos)} minutos, {int(tempoExecucao_segundos)} segundos e {tempoExecucao_milisegundos} milissegundos.")
 
                     estatisticasAvancadas = input("\n\nVer estatísticas avançadas da Travessia? (S ou N)\n\n")
                     if estatisticasAvancadas.capitalize()=="S":
@@ -199,12 +167,12 @@ def main():
                     idsEntregas = eval(input("Ids das Entregas que deseja fazer agora (formato [1,2,3,...]): "))
                     # Completar
                     
-
             elif option==5:
                 print("\n---INFORMAÇÃO ESTAFETA---\n")
                 idEstafeta = int(input("Id do Estafeta: "))
                 print("\n")
                 print(healthPlanet.getInfoEstafeta(idEstafeta))
+
             elif option==6:
                     exit = True
 
@@ -218,12 +186,6 @@ def main():
         
         except ValueError:
             print("Input inválido.")
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
