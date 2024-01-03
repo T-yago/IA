@@ -37,6 +37,50 @@ class Grafo():
                 listaA = listaA + nodo + " ->" + nodo2 + " custo:" + str(custo) + "\n"
         return listaA
 
+
+    """
+    Função responsável por apagar um nodo do grafo bem como todos os arcos associados ao mesmo
+    """
+    def remove_nodo(self, nodo):
+        if nodo not in self.m_graph:
+            print(f"O node {nodo} não existe.")
+            return
+
+        # Remove o node da lista de nodos
+        self.m_nodes = [node for node in self.m_nodes if node.getName() != nodo]
+
+        # Remove todos os arcos associados ao nodo
+        del self.m_graph[nodo]
+
+        for key in self.m_graph:
+            self.m_graph[key] = [(adj, weight) for adj, weight in self.m_graph[key] if adj != nodo]
+        
+        return True
+    
+
+    """
+    Função responsável por alterar o peso associado a um arco
+    """
+    def altera_custo_arco(self, node1, node2, new_weight):
+
+        if node1 not in self.m_graph or node2 not in self.m_graph:
+            print(f"Ambos ou um dos arcos não existe.")
+            return
+
+        # Atualiza o peso do arco (nodo1, nodo2)
+        for i, (adj, weight) in enumerate(self.m_graph[node1]):
+            if adj == node2:
+                self.m_graph[node1][i] = (adj, new_weight)
+
+        # Se o arco não for direcionado, atualiza o peso do arco inverso (nodo2, nodo1)
+        if not self.m_directed:
+            for i, (adj, weight) in enumerate(self.m_graph[node2]):
+                if adj == node1:
+                    self.m_graph[node2][i] = (adj, new_weight)
+        
+        return True
+
+
     def desenha(self):
         lista_v = self.m_nodes
         lista_a = []
@@ -78,6 +122,9 @@ class Grafo():
             self.m_graph[node2].append((node1, weight))
 
     def get_arc_cost(self, node1, node2):
+        if node1==node2:
+            return 0
+
         custoT = math.inf
         a = self.m_graph[node1]
         for (nodo, custo) in a:
@@ -709,5 +756,3 @@ class Grafo():
 
         print('Path does not exist!')
         return None
-    
-    
