@@ -404,11 +404,12 @@ class Grafo():
         print('Path does not exist!')
         return None
 
-
-
     def procura_dijkstra(self, start, end):
         """
         Finds the shortest path using Dijkstra's algorithm.
+
+        It starts from the given start node and explores the neighboring nodes in a greedy manner, always choosing the node with the lowest cost.
+        The algorithm maintains a priority queue to keep track of the nodes to be explored next.
 
         Args:
             start (str): Name of the starting node.
@@ -417,33 +418,28 @@ class Grafo():
         Returns:
             tuple: A tuple containing the shortest path and its cost.
         """
-        # Priority queue for Dijkstra's algorithm
         priority_queue = [(0, start)]
-        # Dictionary to store the cost to reach each node
         cost_to_reach = {start: 0}
-        # Dictionary to store the parent of each node in the shortest path
         parents = {start: None}
-
+        visited = set()
+        
         while priority_queue:
-            # Get the node with the lowest cost from the priority queue
             current_cost, current_node = heapq.heappop(priority_queue)
-
-            # Check if we reached the end node
             if current_node == end:
-                # Reconstruct the path
                 reconst_path = []
                 while current_node is not None:
                     reconst_path.append(current_node)
                     current_node = parents[current_node]
                 reconst_path.reverse()
 
-                return reconst_path, cost_to_reach[end]
+                print("Nodos Visitados: " + str(visited))
+                return reconst_path, round(cost_to_reach[end],2)
 
-            # Explore neighbors
+            visited.add(current_node)
+
             for neighbor, weight in self.get_neighbours(current_node):
                 new_cost = cost_to_reach[current_node] + weight
 
-                # If the new cost is smaller than the recorded cost, update it
                 if neighbor not in cost_to_reach or new_cost < cost_to_reach[neighbor]:
                     cost_to_reach[neighbor] = new_cost
                     parents[neighbor] = current_node
@@ -463,29 +459,29 @@ class Grafo():
         Returns:
             tuple: A tuple containing the shortest path and its cost.
         """
-        # Dictionary to store the cost to reach each node
         cost_to_reach = {node.getName(): math.inf for node in self.m_nodes}
         cost_to_reach[start] = 0
-        # Dictionary to store the parent of each node in the shortest path
         parents = {node.getName(): None for node in self.m_nodes}
-
-        # Relax edges repeatedly
+        visited = set()
+        
         for _ in range(len(self.m_nodes) - 1):
             for node in self.m_nodes:
+                visited.add(node.getName())
                 for neighbor, weight in self.get_neighbours(node.getName()):
+                    visited.add(neighbor)
                     new_cost = cost_to_reach[node.getName()] + weight
                     if new_cost < cost_to_reach[neighbor]:
                         cost_to_reach[neighbor] = new_cost
                         parents[neighbor] = node.getName()
 
-        # Check for negative cycles
         for node in self.m_nodes:
             for neighbor, weight in self.get_neighbours(node.getName()):
+                visited.add(node.getName())
+                visited.add(neighbor)
                 if cost_to_reach[node.getName()] + weight < cost_to_reach[neighbor]:
                     print('Negative cycle detected!')
                     return None
 
-        # Reconstruct the path
         reconst_path = []
         current_node = end
         while current_node is not None:
@@ -493,14 +489,26 @@ class Grafo():
             current_node = parents[current_node]
         reconst_path.reverse()
 
-        return reconst_path, cost_to_reach[end]
+        print("Nodos Visitados: " + str(visited))
+        return reconst_path, round(cost_to_reach[end], 2)
     
     def procura_floyd_warshall(self, start, end):
+        """
+        Finds the shortest path between two nodes using the Floyd-Warshall algorithm.
+        It computes the shortest path between every pair of nodes in the graph.
+
+        Args:
+            start (str): The name of the starting node.
+            end (str): The name of the ending node.
+
+        Returns:
+            tuple or None: A tuple containing the path nodes and the distance between the start and end nodes.
+                           If no path is found, returns None and math.inf for distance.
+        """
         num_nodes = len(self.m_nodes)
         dist_matrix = [[math.inf] * num_nodes for _ in range(num_nodes)]
         next_node_matrix = [[None] * num_nodes for _ in range(num_nodes)]
 
-        # Initialize distance matrix with edge weights
         for i in range(num_nodes):
             dist_matrix[i][i] = 0
             node_name = self.m_nodes[i].getName()
@@ -509,7 +517,6 @@ class Grafo():
                 dist_matrix[i][neighbor_index] = weight
                 next_node_matrix[i][neighbor_index] = neighbor_index
 
-        # Floyd-Warshall algorithm
         for k in range(num_nodes):
             for i in range(num_nodes):
                 for j in range(num_nodes):
@@ -518,24 +525,63 @@ class Grafo():
                             dist_matrix[i][j] = dist_matrix[i][k] + dist_matrix[k][j]
                             next_node_matrix[i][j] = next_node_matrix[i][k]
 
-        # Reconstruct the path
         start_index = self.m_nodes.index(self.get_node_by_name(start))
         end_index = self.m_nodes.index(self.get_node_by_name(end))
 
         if next_node_matrix[start_index][end_index] is None:
-            # No path exists between start and end
             return None, math.inf
 
         path = [start_index]
         while path[-1] != end_index:
             path.append(next_node_matrix[path[-1]][end_index])
 
-        # Convert node indices to node names
         path_nodes = [self.m_nodes[i].getName() for i in path]
 
-        # Return the path and distance
         distance = dist_matrix[start_index][end_index]
-        return path_nodes, distance
+
+        print("Nodos Visitados: " + str(set(node_name for path_node in path_nodes for node_name in path_node)))
+        return path_nodes, round(distance,2)
+
+    def random_walk(self, start, end):
+        """
+        Performs a random walk algorithm to find a path between the start and end nodes.
+
+        The random walk algorithm starts at the specified start node and randomly selects a neighbor node to move to.
+        It continues this process until it reaches the end node or there are no unvisited neighbors left.
+        The algorithm keeps track of the visited nodes and the total cost of the path.
+
+        Args:
+            start (str): The name of the starting node.
+            end (str): The name of the ending node.
+
+        Returns:
+            tuple or None: A tuple containing the path and total cost if a solution is found, None otherwise.
+                - The path is a list of node names representing the sequence of nodes visited during the random walk.
+                - The total cost is the sum of the costs associated with each edge in the path.
+        """
+        current_node = start
+        path = [current_node]
+        total_cost = 0
+        visited_nodes = set()
+
+        while current_node != end:
+            neighbors = self.m_graph.get(current_node, [])
+            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
+
+            if not unvisited_neighbors:
+                path.pop()
+                if not path:
+                    return None
+                current_node = path[-1]
+            else:
+                next_node, cost = random.choice(unvisited_neighbors)
+                path.append(next_node)
+                total_cost += cost
+                visited_nodes.add(next_node)
+                current_node = next_node
+
+        print("Visited Nodes: " + str(visited_nodes))
+        return path, round(total_cost, 2)
 
 # PROCURAS INFORMADAS
 
@@ -759,38 +805,3 @@ class Grafo():
 
         print('Path does not exist!')
         return None
-    
-    def random_walk(self, start_node, end_node):
-        """
-        Random walk algorithm that attempts to find a solution between start and end nodes.
-
-        Args:
-            start_node (str): Name of the starting node.
-            end_node (str): Name of the ending node.
-
-        Returns:
-            tuple or None: Tuple containing the path and total cost if a solution is found, None otherwise.
-        """
-        current_node = start_node
-        path = [current_node]
-        total_cost = 0
-
-        while current_node != end_node:
-            neighbors = self.m_graph.get(current_node, [])
-            unvisited_neighbors = [(neighbor, cost) for neighbor, cost in neighbors if neighbor not in path]
-
-            if not unvisited_neighbors:
-                # If there are no unvisited neighbors, backtrack
-                path.pop()
-                if not path:
-                    # If the path is empty, no solution is found
-                    return None
-                current_node = path[-1]
-            else:
-                # Move to a random unvisited neighbor
-                next_node, cost = random.choice(unvisited_neighbors)
-                path.append(next_node)
-                total_cost += cost
-                current_node = next_node
-
-        return path, round(total_cost, 2)
