@@ -1,6 +1,6 @@
 # HealthPlanet Delivery System
 
-This README provides an overview of the HealthPlanet delivery system. The system is designed to manage deliveries, calculate optimal delivery routes, and manage delivery agents and transportation means.
+This project is a delivery app that uses divers search algorithms to come upon the best path solution, for a company named HealthPlanet.
 
 ## How to Run
 1. Ensure Python 3 is installed on your system.
